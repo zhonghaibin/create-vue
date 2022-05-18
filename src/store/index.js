@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+import user from './modules/user'
+import app from './modules/app'
+
 Vue.use(Vuex)
 
 const modules = {}
@@ -13,6 +16,10 @@ files.keys().forEach((key) => {
 })
 
 const store = new Vuex.Store({
-  modules,
+  modules: {
+    app,
+    user,
+  },
 })
+console.log(store, 'store')
 export default store

@@ -1,5 +1,6 @@
 <template>
   <div class="VipList1">
+    <VipSearch2 />
     <div class="list-top">
       <div>
         <span class="black">筛选结果</span>
@@ -22,8 +23,12 @@
 </template>
 
 <script>
+  import VipSearch2 from '@/components/vip-list1/vip-search-2'
   export default {
     name: 'VipList1',
+    components: {
+      VipSearch2,
+    },
     data: function () {
       return {
         columns1: [

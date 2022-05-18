@@ -1,5 +1,7 @@
 <template>
   <div>
+    <VipSearch />
+    <VipSearch1 />
     <div class="list-top">
       <span class="black">共6732个会员</span>
       <span class="black">（所有会员总余额：￥16653232.32元</span>
@@ -11,7 +13,7 @@
         <!-- slot对应data里面的slot-->
 
         <template slot="action">
-          <span class="bt">详情</span>
+          <span class="bt" @click="jumpVipInfo">详情</span>
           <span class="bt">更多</span>
         </template>
       </Table>
@@ -20,8 +22,14 @@
 </template>
 
 <script>
+  import VipSearch from '@/components/vip-list/vip-search'
+  import VipSearch1 from '@/components/vip-list/vip-search-1'
   export default {
     name: 'VipList1',
+    components: {
+      VipSearch,
+      VipSearch1,
+    },
     data: function () {
       return {
         columns1: [
@@ -45,10 +53,11 @@
                       style: {
                         width: '40px',
                         height: '40px',
-                        margin: '10px',
                         position: 'relative',
                         borderRadius: '100%',
                         border: '1px solid',
+                        top: '-12px',
+                        left: '-8px',
                       },
                     },
                     [
@@ -70,6 +79,7 @@
                       {
                         style: {
                           color: '#f62727',
+                          paddingTop: '10px',
                         },
                       },
                       params.row.name
@@ -91,6 +101,23 @@
                         },
                       },
                       params.row.name
+                    ),
+                    h(
+                      'div',
+                      {
+                        style: {
+                          textAlign: 'center',
+                          border: '1px solid #228d57',
+                          borderRadius: ' 32px',
+                          background: '#228d57',
+                          height: '18px',
+                          lineHeight: '18px',
+                          color: '#ffffff',
+                          marginTop: '4px',
+                          marginBottom: '10px',
+                        },
+                      },
+                      '铂金会员'
                     ),
                   ]),
                 ]
@@ -348,8 +375,71 @@
             key: 'counselor',
           },
           {
-            title: '锁定状态',
+            title: '绑定状态',
             key: 'status',
+            render: (h) => {
+              let html = h('div', [
+                h(
+                  'div',
+                  {
+                    style: {
+                      display: 'flex',
+                      alignItems: 'center',
+                    },
+                  },
+                  [
+                    h(
+                      'span',
+                      {
+                        style: {
+                          color: '#31708f',
+                        },
+                      },
+                      '已绑定'
+                    ),
+                    h('img', {
+                      attrs: { src: this.WeComImgUrl },
+                      style: {
+                        width: '20px',
+                        height: '20px',
+                        borderRadius: '100%',
+                        overflow: 'hidden',
+                      },
+                    }),
+                  ]
+                ),
+                h(
+                  'div',
+                  {
+                    style: {
+                      display: 'flex',
+                    },
+                  },
+                  [
+                    h(
+                      'span',
+                      {
+                        style: {
+                          color: '#31708f',
+                        },
+                      },
+                      '已绑定'
+                    ),
+                    h('img', {
+                      attrs: { src: this.WeChatImgUrl },
+                      style: {
+                        width: '20px',
+                        height: '20px',
+                        borderRadius: '100%',
+                        overflow: 'hidden',
+                      },
+                    }),
+                  ]
+                ),
+              ])
+
+              return html
+            },
           },
           {
             title: '操作',
@@ -372,21 +462,15 @@
             image:
               'http://iview.talkingdata.com/dist/e1cf12c07bf6458992569e67927d767e.png',
           },
-          {
-            name: 'John Brown',
-            username: 18,
-            money: 'New York No. 1 Lake Park',
-            count: '2016-10-03',
-            money1: '2016-10-03',
-            source: '2016-10-03',
-            birthday: '2016-10-03',
-            counselor: '2016-10-03',
-            status: '2016-10-03',
-            image:
-              'http://iview.talkingdata.com/dist/e1cf12c07bf6458992569e67927d767e.png',
-          },
         ],
+        WeComImgUrl: require('../assets/企业微信.png'),
+        WeChatImgUrl: require('../assets/微信.png'),
       }
+    },
+    methods: {
+      jumpVipInfo() {
+        this.$router.push('/user/vip/vip-details')
+      },
     },
   }
 </script>
@@ -408,9 +492,11 @@
     }
   }
   .list {
-    /deep/.ivu-table td {
-      //text-align: center;
+    /deep/.ivu-table-row {
     }
+    /deep/.ivu-table td {
+    }
+
     .bt {
       color: blue;
       margin-right: 20px;

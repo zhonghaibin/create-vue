@@ -8,6 +8,7 @@ import { getPhone, setPhone } from '@/utils/phone'
 import { getShopId, setShopId } from '@/utils/shopId'
 import { setUid, getUid } from '@/utils/uid'
 import Cookies from 'js-cookie'
+import { logout } from '@/api/user'
 
 const getters = {
   token: (state) => state.token,
@@ -27,6 +28,7 @@ const state = () => ({
   phone: getPhone(),
   isOnLine: 0,
   avatar: '',
+  unreadCount: 0,
 })
 const mutations = {
   /**
@@ -184,6 +186,23 @@ const actions = {
       Vue.prototype.$baseMessage(err, 'error', 'vab-hey-message-error')
       throw err
     }
+  },
+  handleLogOut({ state, commit }) {
+    return new Promise((resolve, reject) => {
+      logout(state.token)
+        .then(() => {
+          commit('setToken', '')
+          commit('setAccess', [])
+          resolve()
+        })
+        .catch((err) => {
+          reject(err)
+        })
+      // 如果你的退出登录无需请求接口，则可以直接使用下面三行代码而无需使用logout调用接口
+      // commit('setToken', '')
+      // commit('setAccess', [])
+      // resolve()
+    })
   },
   /**
    * @description 获取用户信息接口 这个接口非常非常重要，如果没有明确底层前逻辑禁止修改此方法，错误的修改可能造成整个框架无法正常使用

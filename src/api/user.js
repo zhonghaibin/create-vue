@@ -22,3 +22,11 @@ export function updateUser(data) {
     data,
   })
 }
+export const logout = (token) => {
+  console.log(token)
+  return request({
+    url: '',
+    method: 'get',
+    token: token,
+  })
+}
