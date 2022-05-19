@@ -186,7 +186,7 @@
         }
         .row4 {
           display: flex;
-          justify-content: end;
+          justify-content: flex-end;
           .bt {
             width: 100px;
             height: 30px;

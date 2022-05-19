@@ -179,13 +179,13 @@
 
             .right {
               display: flex;
-              justify-content: end;
+              justify-content: flex-end;
             }
           }
 
           .more {
             display: flex;
-            justify-content: end;
+            justify-content: flex-end;
 
             .details {
               color: blue;

@@ -107,7 +107,6 @@
             padding: 0 4px;
           }
           .right {
-            flex: 1;
             display: flex;
             border: 1px solid #bdbdbd;
             border-radius: 4px;
@@ -137,7 +136,7 @@
       .right {
         margin-top: 10px;
         display: flex;
-        justify-content: end;
+        justify-content: flex-end;
         .bt {
           margin-right: 10px;
           width: 80px;

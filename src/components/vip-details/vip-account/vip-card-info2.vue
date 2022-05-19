@@ -125,7 +125,7 @@
             flex-flow: wrap;
             .row {
               display: flex;
-              justify-content: end;
+              justify-content: flex-end;
               padding: 2px 20px;
               width: 50%;
               .l {

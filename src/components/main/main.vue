@@ -110,6 +110,36 @@
         return this.$store.state.user.unreadCount
       },
     },
+    watch: {
+      $route(newRoute) {
+        const { name, query, params, meta } = newRoute
+        this.addTag({
+          route: { name, query, params, meta },
+          type: 'push',
+        })
+        this.setBreadCrumb(newRoute)
+        this.setTagNavList(getNewTagList(this.tagNavList, newRoute))
+        this.$refs.sideMenu.updateOpenName(newRoute.name)
+      },
+    },
+    mounted() {
+      /**
+       * @description 初始化设置面包屑导航和标签导航
+       */
+      this.setTagNavList()
+      this.setHomeRoute(routers)
+      const { name, params, query, meta } = this.$route
+      this.addTag({
+        route: { name, params, query, meta },
+      })
+      this.setBreadCrumb(this.$route)
+      // 如果当前打开页面不在标签栏中，跳到homeName页
+      if (!this.tagNavList.find((item) => item.name === this.$route.name)) {
+        this.$router.push({
+          name: this.$config.homeName,
+        })
+      }
+    },
     methods: {
       ...mapMutations([
         'setBreadCrumb',
@@ -157,36 +187,6 @@
         this.turnToPage(item)
       },
     },
-    watch: {
-      $route(newRoute) {
-        const { name, query, params, meta } = newRoute
-        this.addTag({
-          route: { name, query, params, meta },
-          type: 'push',
-        })
-        this.setBreadCrumb(newRoute)
-        this.setTagNavList(getNewTagList(this.tagNavList, newRoute))
-        this.$refs.sideMenu.updateOpenName(newRoute.name)
-      },
-    },
-    mounted() {
-      /**
-       * @description 初始化设置面包屑导航和标签导航
-       */
-      this.setTagNavList()
-      this.setHomeRoute(routers)
-      const { name, params, query, meta } = this.$route
-      this.addTag({
-        route: { name, params, query, meta },
-      })
-      this.setBreadCrumb(this.$route)
-      // 如果当前打开页面不在标签栏中，跳到homeName页
-      if (!this.tagNavList.find((item) => item.name === this.$route.name)) {
-        this.$router.push({
-          name: this.$config.homeName,
-        })
-      }
-    },
   }
 </script>
 
@@ -213,6 +213,7 @@
         display: flex;
         align-items: center;
         .logo {
+          padding-left: 10px;
           img {
             height: 50px;
             width: auto;

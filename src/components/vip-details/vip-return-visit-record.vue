@@ -32,7 +32,6 @@
         </template>
       </Table>
     </div>
-
     <div class="page">
       <Page show-elevator show-sizer size="small" :total="40" transfer />
     </div>

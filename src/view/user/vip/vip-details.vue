@@ -297,7 +297,7 @@
 
               .level {
                 flex: 1;
-                justify-content: end;
+                justify-content: flex-end;
                 display: flex;
 
                 .bt {
@@ -326,7 +326,7 @@
 
               .bind {
                 flex: 1;
-                justify-content: end;
+                justify-content: flex-end;
                 margin: auto;
                 padding-left: 4px;
                 padding-right: 4px;
@@ -408,7 +408,7 @@
 
             .node {
               display: flex;
-              justify-content: end;
+              justify-content: flex-end;
 
               .title {
                 font-weight: bold;

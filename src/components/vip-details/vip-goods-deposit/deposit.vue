@@ -60,7 +60,7 @@
     .footer {
       margin-top: 10px;
       display: flex;
-      justify-content: end;
+      justify-content: flex-end;
       .bt {
         margin-right: 10px;
         width: 80px;

@@ -47,10 +47,9 @@
     </div>
     <div class="list">
       <Table :columns="columns1" :data="data1">
-        <div></div>
+        <template slot="action"></template>
       </Table>
     </div>
-
     <div class="page">
       <Page show-elevator show-sizer size="small" :total="40" transfer />
     </div>

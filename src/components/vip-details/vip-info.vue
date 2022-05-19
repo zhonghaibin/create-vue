@@ -198,7 +198,7 @@
         }
         .r {
           display: flex;
-          justify-content: end;
+          justify-content: flex-end;
           .bt {
             width: 80px;
             min-width: 60px;
