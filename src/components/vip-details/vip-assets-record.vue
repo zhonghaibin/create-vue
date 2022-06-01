@@ -1,13 +1,30 @@
 <template>
   <div class="VipAssetsRecord">
-    <Tabs size="small" @on-click="handleTabClick">
-      <TabPane v-for="item in lab_list" :key="item.id" :label="item.name">
-        <VipConsumptionRecord v-if="item.id === 1 && tab_index === 1" />
-        <VipGiftRecord v-if="item.id === 2 && tab_index === 2" />
-        <VipIntegralRecord v-if="item.id === 3 && tab_index === 3" />
-        <VipChangeRecord v-if="item.id === 4 && tab_index === 4" />
-        <VipReachStoreRecord v-if="item.id === 5 && tab_index === 5" />
-        <VipOrderRecord v-if="item.id === 6 && tab_index === 6" />
+    <Tabs v-model="tab_index" size="small" @on-click="handleTabClick">
+      <TabPane
+        v-for="item in lab_list"
+        :key="item.id"
+        :label="item.name"
+        :name="item.name"
+      >
+        <VipConsumptionRecord
+          v-if="item.name === '消费记录' && tab_index === '消费记录'"
+        />
+        <VipGiftRecord
+          v-if="item.name === '获赠记录' && tab_index === '获赠记录'"
+        />
+        <VipIntegralRecord
+          v-if="item.name === '积分记录' && tab_index === '积分记录'"
+        />
+        <VipChangeRecord
+          v-if="item.name === '修改记录' && tab_index === '修改记录'"
+        />
+        <VipReachStoreRecord
+          v-if="item.name === '到店记录' && tab_index === '到店记录'"
+        />
+        <VipOrderRecord
+          v-if="item.name === '商城订单' && tab_index === '商城订单'"
+        />
       </TabPane>
     </Tabs>
   </div>
@@ -32,7 +49,7 @@
     },
     data: function () {
       return {
-        tab_index: 1,
+        tab_index: '消费记录',
         lab_list: [
           {
             id: 1,
@@ -63,7 +80,7 @@
     },
     methods: {
       handleTabClick(index) {
-        this.tab_index = index + 1
+        this.tab_index = index
       },
     },
   }

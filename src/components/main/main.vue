@@ -103,7 +103,6 @@
         return this.$store.state.user.avatar
       },
       menuList() {
-        console.log('menuList', this.$store.getters.menuList)
         return this.$store.getters.menuList
       },
       unreadCount() {
@@ -206,6 +205,9 @@
 </style>
 <style lang="less" scoped>
   .layout {
+    .spin-icon-load {
+      animation: ani-demo-spin 1s linear infinite;
+    }
     .logo-con {
       padding: 5px;
 
@@ -339,8 +341,10 @@
       font-weight: bold;
       font-size: 14px;
       padding: 10px 2px;
+      height: 100%;
     }
     padding: 4px 16px;
+    background: white;
   }
 
   /deep/.ivu-tabs.ivu-tabs-card > .ivu-tabs-bar {

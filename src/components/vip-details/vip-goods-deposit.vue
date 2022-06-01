@@ -1,9 +1,18 @@
 <template>
   <div class="VipGoodsDeposit">
-    <Tabs size="small" @on-click="handleTabClick">
-      <TabPane v-for="item in lab_list" :key="item.id" :label="item.name">
-        <VipDepositData v-if="item.id === 1 && tab_index === 1" />
-        <VipDepositDetails v-if="item.id === 2 && tab_index === 2" />
+    <Tabs v-model="tab_index" size="small" @on-click="handleTabClick">
+      <TabPane
+        v-for="item in lab_list"
+        :key="item.id"
+        :label="item.name"
+        :name="item.name"
+      >
+        <VipDepositData
+          v-if="item.name === '寄存数据' && tab_index === '寄存数据'"
+        />
+        <VipDepositDetails
+          v-if="item.name === '寄存记录' && tab_index === '寄存记录'"
+        />
       </TabPane>
     </Tabs>
   </div>
@@ -20,7 +29,7 @@
     },
     data: function () {
       return {
-        tab_index: 1,
+        tab_index: '寄存数据',
         lab_list: [
           {
             id: 1,
@@ -35,7 +44,7 @@
     },
     methods: {
       handleTabClick(index) {
-        this.tab_index = index + 1
+        this.tab_index = index
       },
     },
   }

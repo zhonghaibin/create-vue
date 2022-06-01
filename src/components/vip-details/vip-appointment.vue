@@ -4,72 +4,138 @@
       <div class="box">
         <span class="text">时间</span>
         <DatePicker
+          v-model="date"
+          format="yyyy-MM-dd"
           placeholder="开始时间-结束时间"
           style="width: 280px"
+          transfer
           type="datetimerange"
+          value-format="yyyy-MM-dd"
+          @on-change="searchData.date = $event"
+          @on-clear="clearDate"
+          @on-open-change="changeDatePicker(searchData.date)"
         />
       </div>
       <div class="box">
         <Input
+          v-model="searchData.search"
           enter-button
           placeholder="可搜索服务人员/消费内容"
           search
           style="width: 300px"
+          @on-search="changeValue"
         />
       </div>
     </div>
     <div class="list">
-      <Table :columns="columns1" :data="data1" />
-    </div>
-    <div class="page">
-      <Page show-elevator show-sizer size="small" :total="40" />
+      <Table :columns="columns" :data="list" />
+      <div class="page">
+        <Page
+          :current="page.current"
+          :page-size="page.pageSize"
+          show-elevator
+          show-sizer
+          size="small"
+          :total="page.total"
+          @on-change="currentPage"
+          @on-page-size-change="pageSizeChange"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+  import { getMemberAppointmentList } from '@/api/vip'
+
   export default {
     name: 'VipAppointment',
+    props: {
+      memberInfo: {
+        type: Object,
+        default: () => {},
+      },
+    },
     data: function () {
       return {
-        columns1: [
+        page: {
+          total: 0,
+          pageSize: 10,
+          current: 1,
+        },
+        columns: [
           {
             title: '预约时间',
-            key: 'name',
+            key: 'timeer',
             width: '200px',
           },
           {
             title: '预约门店',
-            key: 'username',
+            key: 'shop_name',
           },
           {
             title: '预约产康师',
-            key: 'money',
+            key: 'staff',
           },
           {
             title: '预约内容',
-            key: 'count',
+            key: 'service',
           },
           {
             title: '项目第X次',
-            key: 'money1',
+            key: 'service_num',
           },
           {
             title: '预约状态',
-            key: 'source',
+            key: 'status_name',
           },
         ],
-        data1: [
-          {
-            name: 'John Brown',
-            username: 18,
-            money: 'New York No. 1 Lake Park',
-            count: '2016-10-03',
-            money1: '2016-10-03',
-            source: '2016-10-03',
-          },
-        ],
+        list: [],
+        searchData: { search: '', start: '', end: '' },
+        date: [],
       }
+    },
+    activated() {
+      this.getMemberAppointmentList()
+    },
+    created() {
+      this.getMemberAppointmentList()
+    },
+    methods: {
+      changeValue() {
+        this.getMemberAppointmentList()
+      },
+      clearDate() {
+        this.searchData.start = ''
+        this.searchData.end = ''
+      },
+      changeDatePicker: function (date) {
+        if (date) {
+          this.searchData.start = date[0]
+          this.searchData.end = date[1]
+        }
+      },
+      currentPage(current) {
+        this.page.current = current
+        this.getMemberAppointmentList()
+      },
+      pageSizeChange(pageSize) {
+        this.page.pageSize = pageSize
+        this.getMemberAppointmentList()
+      },
+      search() {
+        this.getMemberAppointmentList()
+      },
+      async getMemberAppointmentList() {
+        console.log('this.memeberInfo', this.memberInfo)
+        this.$set(this.searchData, 'vip_id', this.memberInfo.vip_id)
+        this.$set(this.searchData, 'page', this.page.pageSize)
+        this.$set(this.searchData, 'p', this.page.current)
+        const { data } = await getMemberAppointmentList(this.searchData)
+        this.list = data.list
+        this.page.total = Number(data.count)
+        this.page.current = Number(data.p)
+      },
     },
   }
 </script>
@@ -89,10 +155,12 @@
     }
     .list {
       margin-top: 20px;
-    }
-    .page {
-      display: flex;
-      justify-content: center;
+      .page {
+        height: 40px;
+        padding: 8px 0;
+        text-align: center;
+        background: white;
+      }
     }
   }
 </style>

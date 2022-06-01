@@ -1,9 +1,18 @@
 <template>
   <div class="VipShareholderDividends">
-    <Tabs size="small" @on-click="handleTabClick">
-      <TabPane v-for="item in lab_list" :key="item.id" :label="item.name">
-        <VipDividendsInfo v-if="item.id === 1 && tab_index === 1" />
-        <VipShareholderDetails v-if="item.id === 2 && tab_index === 2" />
+    <Tabs v-model="tab_index" size="small" @on-click="handleTabClick">
+      <TabPane
+        v-for="item in lab_list"
+        :key="item.id"
+        :label="item.name"
+        :name="item.name"
+      >
+        <VipDividendsInfo
+          v-if="item.name === '股东信息' && tab_index === '股东信息'"
+        />
+        <VipShareholderDetails
+          v-if="item.name === '分红记录' && tab_index === '分红记录'"
+        />
       </TabPane>
     </Tabs>
   </div>
@@ -20,7 +29,7 @@
     },
     data: function () {
       return {
-        tab_index: 1,
+        tab_index: '股东信息',
         lab_list: [
           {
             id: 1,
@@ -35,7 +44,7 @@
     },
     methods: {
       handleTabClick(index) {
-        this.tab_index = index + 1
+        this.tab_index = index
       },
     },
   }

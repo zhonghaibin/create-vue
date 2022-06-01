@@ -1,0 +1,45 @@
+<template>
+  <div class="Supplier">
+    <Row>
+      <Col>
+        <Tabs v-model="tab_index" size="small" @on-click="handleTabClick">
+          <TabPane
+            v-for="item in tab_list"
+            :key="item.id"
+            :label="item.name"
+            :name="item.name"
+          >
+            <ServiceList
+              v-if="
+                item.name === '项目类别设置' && tab_index === '项目类别设置'
+              "
+            />
+          </TabPane>
+        </Tabs>
+      </Col>
+    </Row>
+  </div>
+</template>
+<script>
+  import ServiceList from '@/components/setting/item/type/service-list'
+  export default {
+    name: 'Supplier',
+    components: { ServiceList },
+    data: function () {
+      return {
+        tab_index: '项目类别设置',
+        tab_list: [
+          { name: '项目类别设置', id: 1 },
+          { name: '套餐次卡类别设置', id: 2 },
+          { name: '商品类别设置', id: 3 },
+        ],
+      }
+    },
+    methods: {
+      handleTabClick(index) {
+        this.tab_index = index
+      },
+    },
+  }
+</script>
+<style lang="less" scoped></style>

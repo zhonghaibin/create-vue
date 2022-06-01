@@ -2,7 +2,12 @@
   <div class="CustomerInfo">
     <div class="header">
       <div class="right">
-        <div class="add-bt" @click="showCustomer">添加客情</div>
+        <div
+          class="add-bt"
+          @click="showModal('添加自定义客情记录', 'Customer')"
+        >
+          添加客情
+        </div>
       </div>
     </div>
     <div class="content">
@@ -303,8 +308,8 @@
         </div>
       </div>
     </div>
-    <Modal v-model="is_show_modal" :footer-hide="true" :title="modal_title">
-      <Customer v-if="modal_type === 'Customer'" @cancelModal="cancelModal" />
+    <Modal v-model="modal.show" :footer-hide="true" :title="modal.title">
+      <Customer v-if="modal.type === 'Customer'" @cancelModal="cancelModal" />
     </Modal>
   </div>
 </template>
@@ -316,9 +321,11 @@
     components: { Customer },
     data: function () {
       return {
-        is_show_modal: false,
-        modal_title: '添加自定义客情记录',
-        modal_type: 'Customer',
+        modal: {
+          show: false,
+          title: '',
+          type: false,
+        },
         blood_type: '',
         blood_type_list: [
           {
@@ -775,13 +782,13 @@
       console.log('VipInfo')
     },
     methods: {
-      showCustomer() {
-        this.is_show_modal = true
-        this.modal_title = '添加自定义客情记录'
-        this.modal_type = 'Customer'
+      showModal(title, type) {
+        this.modal.show = true
+        this.modal.title = title
+        this.modal.type = type
       },
       cancelModal(status) {
-        this.is_show_modal = status
+        this.modal.show = status
       },
     },
   }

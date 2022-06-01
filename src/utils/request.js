@@ -9,7 +9,7 @@ import {
   statusName,
   successCode,
 } from '@/config'
-import store from '@/store'
+// import store from '@/store'
 import qs from 'qs'
 import { isArray } from '@/utils/validate'
 
@@ -46,18 +46,19 @@ const CODE_MESSAGE = {
  * @returns {any}
  */
 const requestConf = (config) => {
-  const token = store.getters['user/token']
-  const companyId = store.getters['user/companyId']
-  const shopId = store.getters['user/shopId']
+  // const token = store.getters['user/token']
+  // const companyId = store.getters['user/companyId']
+  // const shopId = store.getters['user/shopId']
 
   // 不规范写法 可根据setting.config.js tokenName配置随意自定义headers
   // if (token) config.headers[tokenName] = token
 
-  config.headers['companyId'] = companyId
-  config.headers['shopId'] = shopId
+  // config.headers['companyId'] = companyId
+  // config.headers['shopId'] = shopId
 
   // 规范写法 不可随意自定义
-  if (token) config.headers['ticket'] = token
+  // if (token) config.headers['ticket'] = token
+  config.headers['token'] = '888'
 
   if (
     config.data &&

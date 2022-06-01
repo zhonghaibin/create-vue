@@ -47,21 +47,21 @@
             <div class="right"><div class="text">8次</div></div>
           </div>
           <div class="more">
-            <div class="details" @click="showCardInfo">详情</div>
+            <div class="details" @click="showModal('卡详情', 'VipCardInfo2')">
+              详情
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div>
       <Modal
-        v-model="is_show_modal"
+        v-model="modal.show"
         :footer-hide="true"
-        :title="modal_title"
+        :title="modal.title"
         :width="700"
-        @on-cancel="cancel"
-        @on-ok="ok"
       >
-        <VipCardInfo2 v-if="modal_type === 'VipCardInfo2'" />
+        <VipCardInfo2 v-if="modal.type === 'VipCardInfo2'" />
       </Modal>
     </div>
   </div>
@@ -99,19 +99,19 @@
           },
         ],
         status: '0',
-        is_show_modal: false,
-        modal_title: '卡详情',
-        modal_type: 'VipCardInfo2',
+        modal: {
+          show: false,
+          title: '',
+          type: false,
+        },
       }
     },
     methods: {
-      showCardInfo() {
-        this.is_show_modal = true
-        this.modal_title = '卡详情'
-        this.modal_type = 'VipCardInfo2'
+      showModal(title, type) {
+        this.modal.show = true
+        this.modal.title = title
+        this.modal.type = type
       },
-      ok() {},
-      cancel() {},
     },
   }
 </script>

@@ -26,11 +26,35 @@
           </div>
         </div>
       </div>
+
       <div class="history">
-        <div class="title">历史标签</div>
+        <div class="title">已添加标签</div>
         <div class="content">
-          <Tag color="default">不吃香菜芹菜</Tag>
-          <Tag color="default">不能吹空调</Tag>
+          <Tag closable color="default">不吃香菜芹菜</Tag>
+          <Tag closable color="default">不能吹空调</Tag>
+        </div>
+      </div>
+      <div class="tab-list">
+        <div class="tab-list-row">
+          <div class="left">禁忌事项</div>
+          <div class="right">
+            <Tag color="default">不吃香菜芹菜</Tag>
+            <Tag color="default">不吃香菜芹菜</Tag>
+            <Tag color="default">不吃香菜芹菜</Tag>
+            <Tag color="default">不吃香菜芹菜</Tag>
+            <Tag color="default">不吃香菜芹菜</Tag>
+            <Tag color="default">不吃香菜芹菜</Tag>
+            <Tag color="default">不吃香菜芹菜</Tag>
+            <Tag color="default">不吃香菜芹菜</Tag>
+          </div>
+        </div>
+        <div class="tab-list-row">
+          <div class="left">消费能力</div>
+          <div class="right">
+            <Tag color="default">不吃香菜芹菜</Tag>
+            <Tag color="default">不吃香菜芹菜</Tag>
+            <Tag color="default">不吃香菜芹菜</Tag>
+          </div>
         </div>
       </div>
     </div>
@@ -47,6 +71,7 @@
 <script>
   export default {
     name: 'PersonalityLabel',
+    components: {},
     props: {
       labels: {
         type: Array,
@@ -127,6 +152,24 @@
           padding: 10px 0;
         }
         .content {
+        }
+      }
+      .tab-list {
+        border-top: 1px solid #ccc;
+        margin-top: 10px;
+        .tab-list-row {
+          display: flex;
+          padding: 4px 2px;
+          align-items: center;
+          border-bottom: 1px solid #f3f3f3;
+          margin: 1px;
+          .left {
+            min-width: 80px;
+            padding: 2px 4px;
+            font-weight: bold;
+          }
+          .right {
+          }
         }
       }
     }

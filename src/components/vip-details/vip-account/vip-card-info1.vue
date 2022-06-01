@@ -40,12 +40,25 @@
       </div>
     </div>
     <div class="tab">
-      <Tabs size="small" @on-click="handleTabClick">
-        <TabPane v-for="item in lab_list" :key="item.id" :label="item.name">
-          <VipCardList v-if="item.id === 1 && tab_index === 1" />
-          <VipConsumptionList v-if="item.id === 2 && tab_index === 2" />
-          <VipChangeList v-if="item.id === 3 && tab_index === 3" />
-          <VipNodeList v-if="item.id === 4 && tab_index === 4" />
+      <Tabs v-model="tab_index" size="small" @on-click="handleTabClick">
+        <TabPane
+          v-for="item in lab_list"
+          :key="item.id"
+          :label="item.name"
+          :name="item.name"
+        >
+          <VipCardList
+            v-if="item.name === '次卡内容' && tab_index === '次卡内容'"
+          />
+          <VipConsumptionList
+            v-if="item.name === '消费记录' && tab_index === '消费记录'"
+          />
+          <VipChangeList
+            v-if="item.name === '修改记录' && tab_index === '修改记录'"
+          />
+          <VipNodeList
+            v-if="item.name === '备注信息' && tab_index === '备注信息'"
+          />
         </TabPane>
       </Tabs>
     </div>
@@ -67,7 +80,7 @@
     },
     data: function () {
       return {
-        tab_index: 1,
+        tab_index: '次卡内容',
         lab_list: [
           {
             id: 1,
@@ -90,7 +103,7 @@
     },
     methods: {
       handleTabClick(index) {
-        this.tab_index = index + 1
+        this.tab_index = index
       },
     },
   }

@@ -12,14 +12,18 @@
         </div>
       </div>
       <div class="right">
-        <div class="add-bt" @click="addDepositGoods">添加寄存商品</div>
+        <div class="add-bt" @click="showModal('添加寄存商品', 'Deposit')">
+          添加寄存商品
+        </div>
       </div>
     </div>
     <div class="list">
       <Table :columns="columns1" :data="data1">
         <!-- slot对应data里面的slot-->
         <template slot="action">
-          <span class="bt" @click="takeGoods">取走商品</span>
+          <span class="bt" @click="showModal('操作取走商品', 'Take')">
+            取走商品
+          </span>
         </template>
       </Table>
     </div>
@@ -27,9 +31,9 @@
     <div class="page">
       <Page show-elevator show-sizer size="small" :total="40" transfer />
     </div>
-    <Modal v-model="is_show_modal" :footer-hide="true" :title="modal_title">
-      <Deposit v-if="modal_type === 'Deposit'" @cancelModal="cancelModal" />
-      <Take v-if="modal_type === 'Take'" @cancelModal="cancelModal" />
+    <Modal v-model="modal.show" :footer-hide="true" :title="modal.title">
+      <Deposit v-if="modal.type === 'Deposit'" @cancelModal="cancelModal" />
+      <Take v-if="modal.type === 'Take'" @cancelModal="cancelModal" />
     </Modal>
   </div>
 </template>
@@ -45,9 +49,11 @@
     },
     data: function () {
       return {
-        is_show_modal: false,
-        modal_title: '添加寄存商品',
-        modal_type: 'Deposit',
+        modal: {
+          show: false,
+          title: '',
+          type: false,
+        },
         columns1: [
           {
             title: '寄存时间',
@@ -85,18 +91,13 @@
     },
     created() {},
     methods: {
-      addDepositGoods() {
-        this.is_show_modal = true
-        this.modal_title = '添加寄存商品'
-        this.modal_type = 'Deposit'
-      },
-      takeGoods() {
-        this.is_show_modal = true
-        this.modal_title = '操作取走商品'
-        this.modal_type = 'Take'
+      showModal(title, type) {
+        this.modal.show = true
+        this.modal.title = title
+        this.modal.type = type
       },
       cancelModal(status) {
-        this.is_show_modal = status
+        this.modal.show = status
       },
     },
   }

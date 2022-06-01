@@ -24,15 +24,15 @@
         </div>
       </div>
     </div>
-    <div class="add-card" @click="showUploadFile">
+    <div class="add-card" @click="showModal('添加客户附件', 'UploadFile')">
       <div class="text">
         <Icon type="md-add" />
         添加附件
       </div>
     </div>
-    <Modal v-model="is_show_modal" :footer-hide="true" :title="modal_title">
+    <Modal v-model="modal.show" :footer-hide="true" :title="modal.title">
       <UploadFile
-        v-if="modal_type === 'UploadFile'"
+        v-if="modal.type === 'UploadFile'"
         @cancelModal="cancelModal"
       />
     </Modal>
@@ -48,19 +48,21 @@
     },
     data: function () {
       return {
-        is_show_modal: false,
-        modal_title: '添加客户附件',
-        modal_type: 'UploadFile',
+        modal: {
+          show: false,
+          title: '',
+          type: false,
+        },
       }
     },
     methods: {
-      showUploadFile() {
-        this.is_show_modal = true
-        this.modal_title = '添加客户附件'
-        this.modal_type = 'UploadFile'
+      showModal(title, type) {
+        this.modal.show = true
+        this.modal.title = title
+        this.modal.type = type
       },
       cancelModal(status) {
-        this.is_show_modal = status
+        this.modal.show = status
       },
     },
   }
