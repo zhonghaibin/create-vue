@@ -5,26 +5,27 @@
         <div class="box">
           <span class="text">时间</span>
           <DatePicker
-            v-model="date"
             format="yyyy-MM-dd"
             placeholder="开始时间-结束时间"
-            style="width: 280px"
+            style="width: 200px"
             transfer
             type="datetimerange"
             value-format="yyyy-MM-dd"
-            @on-change="searchData.date = $event"
+            @on-change="changeDatePicker"
             @on-clear="clearDate"
-            @on-open-change="changeDatePicker(searchData.date)"
+            @on-open-change="changeDatePicker"
           />
         </div>
         <div class="box">
           <Input
             v-model="searchData.search"
+            clearable
             enter-button
             placeholder="搜索回访内容"
             search
-            style="width: 300px"
-            @on-search="changeValue"
+            style="width: 250px"
+            @on-clear="search"
+            @on-search="search"
           />
         </div>
       </div>
@@ -35,11 +36,16 @@
       </div>
     </div>
     <div class="list">
-      <Table :columns="columns" :data="list">
+      <Table :columns="columns" :data="list" :loading="loading">
         <!-- slot对应data里面的slot-->
-        <template slot="action">
-          <span class="bt">编辑</span>
-          <span class="bt">删除</span>
+        <template slot-scope="{ row }" slot="action">
+          <span
+            class="bt"
+            @click="showModal('编辑回访', 'VipReturnVisit', row)"
+          >
+            编辑
+          </span>
+          <span class="bt" @click="delVisitAct(row.id)">删除</span>
         </template>
       </Table>
       <div class="page">
@@ -47,7 +53,6 @@
           :current="page.current"
           :page-size="page.pageSize"
           show-elevator
-          show-sizer
           size="small"
           :total="page.total"
           @on-change="currentPage"
@@ -57,8 +62,16 @@
     </div>
     <Modal v-model="modal.show" :footer-hide="true" :title="modal.title">
       <VipReturnVisit
-        v-if="modal.type === 'VipReturnVisit'"
+        v-if="modal.type === 'VipReturnVisit' && modal.show"
+        :data="data"
+        :member-info="memberInfo"
         @cancelModal="cancelModal"
+        @change="change"
+      />
+      <img
+        v-if="modal.type === 'Look' && modal.show"
+        :src="file"
+        style="width: 100%"
       />
     </Modal>
   </div>
@@ -66,7 +79,7 @@
 
 <script>
   import VipReturnVisit from '@/components/vip-details/return-visit/vip-return-visit'
-  import { getMemberVisitList } from '@/api/vip'
+  import { getMemberVisitList, delVisitAct } from '@/api/vip'
   export default {
     name: 'VipReturnVisitList',
     components: {
@@ -80,9 +93,10 @@
     },
     data: function () {
       return {
+        data: {},
         page: {
           total: 0,
-          pageSize: 10,
+          pageSize: 5,
           current: 1,
         },
         modal: {
@@ -90,10 +104,11 @@
           title: '',
           type: false,
         },
+        file: '',
         columns: [
           {
             title: '回访日期',
-            key: 'time',
+            key: 'info',
             width: '200px',
           },
           {
@@ -136,6 +151,12 @@
                         attrs: {
                           src: params.row.img,
                         },
+                        on: {
+                          click: () => {
+                            this.file = params.row.img
+                            this.showModal('查看', 'Look')
+                          },
+                        },
                         style: {
                           width: '40px',
                           height: '40px',
@@ -158,57 +179,81 @@
           },
         ],
         list: [],
-        searchData: { search: '', start_time: '', end_time: '' },
-        date: [],
+        searchData: {
+          search: '',
+          start: '',
+          end: '',
+          vid: this.memberInfo.id,
+          p: 1,
+          page: 5,
+        },
+        loading: false,
       }
     },
     activated() {
-      this.getMemberVisitList()
+      this.search()
     },
     created() {
-      this.getMemberVisitList()
+      this.search()
     },
     methods: {
-      showModal(title, type) {
+      showModal(title, type, data = {}) {
         this.modal.show = true
         this.modal.title = title
         this.modal.type = type
+        this.data = data
       },
       cancelModal(status) {
         this.modal.show = status
       },
-      changeValue() {
-        this.getMemberVisitList()
+      change() {
+        this.modal.show = false
+        this.search()
       },
       clearDate() {
-        this.searchData.start_time = ''
-        this.searchData.end_time = ''
+        this.searchData.start = ''
+        this.searchData.end = ''
+        this.search()
       },
       changeDatePicker: function (date) {
         if (date) {
-          this.searchData.start_time = date[0]
-          this.searchData.end_time = date[1]
+          this.searchData.start = date[0]
+          this.searchData.end = date[1]
         }
+        this.search()
       },
       currentPage(current) {
         this.page.current = current
-        this.getMemberList()
+        this.searchData.p = current
+        this.getMemberVisitList()
       },
       pageSizeChange(pageSize) {
         this.page.pageSize = pageSize
-        this.getMemberList()
+        this.getMemberVisitList()
       },
+
       search() {
-        this.getMemberList()
+        this.searchData.p = 1
+        this.getMemberVisitList()
       },
       async getMemberVisitList() {
-        this.$set(this.searchData, 'vid', this.memberInfo.id)
-        this.$set(this.searchData, 'page', this.page.pageSize)
-        this.$set(this.searchData, 'p', this.page.current)
+        this.loading = true
         const { data } = await getMemberVisitList(this.searchData)
+        this.loading = false
         this.list = data.list
         this.page.total = Number(data.count)
         this.page.current = Number(data.p)
+      },
+      async delVisitAct(id) {
+        const { status, msg } = await delVisitAct({
+          visit_id: id,
+        })
+        if (status !== 1) {
+          this.$Message.error(msg)
+        } else {
+          this.$Message.success(msg)
+          this.search()
+        }
       },
     },
   }
@@ -273,9 +318,10 @@
       color: white;
       margin-right: 20px;
       cursor: pointer;
-      background: #db528d;
+      background: #f19ec2;
       padding: 6px 14px;
       border-radius: 4px;
+      margin-bottom: 1px;
     }
   }
 </style>

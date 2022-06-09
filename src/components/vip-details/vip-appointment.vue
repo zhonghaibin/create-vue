@@ -4,16 +4,15 @@
       <div class="box">
         <span class="text">时间</span>
         <DatePicker
-          v-model="date"
           format="yyyy-MM-dd"
           placeholder="开始时间-结束时间"
-          style="width: 280px"
+          style="width: 200px"
           transfer
           type="datetimerange"
           value-format="yyyy-MM-dd"
-          @on-change="searchData.date = $event"
+          @on-change="changeDatePicker"
           @on-clear="clearDate"
-          @on-open-change="changeDatePicker(searchData.date)"
+          @on-open-change="changeDatePicker"
         />
       </div>
       <div class="box">
@@ -22,13 +21,13 @@
           enter-button
           placeholder="可搜索服务人员/消费内容"
           search
-          style="width: 300px"
-          @on-search="changeValue"
+          style="width: 250px"
+          @on-search="search"
         />
       </div>
     </div>
     <div class="list">
-      <Table :columns="columns" :data="list" />
+      <Table :columns="columns" :data="list" :loading="loading" />
       <div class="page">
         <Page
           :current="page.current"
@@ -58,11 +57,6 @@
     },
     data: function () {
       return {
-        page: {
-          total: 0,
-          pageSize: 10,
-          current: 1,
-        },
         columns: [
           {
             title: '预约时间',
@@ -91,32 +85,44 @@
           },
         ],
         list: [],
-        searchData: { search: '', start: '', end: '' },
-        date: [],
+        searchData: {
+          vip_id: this.memberInfo.vip_id,
+          search: '',
+          start: '',
+          end: '',
+          page: 5,
+          p: 1,
+        },
+        page: {
+          total: 0,
+          pageSize: 5,
+          current: 1,
+        },
+        loading: false,
       }
     },
     activated() {
-      this.getMemberAppointmentList()
+      this.search()
     },
     created() {
-      this.getMemberAppointmentList()
+      this.search()
     },
     methods: {
-      changeValue() {
-        this.getMemberAppointmentList()
-      },
       clearDate() {
         this.searchData.start = ''
         this.searchData.end = ''
+        this.search()
       },
       changeDatePicker: function (date) {
         if (date) {
           this.searchData.start = date[0]
           this.searchData.end = date[1]
         }
+        this.search()
       },
       currentPage(current) {
         this.page.current = current
+        this.searchData.p = current
         this.getMemberAppointmentList()
       },
       pageSizeChange(pageSize) {
@@ -124,14 +130,13 @@
         this.getMemberAppointmentList()
       },
       search() {
+        this.searchData.p = 1
         this.getMemberAppointmentList()
       },
       async getMemberAppointmentList() {
-        console.log('this.memeberInfo', this.memberInfo)
-        this.$set(this.searchData, 'vip_id', this.memberInfo.vip_id)
-        this.$set(this.searchData, 'page', this.page.pageSize)
-        this.$set(this.searchData, 'p', this.page.current)
+        this.loading = true
         const { data } = await getMemberAppointmentList(this.searchData)
+        this.loading = false
         this.list = data.list
         this.page.total = Number(data.count)
         this.page.current = Number(data.p)

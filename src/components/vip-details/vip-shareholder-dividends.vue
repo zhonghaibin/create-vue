@@ -9,9 +9,11 @@
       >
         <VipDividendsInfo
           v-if="item.name === '股东信息' && tab_index === '股东信息'"
+          :member-info="memberInfo"
         />
         <VipShareholderDetails
           v-if="item.name === '分红记录' && tab_index === '分红记录'"
+          :member-info="memberInfo"
         />
       </TabPane>
     </Tabs>
@@ -26,6 +28,12 @@
     components: {
       VipDividendsInfo,
       VipShareholderDetails,
+    },
+    props: {
+      memberInfo: {
+        type: Object,
+        default: () => {},
+      },
     },
     data: function () {
       return {

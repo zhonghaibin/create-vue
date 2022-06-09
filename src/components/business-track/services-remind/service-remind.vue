@@ -27,6 +27,18 @@
           <Input placeholder="停止提醒次数" style="width: 200px" />
         </div>
       </div>
+      <div class="row">
+        <div class="left">发短信天数</div>
+        <div class="right">
+          <Input placeholder="停止提醒次数" style="width: 200px" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="left">发短信内容</div>
+        <div class="right">
+          <Input placeholder="停止提醒次数" style="width: 200px" />
+        </div>
+      </div>
       <div class="bt">
         <Icon type="md-add" />
         继续添加

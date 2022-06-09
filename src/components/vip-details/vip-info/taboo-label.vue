@@ -7,17 +7,17 @@
           <div class="right">
             <div class="labs">
               <Tag
-                v-for="label in labels"
-                :key="label"
+                v-for="item in list"
+                :key="item.name"
                 closable
-                @on-close="handleClose(label)"
+                @on-close="handleClose(item.name)"
               >
-                {{ label }}
+                {{ item.name }}
               </Tag>
             </div>
             <div class="input">
               <Input
-                v-model="labels_title"
+                v-model="labelsTitle"
                 placeholder="请输入标签名称后按回车"
                 style="width: 180px"
                 @keyup.enter.native="keyupClick"
@@ -26,18 +26,41 @@
           </div>
         </div>
       </div>
+
       <div class="history">
-        <div class="title">历史标签</div>
+        <div class="title">已添加标签</div>
         <div class="content">
-          <Tag color="default">不吃香菜芹菜</Tag>
-          <Tag color="default">不能吹空调</Tag>
+          <Tag
+            v-for="item in labelsList"
+            :key="item.name"
+            closable
+            color="default"
+            @on-close="handleDel(item.name)"
+          >
+            {{ item.name }}
+          </Tag>
+        </div>
+      </div>
+      <div class="tab-list">
+        <div v-for="item in tagsTypeList" :key="item.id" class="tab-list-row">
+          <div class="left">{{ item.name }}</div>
+          <div class="right">
+            <Tag
+              v-for="val in item.childlist"
+              :key="val.id"
+              :color="val.color ? val.color : `default`"
+              @click.native="selectTag(val)"
+            >
+              {{ val.name }}
+            </Tag>
+          </div>
         </div>
       </div>
     </div>
     <div class="footer">
       <div class="left"></div>
       <div class="right">
-        <div class="bt">保存</div>
+        <div class="bt" @click="save">保存</div>
         <div class="bt" @click="cancel">取消</div>
       </div>
     </div>
@@ -45,31 +68,121 @@
 </template>
 
 <script>
+  import { getTags, setTags, getTagsTypeList } from '@/api/vip'
+
   export default {
     name: 'TabooLabel',
+    components: {},
+    props: {
+      memberInfo: {
+        type: Object,
+        default: () => {},
+      },
+    },
     data: function () {
       return {
-        labels: [],
-        labels_title: '',
+        labelsList: [],
+        labelsTitle: '',
+        list: [],
+        formData: {
+          vid: '',
+          mold: '2',
+          tags: [],
+        },
+        searchData: { vid: '', mold: 2, search: '', page: 10000 },
+        tagsTypeList: [],
       }
     },
+    created() {
+      this.getTags()
+      this.getTagsTypeList()
+    },
+    activated() {
+      this.getTags()
+    },
+
     methods: {
+      check(name) {
+        let list = []
+        list = JSON.parse(JSON.stringify(this.labelsList))
+        for (let i in this.list) {
+          list.push(this.list[i])
+        }
+        let flag = true
+        for (let i in list) {
+          if (list[i].name === name) {
+            flag = false
+            break
+          }
+        }
+
+        return flag
+      },
+      selectTag(row) {
+        if (this.check(row.name)) {
+          this.list.push({
+            tags_id: row.id,
+            name: row.name,
+          })
+        }
+      },
       cancel() {
         this.$emit('cancelModal', false)
       },
-
+      save() {
+        this.formData.vid = this.memberInfo.id
+        this.formData.mold = 2
+        this.formData.tags = this.labelsList
+        for (let i in this.list) {
+          this.formData.tags.push(this.list[i])
+        }
+        this.setTags()
+        this.list = []
+      },
+      handleDel(val) {
+        for (let i in this.labelsList) {
+          if (this.labelsList[i].name === val) {
+            this.labelsList.splice(i, 1)
+            return false
+          }
+        }
+      },
       handleClose(val) {
-        let index = this.labels.indexOf(val)
-        if (index > -1) {
-          this.labels.splice(index, 1)
+        for (let i in this.list) {
+          if (this.list[i].name === val) {
+            this.list.splice(i, 1)
+            return false
+          }
         }
       },
       keyupClick() {
-        if (this.labels_title && this.labels.indexOf(this.labels_title) < 0) {
-          this.labels.push(this.labels_title)
+        if (this.check(this.labelsTitle)) {
+          this.list.push({
+            tags_id: 0,
+            name: this.labelsTitle,
+          })
         }
 
-        this.labels_title = ''
+        this.labelsTitle = ''
+      },
+      async getTags() {
+        this.searchData.vid = this.memberInfo.id
+        this.searchData.mold = 2
+        const { data } = await getTags(this.searchData)
+        this.labelsList = data.list
+      },
+      async setTags() {
+        const { msg, status } = await setTags(this.formData)
+        if (status !== 1) {
+          this.$Message.error(msg)
+        } else {
+          this.$Message.success(msg)
+          this.$emit('changeLabels')
+        }
+      },
+      async getTagsTypeList() {
+        const { data } = await getTagsTypeList({})
+        this.tagsTypeList = data.list
       },
     },
   }
@@ -90,7 +203,6 @@
             padding: 0 4px;
           }
           .right {
-            flex: 1;
             display: flex;
             border: 1px solid #bdbdbd;
             border-radius: 4px;
@@ -111,6 +223,24 @@
           padding: 10px 0;
         }
         .content {
+        }
+      }
+      .tab-list {
+        border-top: 1px solid #ccc;
+        margin-top: 10px;
+        .tab-list-row {
+          display: flex;
+          padding: 4px 2px;
+          align-items: center;
+          border-bottom: 1px solid #f3f3f3;
+          margin: 1px;
+          .left {
+            min-width: 80px;
+            padding: 2px 4px;
+            font-weight: bold;
+          }
+          .right {
+          }
         }
       }
     }

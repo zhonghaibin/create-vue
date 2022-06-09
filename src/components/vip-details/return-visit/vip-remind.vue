@@ -4,30 +4,39 @@
       <div class="row">
         <div class="left">会员信息</div>
         <div class="right">
-          <div class="name">曾文明</div>
-          <div class="phone">13823232512</div>
+          <div class="name">{{ memberInfo.name }}</div>
+          <div class="phone">{{ memberInfo.tel }}</div>
         </div>
       </div>
       <div class="row">
         <div class="left">提醒时间</div>
         <div class="right">
           <DatePicker
-            placeholder="Select date"
+            v-model="formData.time"
+            format="yyyy-MM-dd"
+            placeholder="请选择时间"
             style="width: 200px"
+            transfer
             type="date"
+            :value="formData.time"
+            value-format="yyyy-MM-dd"
+            @on-change="formData.time = $event"
           />
         </div>
       </div>
       <div class="row">
         <div class="left">提醒人员</div>
         <div class="right">
-          <Select v-model="person" clearable style="width: 200px">
-            <Option
-              v-for="item in person_list"
-              :key="item.value"
-              :value="item.value"
-            >
-              {{ item.label }}
+          <Select
+            v-model="formData.staff_id"
+            clearable
+            filterable
+            :loading="loading"
+            style="width: 200px"
+          >
+            <div slot="empty">未找到数据</div>
+            <Option v-for="item in staffList" :key="item.id" :value="item.id">
+              {{ item.name }}
             </Option>
           </Select>
         </div>
@@ -36,8 +45,8 @@
         <div class="left">提醒内容</div>
         <div class="right">
           <Input
-            placeholder="请输入寄存的数量"
-            rows="5"
+            v-model="formData.info"
+            placeholder="请输入提醒内容"
             style="width: 200px"
             type="textarea"
           />
@@ -46,24 +55,71 @@
     </div>
 
     <div class="footer">
-      <div class="bt">保存</div>
+      <div class="bt" @click="setWarningAct">保存</div>
       <div class="bt" @click="cancel">取消</div>
     </div>
   </div>
 </template>
 
 <script>
+  import { getStaffList, setWarningAct } from '@/api/vip'
+
   export default {
     name: 'VipRemind',
+    props: {
+      memberInfo: {
+        type: Object,
+        default: () => {},
+      },
+    },
     data: function () {
       return {
-        person_list: [],
-        person: '',
+        loading: false,
+        staffList: [],
+        formData: {
+          vid: this.memberInfo.id,
+          info: '',
+          staff_id: '',
+          time: '',
+        },
+        page: {
+          total: 0,
+          pageSize: 5,
+          current: 1,
+        },
       }
+    },
+    created() {
+      this.getStaffList()
     },
     methods: {
       cancel() {
         this.$emit('cancelModal', false)
+      },
+      save() {
+        this.setWarningAct()
+      },
+      async setWarningAct() {
+        const { status, msg } = await setWarningAct(this.formData)
+        if (status !== 1) {
+          this.$Message.error(msg)
+        } else {
+          this.$Message.success(msg)
+          this.$emit('change')
+        }
+      },
+      async getStaffList() {
+        this.loading = true
+        const { data } = await getStaffList({
+          search: '',
+          tid: '',
+          status: '',
+          page: '1000',
+        })
+        this.loading = false
+        this.staffList = data.list
+        this.page.total = Number(data.count)
+        this.page.current = Number(data.p)
       },
     },
   }

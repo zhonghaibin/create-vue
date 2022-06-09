@@ -141,8 +141,8 @@
     methods: {
       changeValue() {},
       clearDate() {
-        this.searchData.start_time = ''
-        this.searchData.end_time = ''
+        this.searchData.start = ''
+        this.searchData.end = ''
       },
       currentPage(current) {
         this.page.current = current
@@ -225,6 +225,7 @@
       background: #f19ec2;
       padding: 6px 14px;
       border-radius: 4px;
+      margin-bottom: 1px;
     }
   }
 </style>

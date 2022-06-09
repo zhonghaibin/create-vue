@@ -8,7 +8,7 @@
             enter-button
             placeholder="可模糊搜索"
             search
-            style="width: 300px"
+            style="width: 250px"
             @on-search="changeValue"
           />
         </div>
@@ -38,16 +38,15 @@
         </div>
         <div class="box">
           <DatePicker
-            v-model="date"
             format="yyyy-MM-dd"
             placeholder="开始时间-结束时间"
-            style="width: 280px"
+            style="width: 200px"
             transfer
             type="datetimerange"
             value-format="yyyy-MM-dd"
-            @on-change="searchData.date = $event"
+            @on-change="changeDatePicker"
             @on-clear="clearDate"
-            @on-open-change="changeDatePicker(searchData.date)"
+            @on-open-change="changeDatePicker"
           />
         </div>
       </div>
@@ -121,8 +120,7 @@
           },
         ],
         list: [],
-        searchData: { search: '', start_time: '', end_time: '' },
-        date: [],
+        searchData: { search: '', start: '', end: '' },
       }
     },
     activated() {},
@@ -130,14 +128,16 @@
     methods: {
       changeValue() {},
       clearDate() {
-        this.searchData.start_time = ''
-        this.searchData.end_time = ''
+        this.searchData.start = ''
+        this.searchData.end = ''
+        this.search()
       },
       changeDatePicker: function (date) {
         if (date) {
-          this.searchData.start_time = date[0]
-          this.searchData.end_time = date[1]
+          this.searchData.start = date[0]
+          this.searchData.end = date[1]
         }
+        this.search()
       },
       currentPage(current) {
         this.page.current = current
@@ -212,6 +212,7 @@
       background: #f19ec2;
       padding: 6px 14px;
       border-radius: 4px;
+      margin-bottom: 1px;
     }
   }
 </style>

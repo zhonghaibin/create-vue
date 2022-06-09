@@ -1,34 +1,87 @@
 <template>
   <div class="customer">
     <div class="content">
-      <div class="row">
+      <div v-for="(item, index) in list" :key="index" class="row">
         <div class="left">
-          <Input placeholder="输入自定义名称" style="width: 200px" />
+          <Input
+            v-model="item.name"
+            placeholder="输入自定义名称"
+            style="width: 200px"
+          />
         </div>
         <div class="right">
-          <Input placeholder="输入内容" style="width: 200px" />
+          <Input
+            v-model="item.info"
+            placeholder="输入内容"
+            style="width: 200px"
+          />
         </div>
       </div>
       <div class="row">
-        <div class="bt">
+        <div class="bt" @click="add">
           <Icon type="md-add" />
           继续添加一项
         </div>
       </div>
     </div>
     <div class="footer">
-      <div class="bt">保存</div>
+      <div class="bt" @click="save">保存</div>
       <div class="bt" @click="cancel">取消</div>
     </div>
   </div>
 </template>
 
 <script>
+  import { setVipRecordAdd } from '@/api/vip'
+
   export default {
     name: 'Customer',
+    props: {
+      memberInfo: {
+        type: Object,
+        default: () => {},
+      },
+    },
+    data: function () {
+      return {
+        formData: {
+          vid: this.memberInfo.id,
+          data: [],
+        },
+        list: [
+          {
+            type: 1,
+            name: '',
+            info: '',
+            id: '',
+          },
+        ],
+      }
+    },
     methods: {
       cancel() {
         this.$emit('cancelModal', false)
+      },
+      add() {
+        this.list.push({
+          type: 1,
+          name: '',
+          info: '',
+          id: '',
+        })
+      },
+      save() {
+        this.formData.data = this.list
+        this.setVipRecordAdd()
+      },
+      async setVipRecordAdd() {
+        const { status, msg } = await setVipRecordAdd(this.formData)
+        if (status !== 1) {
+          this.$Message.error(msg)
+        } else {
+          this.$Message.success(msg)
+          this.$emit('change')
+        }
       },
     },
   }

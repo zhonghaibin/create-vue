@@ -1,5 +1,5 @@
 <template>
-  <div class="VipSearch2">
+  <div class="VipSearch">
     <Row>
       <Col>
         <Row class="row">
@@ -294,7 +294,7 @@
 
 <script>
   export default {
-    name: 'VipSearch2',
+    name: 'VipSearch',
     data: function () {
       return {
         search: {
@@ -1550,7 +1550,7 @@
 </script>
 
 <style lang="less" scoped>
-  .VipSearch2 {
+  .VipSearch {
     .isActive {
       color: #ff7db6;
       border: 1px solid #f19ec2;

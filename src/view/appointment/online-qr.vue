@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div>ddd</div>
 </template>
 
 <script>
@@ -8,4 +8,4 @@
   }
 </script>
 
-<style scoped></style>
+<style lang="less" scoped></style>

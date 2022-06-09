@@ -9,12 +9,15 @@
       >
         <VipConsumptionRecord
           v-if="item.name === '消费记录' && tab_index === '消费记录'"
+          :member-info="memberInfo"
         />
         <VipGiftRecord
           v-if="item.name === '获赠记录' && tab_index === '获赠记录'"
+          :member-info="memberInfo"
         />
         <VipIntegralRecord
           v-if="item.name === '积分记录' && tab_index === '积分记录'"
+          :member-info="memberInfo"
         />
         <VipChangeRecord
           v-if="item.name === '修改记录' && tab_index === '修改记录'"
@@ -46,6 +49,12 @@
       VipChangeRecord,
       VipReachStoreRecord,
       VipOrderRecord,
+    },
+    props: {
+      memberInfo: {
+        type: Object,
+        default: () => {},
+      },
     },
     data: function () {
       return {

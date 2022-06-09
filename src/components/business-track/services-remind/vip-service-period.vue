@@ -7,7 +7,7 @@
             enter-button
             placeholder="输入姓名/手机号/卡号"
             search
-            style="width: 300px"
+            style="width: 250px"
           />
         </div>
         <div class="cell">
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-  import ServiceRemind from '@/components/vip/vip-list2/service-remind'
+  import ServiceRemind from '@/components/business-track/services-remind/service-remind'
   export default {
     name: 'VipServicePeriod',
     components: {
@@ -87,6 +87,14 @@
           },
           {
             title: '服务周期',
+            key: 'money',
+          },
+          {
+            title: '发短信天数',
+            key: 'money',
+          },
+          {
+            title: '短信内容',
             key: 'money',
           },
           {

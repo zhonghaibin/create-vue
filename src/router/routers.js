@@ -40,7 +40,7 @@ export default [
           icon: '',
           title: '收银开单',
         },
-        component: () => import('@/view/cashier/index'),
+        component: () => import('@/view/cashier/cashier'),
       },
       {
         path: 'order',
@@ -119,6 +119,15 @@ export default [
           title: '会员管理',
         },
         component: () => import('@/view/vip/index'),
+      },
+      {
+        path: 'business-track',
+        name: 'vip.business-track',
+        meta: {
+          icon: '',
+          title: '业务跟踪',
+        },
+        component: () => import('@/view/vip/business-track'),
       },
     ],
   },

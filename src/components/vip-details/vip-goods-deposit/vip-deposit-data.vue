@@ -4,10 +4,14 @@
       <div class="left">
         <div class="box">
           <Input
+            v-model="searchData.search"
+            clearable
             enter-button
             placeholder="搜索商品名称"
             search
-            style="width: 300px"
+            style="width: 250px"
+            @on-clear="search"
+            @on-search="search"
           />
         </div>
       </div>
@@ -18,22 +22,41 @@
       </div>
     </div>
     <div class="list">
-      <Table :columns="columns1" :data="data1">
+      <Table :columns="columns" :data="list" :loading="loading">
         <!-- slot对应data里面的slot-->
-        <template slot="action">
-          <span class="bt" @click="showModal('操作取走商品', 'Take')">
-            取走商品
+        <template slot-scope="{ row }" slot="action">
+          <span class="bt" @click="showModal('操作存取商品', 'Take', row)">
+            存取商品
           </span>
         </template>
       </Table>
     </div>
 
     <div class="page">
-      <Page show-elevator show-sizer size="small" :total="40" transfer />
+      <Page
+        :current="page.current"
+        :page-size="page.pageSize"
+        show-elevator
+        size="small"
+        :total="page.total"
+        @on-change="currentPage"
+        @on-page-size-change="pageSizeChange"
+      />
     </div>
     <Modal v-model="modal.show" :footer-hide="true" :title="modal.title">
-      <Deposit v-if="modal.type === 'Deposit'" @cancelModal="cancelModal" />
-      <Take v-if="modal.type === 'Take'" @cancelModal="cancelModal" />
+      <Deposit
+        v-if="modal.type === 'Deposit' && modal.show"
+        :member-info="memberInfo"
+        @cancelModal="cancelModal"
+        @changeDeposit="changeDeposit"
+      />
+      <Take
+        v-if="modal.type === 'Take' && modal.show"
+        :deposit="deposit"
+        :member-info="memberInfo"
+        @cancelModal="cancelModal"
+        @changeDeposit="changeDeposit"
+      />
     </Modal>
   </div>
 </template>
@@ -41,37 +64,42 @@
 <script>
   import Deposit from '@/components/vip-details/vip-goods-deposit/deposit'
   import Take from '@/components/vip-details/vip-goods-deposit/take'
+  import { getGoodsDeposit } from '@/api/vip'
   export default {
     name: 'VipDividendsInfo',
     components: {
       Deposit,
       Take,
     },
+    props: {
+      memberInfo: {
+        type: Object,
+        default: () => {},
+      },
+    },
     data: function () {
       return {
+        deposit: {},
         modal: {
           show: false,
           title: '',
           type: false,
         },
-        columns1: [
+        columns: [
           {
             title: '寄存时间',
-            key: 'name',
+            key: 'addtime',
             width: '200px',
           },
           {
             title: '寄存商品名称',
-            key: 'username',
+            key: 'goods_name',
           },
           {
             title: '数量',
-            key: 'money',
+            key: 'use_num',
           },
-          {
-            title: '操作人',
-            key: 'count',
-          },
+
           {
             title: '操作',
             slot: 'action',
@@ -79,25 +107,64 @@
             align: 'center',
           },
         ],
-        data1: [
-          {
-            name: 'John Brown',
-            username: 18,
-            money: 'New York No. 1 Lake Park',
-            count: '2016-10-03',
-          },
-        ],
+        list: [],
+        searchData: {
+          p: 1,
+          vid: this.memberInfo.id,
+          search: '',
+          search2: '',
+          sid: '',
+          page: 5,
+        },
+        page: {
+          total: 0,
+          pageSize: 5,
+          current: 1,
+        },
+        loading: false,
       }
     },
-    created() {},
+    activated() {
+      this.search()
+    },
+    created() {
+      this.search()
+    },
     methods: {
-      showModal(title, type) {
+      showModal(title, type, data = {}) {
         this.modal.show = true
         this.modal.title = title
         this.modal.type = type
+        this.deposit = data
       },
       cancelModal(status) {
         this.modal.show = status
+      },
+      currentPage(current) {
+        this.page.current = current
+        this.searchData.p = current
+        this.getGoodsDeposit()
+      },
+      pageSizeChange(pageSize) {
+        this.page.pageSize = pageSize
+        this.searchData.page = pageSize
+        this.getGoodsDeposit()
+      },
+      search() {
+        this.searchData.p = 1
+        this.getGoodsDeposit()
+      },
+      async getGoodsDeposit() {
+        this.loading = true
+        const { data } = await getGoodsDeposit(this.searchData)
+        this.loading = false
+        this.list = data.list
+        this.page.total = Number(data.count)
+        this.page.current = Number(data.p)
+      },
+      changeDeposit() {
+        this.modal.show = false
+        this.search()
       },
     },
   }
@@ -147,8 +214,11 @@
       margin-top: 20px;
     }
     .page {
-      display: flex;
-      justify-content: center;
+      clear: both;
+      height: 40px;
+      padding: 8px 0;
+      text-align: center;
+      background: white;
     }
     .bt {
       color: blue;
@@ -162,6 +232,7 @@
       background: #f19ec2;
       padding: 6px 14px;
       border-radius: 4px;
+      margin-bottom: 1px;
     }
   }
 </style>

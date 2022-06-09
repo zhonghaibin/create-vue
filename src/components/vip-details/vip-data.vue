@@ -8,23 +8,23 @@
       <div class="content">
         <div class="row">
           <div class="left">会员余额</div>
-          <div class="right">3333</div>
+          <div class="right">{{ statistical.money }}</div>
         </div>
         <div class="row">
           <div class="left">积分</div>
-          <div class="right">333</div>
+          <div class="right">{{ statistical.integral }}</div>
         </div>
         <div class="row">
           <div class="left">欠款金额</div>
-          <div class="right">333</div>
+          <div class="right">{{ statistical.arrears }}</div>
         </div>
         <div class="little-row">
           <div class="left">&nbsp;</div>
           <div class="right"><spin class="bt">还款</spin></div>
         </div>
         <div class="row">
-          <div class="left">名下套餐次卡</div>
-          <div class="right">3</div>
+          <div class="left">名下有效卡</div>
+          <div class="right">{{ statistical.card_num }}</div>
         </div>
       </div>
     </div>
@@ -36,23 +36,23 @@
       <div class="content">
         <div class="row">
           <div class="left">累计消费余额</div>
-          <div class="right">3333</div>
+          <div class="right">{{ statistical.moeny_count }}</div>
         </div>
         <div class="row">
           <div class="left">累计耗卡总额</div>
-          <div class="right">333</div>
+          <div class="right">{{ statistical.haoka_count }}</div>
         </div>
         <div class="row">
           <div class="left">转介绍人数</div>
-          <div class="right">333</div>
+          <div class="right">{{ statistical.rnum }}</div>
         </div>
         <div class="row">
           <div class="left">今年消费排名</div>
-          <div class="right">3</div>
+          <div class="right">{{ statistical.year_rank }}</div>
         </div>
         <div class="row">
           <div class="left">累计消费排名</div>
-          <div class="right">3</div>
+          <div class="right">{{ statistical.count_rank }}</div>
         </div>
       </div>
     </div>
@@ -64,15 +64,15 @@
       <div class="content">
         <div class="row">
           <div class="left">总到店次数</div>
-          <div class="right">3333</div>
+          <div class="right">{{ statistical.arrival_count }}</div>
         </div>
         <div class="row">
           <div class="left">平均到店频率</div>
-          <div class="right">333</div>
+          <div class="right">{{ statistical.arrival_day }}</div>
         </div>
         <div class="row">
           <div class="left">生命周期归类</div>
-          <div class="right">333</div>
+          <div class="right">{{ statistical.customers }}</div>
         </div>
       </div>
     </div>
@@ -84,19 +84,19 @@
       <div class="content">
         <div class="row">
           <div class="left">可提现分红</div>
-          <div class="right">3333</div>
+          <div class="right">{{ statistical.commission_balance }}</div>
         </div>
         <div class="row">
           <div class="left">累计分红</div>
-          <div class="right">333</div>
+          <div class="right">{{ statistical.commission }}</div>
         </div>
         <div class="row">
           <div class="left">分享闺蜜卡领取次数</div>
-          <div class="right">333</div>
+          <div class="right">{{ statistical.swiping_count }}</div>
         </div>
         <div class="row">
           <div class="left">转化数</div>
-          <div class="right">3</div>
+          <div class="right">{{ statistical.swiping_use }}</div>
         </div>
       </div>
     </div>
@@ -104,8 +104,54 @@
 </template>
 
 <script>
+  import { getInfo } from '@/api/vip'
+
   export default {
     name: 'VipData',
+    props: {
+      memberInfo: {
+        type: Object,
+        default: () => {},
+      },
+    },
+    data: function () {
+      return {
+        statistical: {
+          integral: 0,
+          arrears: 0,
+          reg_time: 0,
+          moeny_count: 0,
+          haoka_count: 0,
+          rnum: 0,
+          count_rank: 0,
+          year_rank: 0,
+          arrival_count: 0,
+          arrival_day: 0,
+          customers: 0,
+          swiping_use: 0,
+          commission: 0,
+          commission_balance: 0,
+          card_num: 0,
+          money: 0,
+          swiping_count: 0,
+        },
+      }
+    },
+    created() {
+      this.getInfo()
+    },
+    methods: {
+      async getInfo() {
+        const { data, status, msg } = await getInfo({
+          vid: this.memberInfo.id,
+        })
+        if (status !== 1) {
+          this.$Message.error(msg)
+        } else {
+          this.statistical = data
+        }
+      },
+    },
   }
 </script>
 

@@ -3,22 +3,27 @@
     <div class="box">
       <div class="row">
         <div class="left">会员信息</div>
-        <div class="right">曾文敏 1584512412</div>
+        <div class="right">{{ memberInfo.name }} {{ memberInfo.tel }}</div>
       </div>
       <div class="row">
         <div class="left">当前积分</div>
-        <div class="right">1000</div>
+        <div class="right">
+          {{ memberInfo.integral ? memberInfo.integral : 0 }}
+        </div>
       </div>
       <div class="row">
         <div class="left">选择礼品</div>
         <div class="right">
-          <Select v-model="status" style="width: 200px" transfer>
-            <Option
-              v-for="item in status_list"
-              :key="item.value"
-              :value="item.value"
-            >
-              {{ item.label }}
+          <Select
+            v-model="formData.gift_id"
+            clearable
+            filterable
+            :loading="loading"
+            style="width: 200px"
+          >
+            <div slot="empty">未找到数据</div>
+            <Option v-for="item in giftList" :key="item.id" :value="item.id">
+              {{ item.name }}
             </Option>
           </Select>
         </div>
@@ -26,45 +31,67 @@
       <div class="row">
         <div class="left">备注</div>
         <div class="right">
-          <Input placeholder="" style="width: 200px" />
+          <Input v-model="formData.info" placeholder="" style="width: 200px" />
         </div>
       </div>
     </div>
     <div class="footer">
-      <div class="bt">保存</div>
+      <div class="bt" @click="save">保存</div>
       <div class="bt" @click="cancel">取消</div>
     </div>
   </div>
 </template>
 
 <script>
+  import { getGiftList, integralBuy } from '@/api/vip'
+
   export default {
     name: 'Exchange',
+    props: {
+      memberInfo: {
+        type: Object,
+        default: () => {},
+      },
+    },
     data: function () {
       return {
-        template_type: '',
-        template_type_list: [
-          {
-            label: '预约提醒',
-            value: '1',
-          },
-        ],
-        status: '',
-        status_list: [
-          {
-            label: '启用',
-            value: '1',
-          },
-          {
-            label: '禁用',
-            value: '2',
-          },
-        ],
+        giftList: [],
+        formData: {
+          vip_id: this.memberInfo.vip_id,
+          info: '',
+          gift_id: '',
+        },
+        loading: false,
       }
+    },
+    created() {
+      this.getGiftList()
     },
     methods: {
       cancel() {
         this.$emit('cancelModal', false)
+      },
+      save() {
+        this.integralBuy()
+      },
+      async integralBuy() {
+        const { status, msg } = await integralBuy(this.formData)
+        if (status !== 1) {
+          this.$Message.error(msg)
+        } else {
+          this.$Message.success(msg)
+          this.$emit('change')
+          this.$emit('refreshMemberInfo')
+        }
+      },
+      async getGiftList() {
+        this.loading = true
+        const { data } = await getGiftList({
+          search: '',
+          page: '1000',
+        })
+        this.loading = false
+        this.giftList = data.list
       },
     },
   }

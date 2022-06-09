@@ -11,12 +11,14 @@
           >
             <VipReturnVisitList
               v-if="item.name === '回访记录' && tab_index === '回访记录'"
+              :member-info="memberInfo"
             />
             <VipNurseList
               v-if="item.name === '护理档案' && tab_index === '护理档案'"
             />
             <VipRemindList
               v-if="item.name === '提醒记录' && tab_index === '提醒记录'"
+              :member-info="memberInfo"
             />
           </TabPane>
         </Tabs>
@@ -31,6 +33,12 @@
   export default {
     name: 'ReturnVisit',
     components: { VipReturnVisitList, VipNurseList, VipRemindList },
+    props: {
+      memberInfo: {
+        type: Object,
+        default: () => {},
+      },
+    },
     data: function () {
       return {
         tab_index: '回访记录',

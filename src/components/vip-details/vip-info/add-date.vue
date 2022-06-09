@@ -3,29 +3,37 @@
     <div class="details">
       <div class="box">
         <div class="content">
-          <div class="row">
-            <div class="left"><Input placeholder="输入自定义名称" /></div>
+          <div v-for="(item, index) in list" :key="index" class="row">
+            <div class="left">
+              <Input v-model="item.name" placeholder="输入自定义名称" />
+            </div>
             <div class="center">
               <DatePicker
+                v-model="item.info"
                 placeholder="选择日期"
                 style="width: 200px"
                 type="date"
+                :value="formData.info"
+                value-format="yyyy-MM-dd"
+                @on-change="formData.info = $event"
               />
             </div>
-            <div class="right"><Icon type="ios-trash" /></div>
+            <div class="right">
+              <Icon type="ios-trash" @click="delData(index)" />
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div class="footer">
       <div class="left">
-        <div class="bt">
+        <div class="bt" @click="add">
           <Icon type="md-add" />
           添加自定义
         </div>
       </div>
       <div class="right">
-        <div class="bt">保存</div>
+        <div class="bt" @click="save">保存</div>
         <div class="bt" @click="cancel">取消</div>
       </div>
     </div>
@@ -33,59 +41,59 @@
 </template>
 
 <script>
+  import { setVipRecordAdd } from '@/api/vip'
+
   export default {
     name: 'AddDate',
+    props: {
+      memberInfo: {
+        type: Object,
+        default: () => {},
+      },
+    },
     data: function () {
       return {
-        source_list: [
+        formData: {
+          vid: this.memberInfo.id,
+          data: [],
+        },
+        list: [
           {
-            value: '1',
-            label: '自然进店',
-          },
-          {
-            value: '2',
-            label: '老客转介绍',
-          },
-        ],
-        source: '',
-        store_list: [
-          {
-            value: '1',
-            label: '惠城总店',
-          },
-          {
-            value: '2',
-            label: '武汉分店',
+            type: 2,
+            name: '',
+            info: '',
+            id: '',
           },
         ],
-        store: '',
-        grade_list: [
-          {
-            value: '0',
-            label: '默认等级',
-          },
-        ],
-        grade: '',
-        status_list: [
-          {
-            value: '1',
-            label: '正常使用',
-          },
-          {
-            value: '2',
-            label: '挂失锁定',
-          },
-        ],
-        status: '',
-        counselor_list: [],
-        counselor: '',
-        obstetrician_list: [],
-        obstetrician: '',
       }
     },
     methods: {
+      delData(index) {
+        this.list.splice(index, 1)
+      },
       cancel() {
         this.$emit('cancelModal', false)
+      },
+      add() {
+        this.list.push({
+          type: 2,
+          name: '',
+          info: '',
+          id: '',
+        })
+      },
+      save() {
+        this.formData.data = this.list
+        this.setVipRecordAdd()
+      },
+      async setVipRecordAdd() {
+        const { status, msg } = await setVipRecordAdd(this.formData)
+        if (status !== 1) {
+          this.$Message.error(msg)
+        } else {
+          this.$Message.success(msg)
+          this.$emit('change')
+        }
       },
     },
   }

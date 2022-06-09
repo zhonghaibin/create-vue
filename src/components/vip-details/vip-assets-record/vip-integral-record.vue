@@ -5,16 +5,29 @@
         <div class="box">
           <span class="text">时间</span>
           <DatePicker
+            format="yyyy-MM-dd"
             placeholder="开始时间-结束时间"
-            style="width: 280px"
+            style="width: 200px"
+            transfer
             type="datetimerange"
+            value-format="yyyy-MM-dd"
+            @on-change="changeDatePicker"
+            @on-clear="clearDate"
+            @on-open-change="changeDatePicker"
           />
         </div>
         <div class="box">
           <span class="text">规则类型</span>
-          <Select v-model="rule_status" style="width: 200px" transfer>
+          <Select
+            v-model="searchData.type"
+            clearable
+            style="width: 200px"
+            transfer
+            @on-change="search"
+            @on-clear="search"
+          >
             <Option
-              v-for="item in rule_status_list"
+              v-for="item in typeList"
               :key="item.value"
               :value="item.value"
             >
@@ -26,7 +39,7 @@
       <div class="right"><div class="bt">导出报表</div></div>
     </div>
     <div class="list">
-      <Table :columns="columns1" :data="data1">
+      <Table :columns="columns" :data="list">
         <template slot="action">
           <span class="bt">查看详情</span>
         </template>
@@ -34,61 +47,114 @@
     </div>
 
     <div class="page">
-      <Page show-elevator show-sizer size="small" :total="40" transfer />
+      <Page
+        :current="page.current"
+        :page-size="page.pageSize"
+        show-elevator
+        size="small"
+        :total="page.total"
+        @on-change="currentPage"
+        @on-page-size-change="pageSizeChange"
+      />
     </div>
   </div>
 </template>
 
 <script>
+  import { getIntegralList } from '@/api/vip'
+
   export default {
     name: 'VipIntegralRecord',
+    props: {
+      memberInfo: {
+        type: Object,
+        default: () => {},
+      },
+    },
     data: function () {
       return {
-        rule_status: '0',
-        rule_status_list: [
+        typeList: [
           {
             value: '0',
             label: '全部',
           },
           {
             value: '1',
-            label: '消费返积分',
+            label: '增加',
           },
           {
             value: '2',
-            label: '耗卡返积分',
-          },
-          {
-            value: '3',
-            label: '消费抵扣',
+            label: '扣除',
           },
         ],
 
-        columns1: [
+        columns: [
           {
             title: '时间',
-            key: 'name',
+            key: 'time',
             width: '200px',
           },
           {
             title: '生产门店',
-            key: 'username',
+            key: 'shop_name',
           },
           {
             title: '积分规则',
-            key: 'money',
+            key: 'name',
           },
           {
             title: '规则类型',
-            key: 'count',
+            key: 'type_name',
           },
           {
             title: '积分内容',
-            key: 'money1',
+            render: (h, params) => {
+              console.log(params)
+              let html = h('div', [
+                // 插入文本
+                h(
+                  'div',
+                  {
+                    style: {
+                      display: 'flex',
+                    },
+                  },
+                  [
+                    h(
+                      'div',
+                      {
+                        style: {},
+                      },
+                      params.row.type_name + ':' + params.row.integral
+                    ),
+                  ]
+                ),
+
+                h(
+                  'div',
+                  {
+                    style: {
+                      display: 'flex',
+                    },
+                  },
+                  [
+                    h(
+                      'div',
+                      {
+                        style: {},
+                      },
+                      '现有：' + params.row.vip_integral
+                    ),
+                  ]
+                ),
+              ])
+
+              return html
+            },
           },
           {
-            title: '操作人',
-            key: 'source',
+            title: '备注',
+            key: 'info',
           },
           {
             title: '操作',
@@ -97,19 +163,63 @@
             align: 'center',
           },
         ],
-        data1: [
-          {
-            name: 'John Brown',
-            username: 18,
-            money: 'New York No. 1 Lake Park',
-            count: '2016-10-03',
-            money1: '2016-10-03',
-            source: '2016-10-03',
-          },
-        ],
+        list: [],
+        searchData: {
+          search: '',
+          start: '',
+          end: '',
+          type: '',
+          vip_id: this.memberInfo.vip_id,
+          p: 1,
+          page: 5,
+        },
+        loading: false,
+        page: {
+          total: 0,
+          pageSize: 5,
+          current: 1,
+        },
       }
     },
-    created() {},
+    created() {
+      this.search()
+    },
+    methods: {
+      clearDate() {
+        this.searchData.start = ''
+        this.searchData.end = ''
+        this.search()
+      },
+      changeDatePicker: function (date) {
+        if (date) {
+          this.searchData.start = date[0]
+          this.searchData.end = date[1]
+        }
+        this.search()
+      },
+      currentPage(current) {
+        this.page.current = current
+        this.searchData.p = current
+        this.getIntegralList()
+      },
+      pageSizeChange(pageSize) {
+        this.page.pageSize = pageSize
+        this.getIntegralList()
+      },
+
+      search() {
+        this.searchData.p = 1
+        this.getIntegralList()
+      },
+      async getIntegralList() {
+        this.loading = true
+        const { data } = await getIntegralList(this.searchData)
+        this.loading = false
+        this.list = data.list
+        this.page.total = Number(data.count)
+        this.page.current = Number(data.p)
+      },
+    },
   }
 </script>
 
@@ -157,8 +267,10 @@
       margin-top: 20px;
     }
     .page {
-      display: flex;
-      justify-content: center;
+      height: 40px;
+      padding: 8px 0;
+      text-align: center;
+      background: white;
     }
     .bt {
       color: blue;

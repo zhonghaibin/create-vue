@@ -1,18 +1,26 @@
 <template>
-  <div class="VipSearch1">
+  <div class="VipSearch">
     <div class="topic-nav">
       <Row :gutter="16">
         <Col order="4" span="4">
           <Input
             v-model="formData.search"
+            clearable
             enter-button
             placeholder="输入姓名/手机号/卡号"
             search
+            @on-clear="changeValue"
             @on-search="changeValue"
           />
         </Col>
         <Col order="3" span="2">
-          <Button icon="md-person-add" type="primary">添加会员</Button>
+          <Button
+            icon="md-person-add"
+            type="primary"
+            @click="showModal('添加会员', 'VipInfoDetails')"
+          >
+            添加会员
+          </Button>
         </Col>
         <Col order="2" span="2">
           <Button icon="ios-cloud-upload" type="primary">导入会员</Button>
@@ -210,15 +218,41 @@
         </div>
       </div>
     </div>
+    <Modal
+      v-model="modal.show"
+      :footer-hide="true"
+      :scrollable="modal.scrollable"
+      :styles="modal.styles"
+      :title="modal.title"
+      :width="modal.width"
+    >
+      <VipInfoDetails
+        v-if="modal.type === 'VipInfoDetails' && modal.show"
+        @cancelModal="cancelModal"
+        @change="change"
+      />
+    </Modal>
   </div>
 </template>
 
 <script>
   import { getMemberGradeList, getMemberSourceList } from '@/api/vip'
+  import VipInfoDetails from '@/components/vip-details/vip-info/vip-info-details'
   export default {
-    name: 'VipSearch1',
+    name: 'VipSearch',
+    components: {
+      VipInfoDetails,
+    },
     data: function () {
       return {
+        modal: {
+          show: false,
+          title: '',
+          type: false,
+          width: 600,
+          scrollable: true,
+          styles: { top: '50px' },
+        },
         formData: {
           money_start: '',
           money_end: '',
@@ -312,6 +346,18 @@
       this.getMemberSourceList()
     },
     methods: {
+      change() {
+        this.modal.show = false
+        this.$emit('change')
+      },
+      showModal(title, type) {
+        this.modal.show = true
+        this.modal.title = title
+        this.modal.type = type
+      },
+      cancelModal(status) {
+        this.modal.show = status
+      },
       beforeShop(item) {
         this.formData.day = item.value
         this.memberList()
@@ -373,7 +419,7 @@
 </script>
 
 <style lang="less" scoped>
-  .VipSearch1 {
+  .VipSearch {
     .topic-nav {
       border-bottom: 1px solid #e9e7e7;
       padding: 4px 2px 16px 2px;

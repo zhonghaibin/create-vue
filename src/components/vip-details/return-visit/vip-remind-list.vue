@@ -4,25 +4,26 @@
       <div class="left">
         <div class="box">
           <Input
+            v-model="searchData.search"
             enter-button
             placeholder=""
             search
-            style="width: 300px"
-            @on-search="changeValue"
+            style="width: 250px"
+            @on-clear="search"
+            @on-search="search"
           />
         </div>
         <div class="box">
           <DatePicker
-            v-model="date"
             format="yyyy-MM-dd"
             placeholder="开始时间-结束时间"
-            style="width: 280px"
+            style="width: 200px"
             transfer
             type="datetimerange"
             value-format="yyyy-MM-dd"
-            @on-change="searchData.date = $event"
+            @on-change="changeDatePicker"
             @on-clear="clearDate"
-            @on-open-change="changeDatePicker(searchData.date)"
+            @on-open-change="changeDatePicker"
           />
         </div>
       </div>
@@ -33,13 +34,23 @@
       </div>
     </div>
     <div class="list">
-      <Table :columns="columns" :data="list">
+      <Table :columns="columns" :data="list" :loading="loading">
         <!-- slot对应data里面的slot-->
-        <template slot="action">
-          <span class="bt">查看详情</span>
-          <br />
-          <span class="bt">取消提醒</span>
-          <span class="bt">确认执行</span>
+        <template slot-scope="{ row }" slot="action">
+          <!--          <span class="bt">查看详情</span>-->
+          <!--          <br />-->
+          <span
+            v-if="row.is_send === '0'"
+            class="bt"
+            @click="warningCancel(row)"
+          >
+            取消提醒
+          </span>
+          <span v-else class="bt">--</span>
+          <span v-if="row.status !== 2" class="bt" @click="warningStatus(row)">
+            确认执行
+          </span>
+          <span v-else class="bt">--</span>
         </template>
       </Table>
       <div class="page">
@@ -47,7 +58,6 @@
           :current="page.current"
           :page-size="page.pageSize"
           show-elevator
-          show-sizer
           size="small"
           :total="page.total"
           @on-change="currentPage"
@@ -63,8 +73,10 @@
         :width="700"
       >
         <VipRemind
-          v-if="modal.type === 'VipRemind'"
+          v-if="modal.type === 'VipRemind' && modal.show"
+          :member-info="memberInfo"
           @cancelModal="cancelModal"
+          @change="change"
         />
       </Modal>
     </div>
@@ -73,6 +85,7 @@
 
 <script>
   import VipRemind from '@/components/vip-details/return-visit/vip-remind'
+  import { getWarningList, setWarningCancel, setWarningStatus } from '@/api/vip'
   export default {
     name: 'VipRemindList',
     components: { VipRemind },
@@ -84,6 +97,7 @@
     },
     data: function () {
       return {
+        loading: false,
         page: {
           total: 0,
           pageSize: 10,
@@ -96,20 +110,20 @@
         columns: [
           {
             title: '提醒时间',
-            key: 'name',
+            key: 'time',
             width: '200px',
           },
           {
             title: '提醒人员',
-            key: 'name',
+            key: 'staff_name',
           },
           {
             title: '提醒内容',
-            key: 'name',
+            key: 'info',
           },
           {
             title: '状态',
-            key: 'name',
+            key: 'status_name',
           },
           {
             title: '操作',
@@ -118,13 +132,15 @@
             align: 'center',
           },
         ],
-        list: [
-          {
-            name: '11',
-          },
-        ],
-        searchData: { search: '', start_time: '', end_time: '' },
-        date: [],
+        list: [],
+        searchData: {
+          search: '',
+          start: '',
+          end: '',
+          vid: this.memberInfo.id,
+          p: 1,
+          page: 5,
+        },
         modal: {
           show: false,
           title: '',
@@ -133,34 +149,101 @@
       }
     },
     activated() {},
-    created() {},
+    created() {
+      this.search()
+    },
     methods: {
-      showModal(title, type) {
+      showModal(title, type, data = {}) {
         this.modal.show = true
         this.modal.title = title
         this.modal.type = type
+        this.data = data
       },
       cancelModal(status) {
         this.modal.show = status
       },
-      changeValue() {},
       clearDate() {
-        this.searchData.start_time = ''
-        this.searchData.end_time = ''
+        this.searchData.start = ''
+        this.searchData.end = ''
+        this.search()
       },
       changeDatePicker: function (date) {
         if (date) {
-          this.searchData.start_time = date[0]
-          this.searchData.end_time = date[1]
+          this.searchData.start = date[0]
+          this.searchData.end = date[1]
         }
+        this.search()
       },
       currentPage(current) {
         this.page.current = current
+        this.searchData.p = current
+        this.getWarningList()
       },
       pageSizeChange(pageSize) {
         this.page.pageSize = pageSize
+        this.getWarningList()
       },
-      search() {},
+      change() {
+        this.modal.show = false
+        this.search()
+      },
+      search() {
+        this.searchData.p = 1
+        this.getWarningList()
+      },
+      async getWarningList() {
+        this.loading = true
+        const { data } = await getWarningList(this.searchData)
+        this.loading = false
+        this.list = data.list
+        this.page.total = Number(data.count)
+        this.page.current = Number(data.p)
+      },
+      warningCancel(row) {
+        this.$Modal.confirm({
+          title: '警告？',
+          content: '确定要取消提醒吗？',
+          onOk: () => {
+            this.setWarningCancel(row)
+          },
+          onCancel: () => {},
+        })
+      },
+      async setWarningCancel(row) {
+        const { status, msg } = await setWarningCancel({
+          warning_id: row.id,
+          vid: this.memberInfo.id,
+        })
+        if (status !== 1) {
+          this.$Message.error(msg)
+        } else {
+          this.$Message.success(msg)
+          this.search()
+        }
+      },
+      warningStatus(row) {
+        this.$Modal.confirm({
+          title: '警告？',
+          content: '确定要确认执行吗？',
+          onOk: () => {
+            this.setWarningStatus(row)
+          },
+          onCancel: () => {},
+        })
+      },
+      async setWarningStatus(row) {
+        const { status, msg } = await setWarningStatus({
+          warning_id: row.id,
+          vid: this.memberInfo.id,
+          status: 2,
+        })
+        if (status !== 1) {
+          this.$Message.error(msg)
+        } else {
+          this.$Message.success(msg)
+          this.search()
+        }
+      },
     },
   }
 </script>
@@ -222,6 +305,7 @@
     }
     .right {
       display: flex;
+      flex-flow: wrap;
       .add-bt {
         color: white;
         margin-right: 20px;
@@ -229,6 +313,7 @@
         background: #f19ec2;
         padding: 6px 14px;
         border-radius: 4px;
+        margin-bottom: 1px;
       }
     }
   }

@@ -40,18 +40,16 @@
               <div class="title">
                 专属顾问：{{ memberInfo.dispose_staff_name }}
               </div>
-              <div class="title">
-                专属产康师：{{ memberInfo.dispose_staff_name }}
-              </div>
+              <div class="title">专属产康师：{{ memberInfo.adviser_name }}</div>
             </div>
           </div>
         </div>
         <div class="right">
           <div class="row1">
             <div class="bt" @click="jump('预约记录')">预约</div>
-            <div class="bt">收银</div>
+            <div class="bt" @click="jumpCashier">收银</div>
             <div class="bt">赠送</div>
-            <div class="bt" @click="showModal('添加回访', 'VipRemind')">
+            <div class="bt" @click="showModal('添加提醒', 'VipRemind')">
               提醒
             </div>
             <div class="bt" @click="showModal('添加回访', 'VipReturnVisit')">
@@ -72,8 +70,12 @@
             <div class="label">
               <span class="title">个性标签：</span>
 
-              <Tag v-for="label in labels" :key="label" :name="label">
-                {{ label }}
+              <Tag
+                v-for="item in memberInfo.portrait_tags"
+                :key="item.name"
+                :name="item.name"
+              >
+                {{ item.name }}
               </Tag>
               <Button
                 icon="ios-add"
@@ -86,7 +88,7 @@
             </div>
             <div class="node">
               <span class="title">备注信息：</span>
-              <div class="info"></div>
+              <div class="info">{{ memberInfo.info }}</div>
             </div>
           </div>
         </div>
@@ -100,37 +102,44 @@
             :name="item.name"
           >
             <VipAccount
-              v-if="tab_index === '会员账户' && item.name === '会员账户'"
+              v-if="currentTabPane(item, '会员账户')"
+              :member-info="memberInfo"
             />
             <VipInfo
-              v-if="tab_index === '会员资料' && item.name === '会员资料'"
+              v-if="currentTabPane(item, '会员资料')"
               :member-info="memberInfo"
             />
             <VipData
-              v-if="tab_index === '会员数据' && item.name === '会员数据'"
+              v-if="currentTabPane(item, '会员数据')"
+              :member-info="memberInfo"
             />
             <ReturnVisit
-              v-if="tab_index === '回访记录' && item.name === '回访记录'"
+              v-if="currentTabPane(item, '回访记录')"
               :member-info="memberInfo"
             />
             <VipAppointment
-              v-if="tab_index === '预约记录' && item.name === '预约记录'"
+              v-if="currentTabPane(item, '预约记录')"
               :member-info="memberInfo"
             />
             <VipAssetsRecord
-              v-if="tab_index === '资产记录' && item.name === '资产记录'"
+              v-if="currentTabPane(item, '资产记录')"
+              :member-info="memberInfo"
             />
             <CustomerInfo
-              v-if="tab_index === '客情管理' && item.name === '客情管理'"
+              v-if="currentTabPane(item, '客情管理')"
+              :member-info="memberInfo"
             />
             <VipShareholderDividends
-              v-if="tab_index === '股东分红' && item.name === '股东分红'"
+              v-if="currentTabPane(item, '股东分红')"
+              :member-info="memberInfo"
             />
             <Attachment
-              v-if="tab_index === '附件管理' && item.name === '附件管理'"
+              v-if="currentTabPane(item, '附件管理')"
+              :member-info="memberInfo"
             />
             <VipGoodsDeposit
-              v-if="tab_index === '商品寄存' && item.name === '商品寄存'"
+              v-if="currentTabPane(item, '商品寄存')"
+              :member-info="memberInfo"
             />
           </TabPane>
         </Tabs>
@@ -144,46 +153,49 @@
       :title="modal.title"
     >
       <PersonalityLabel
-        v-if="modal.type === 'PersonalityLabel'"
-        :labels="labels"
+        v-if="modal.type === 'PersonalityLabel' && modal.show"
+        :member-info="memberInfo"
         @cancelModal="cancelModal"
         @changeLabels="changeLabels"
       />
       <Exchange
-        v-if="modal.type === 'Exchange'"
-        :labels="labels"
+        v-if="modal.type === 'Exchange' && modal.show"
+        :member-info="memberInfo"
         @cancelModal="cancelModal"
-        @changeLabels="changeLabels"
+        @change="change"
+        @refreshMemberInfo="getMemberInfo"
       />
       <EditIntegral
-        v-if="modal.type === 'EditIntegral'"
-        :labels="labels"
+        v-if="modal.type === 'EditIntegral' && modal.show"
+        :member-info="memberInfo"
         @cancelModal="cancelModal"
-        @changeLabels="changeLabels"
+        @change="change"
+        @refreshMemberInfo="getMemberInfo"
       />
       <GoShop
-        v-if="modal.type === 'GoShop'"
-        :labels="labels"
+        v-if="modal.type === 'GoShop' && modal.show"
+        :member-info="memberInfo"
         @cancelModal="cancelModal"
-        @changeLabels="changeLabels"
+        @change="change"
+        @refreshMemberInfo="getMemberInfo"
       />
       <Deposit
-        v-if="modal.type === 'Deposit'"
-        :labels="labels"
+        v-if="modal.type === 'Deposit' && modal.show"
+        :member-info="memberInfo"
         @cancelModal="cancelModal"
-        @changeLabels="changeLabels"
+        @changeDeposit="change"
       />
       <VipReturnVisit
-        v-if="modal.type === 'VipReturnVisit'"
-        :labels="labels"
+        v-if="modal.type === 'VipReturnVisit' && modal.show"
+        :member-info="memberInfo"
         @cancelModal="cancelModal"
-        @changeLabels="changeLabels"
+        @change="change"
       />
       <VipRemind
-        v-if="modal.type === 'VipRemind'"
-        :labels="labels"
+        v-if="modal.type === 'VipRemind' && modal.show"
+        :member-info="memberInfo"
         @cancelModal="cancelModal"
-        @changeLabels="changeLabels"
+        @change="change"
       />
     </Modal>
   </div>
@@ -284,9 +296,19 @@
             name: '商品寄存',
           },
         ],
-        labels: [],
-        memberInfo: [],
+        memberInfo: {},
       }
+    },
+    computed: {
+      currentTabPane() {
+        return (item, title) => {
+          return (
+            this.tab_index === title &&
+            item.name === title &&
+            Object.keys(this.memberInfo).length !== 0
+          )
+        }
+      },
     },
     mounted() {
       this.$nextTick(() => {
@@ -301,11 +323,22 @@
       this.getMemberInfo()
     },
     methods: {
+      cancel() {
+        this.$emit('cancelModal', false)
+      },
+      jumpCashier() {
+        this.cancel()
+        this.$router.push('/cashier/index')
+      },
+      change() {
+        this.modal.show = false
+      },
       tabHeight() {
-        let orgTreeHeight = window.innerHeight
-        let divHeight = orgTreeHeight - 330
-        this.$refs.tab.style.minHeight = divHeight + 'px'
-        console.log(orgTreeHeight, divHeight)
+        console.log('s')
+        // let orgTreeHeight = window.innerHeight
+        // let divHeight = orgTreeHeight - 400
+        // this.$refs.tab.style.minHeight = divHeight + 'px'
+        // console.log(orgTreeHeight, divHeight)
       },
       showModal(title, type) {
         this.modal.show = true
@@ -323,11 +356,12 @@
         this.tab_index = index
       },
       changeLabels() {
-        this.modal.show = false
         //刷新接口
+        this.getMemberInfo()
       },
 
       async getMemberInfo() {
+        console.log('getMemberInfo')
         const { data } = await getMemberInfo({
           vid: cookie.get('vid'),
         })
@@ -413,7 +447,7 @@
 
             .row2 {
               display: flex;
-
+              flex-flow: wrap;
               .member_no {
                 font-size: 12px;
                 font-weight: bold;
@@ -485,8 +519,9 @@
             display: flex;
             padding: 10px;
             background: white;
-
+            flex-flow: wrap;
             .label {
+              overflow: hidden;
               flex: 1;
               .title {
                 font-weight: bold;
@@ -511,10 +546,11 @@
 
               .info {
                 width: 300px;
-                height: 46px;
+                min-height: 46px;
                 border: 1px dashed #505050;
-                border-radius: 10px;
+                border-radius: 6px;
                 margin-left: 10px;
+                padding: 2px 4px;
               }
             }
           }
@@ -524,7 +560,6 @@
       .tab {
         margin-top: 20px;
         background: white;
-        padding-bottom: 10px;
         /deep/ .ivu-tabs-ink-bar {
           background: #cc749a;
         }

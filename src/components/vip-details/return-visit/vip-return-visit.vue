@@ -4,128 +4,147 @@
       <div class="row">
         <div class="left">回访人员</div>
         <div class="right">
-          <Input placeholder="" search style="width: 200px" />
+          <Select
+            v-model="formData.staff_id"
+            clearable
+            filterable
+            :loading="loading"
+            style="width: 200px"
+          >
+            <div slot="empty">未找到数据</div>
+            <Option v-for="item in staffList" :key="item.id" :value="item.id">
+              {{ item.name }}
+            </Option>
+          </Select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="left">回访标题</div>
+        <div class="right">
+          <Input v-model="formData.name" placeholder="" style="width: 200px" />
         </div>
       </div>
       <div class="row">
         <div class="left">回访内容</div>
         <div class="right">
-          <Input placeholder="" style="width: 200px" type="textarea" />
+          <Input
+            v-model="formData.info"
+            placeholder=""
+            style="width: 200px"
+            type="textarea"
+          />
         </div>
       </div>
       <div class="row">
         <div class="left">附件</div>
         <div class="right">
-          <div
-            v-for="(item, index) in uploadList"
-            :key="index"
-            class="upload-list"
-          >
-            <template v-if="item.status === 'finished'">
-              <img :src="item.url" />
-              <div class="upload-list-cover">
-                <Icon
-                  type="ios-eye-outline"
-                  @click.native="handleView(item.name)"
-                />
-                <Icon
-                  type="ios-trash-outline"
-                  @click.native="handleRemove(item)"
-                />
-              </div>
-            </template>
-            <template v-else>
-              <Progress
-                v-if="item.showProgress"
-                hide-info
-                :percent="item.percentage"
-              />
-            </template>
-          </div>
-          <Upload
-            ref="upload"
-            action="//jsonplaceholder.typicode.com/posts/"
-            :before-upload="handleBeforeUpload"
-            :default-file-list="defaultList"
-            :format="['jpg', 'jpeg', 'png']"
-            :max-size="2048"
-            multiple
-            :on-exceeded-size="handleMaxSize"
-            :on-format-error="handleFormatError"
-            :on-success="handleSuccess"
-            :show-upload-list="false"
-            style="display: inline-block; width: 58px"
-            type="drag"
-          >
-            <div style="width: 58px; height: 58px; line-height: 58px">
-              <Icon size="20" type="ios-camera" />
-            </div>
-          </Upload>
+          <UploadImage
+            :default-list="defaultList"
+            @remove="removeFile"
+            @uploadFile="uploadFile"
+          />
         </div>
       </div>
     </div>
 
     <div class="footer">
-      <div class="bt">保存</div>
+      <div class="bt" @click="save">保存</div>
       <div class="bt" @click="cancel">取消</div>
     </div>
   </div>
 </template>
 
 <script>
+  import UploadImage from '@/components/upload-image'
+  import { getStaffList, setVisitAct } from '@/api/vip'
   export default {
     name: 'VipReturnVisit',
+    components: { UploadImage },
+    props: {
+      memberInfo: {
+        type: Object,
+        default: () => {},
+      },
+      data: {
+        type: Object,
+        default: () => {},
+      },
+    },
     data: function () {
       return {
+        loading: false,
+        formData: {
+          vid: this.memberInfo.id,
+          name: '',
+          staff_id: '',
+          img_id: '',
+          info: '',
+          visit_id: '',
+        },
         defaultList: [],
-        imgName: '',
-        visible: false,
-        uploadList: [],
+        staffList: [],
+        page: {
+          total: 0,
+          pageSize: 10,
+          current: 1,
+        },
       }
     },
-    mounted() {
-      this.uploadList = this.$refs.upload.fileList
+    created() {
+      this.getStaffList()
+      console.log(this.data, 'data')
+      this.defaultList = []
+      if (Object.keys(this.data).length > 0) {
+        this.formData.img_id = this.data.img_id
+        this.formData.name = this.data.name
+        this.formData.info = this.data.info
+        this.formData.staff_id = this.data.staff_id
+        if (this.data.img_id > 0) {
+          this.defaultList.push({
+            name: this.data.img_id,
+            url: this.data.img,
+          })
+        }
+      }
+
+      console.log(this.defaultList, 'this.defaultList')
     },
     methods: {
       cancel() {
         this.$emit('cancelModal', false)
       },
-      handleView(name) {
-        this.imgName = name
-        this.visible = true
+      removeFile(res) {
+        console.log(res, 'removeFile')
+        this.formData.img_id = ''
       },
-      handleRemove(file) {
-        const fileList = this.$refs.upload.fileList
-        this.$refs.upload.fileList.splice(fileList.indexOf(file), 1)
+      uploadFile(res) {
+        this.formData.img_id = res.id
+        console.log(res, 'uploadFile')
       },
-      handleSuccess(res, file) {
-        file.url =
-          'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar'
-        file.name = '7eb99afb9d5f317c912f08b5212fd69a'
+      save() {
+        this.setVisitAct()
       },
-      handleFormatError(file) {
-        this.$Notice.warning({
-          title: 'The file format is incorrect',
-          desc:
-            'File format of ' +
-            file.name +
-            ' is incorrect, please select jpg or png.',
-        })
-      },
-      handleMaxSize(file) {
-        this.$Notice.warning({
-          title: 'Exceeding file size limit',
-          desc: 'File  ' + file.name + ' is too large, no more than 2M.',
-        })
-      },
-      handleBeforeUpload() {
-        const check = this.uploadList.length < 5
-        if (!check) {
-          this.$Notice.warning({
-            title: 'Up to five pictures can be uploaded.',
-          })
+      async setVisitAct() {
+        const { status, msg } = await setVisitAct(this.formData)
+        if (status !== 1) {
+          this.$Message.error(msg)
+        } else {
+          this.$Message.success(msg)
+          this.$emit('change')
         }
-        return check
+      },
+      async getStaffList() {
+        this.loading = true
+        const { data } = await getStaffList({
+          search: '',
+          tid: '',
+          status: '',
+          page: '1000',
+        })
+        this.loading = false
+        this.staffList = data.list
+        this.page.total = Number(data.count)
+        this.page.current = Number(data.p)
       },
     },
   }

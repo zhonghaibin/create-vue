@@ -36,6 +36,9 @@
               <CustomFieldList
                 v-if="item.name === '自定义字段' && tab_index === '自定义字段'"
               />
+              <Attendance
+                v-if="item.name === '考勤设置' && tab_index === '考勤设置'"
+              />
               <PushTemplateList
                 v-if="
                   item.name === '企业微信推送' && tab_index === '企业微信推送'
@@ -57,6 +60,7 @@
   import Appointment from '@/components/setting/system/appointment'
   import Cashier from '@/components/setting/system/cashier'
   import VipSet from '@/components/setting/system/vip-set'
+  import Attendance from '@/components/setting/system/attendance'
   export default {
     name: 'Index',
     components: {
@@ -68,6 +72,7 @@
       Appointment,
       Cashier,
       VipSet,
+      Attendance,
     },
     data: function () {
       return {
@@ -80,7 +85,8 @@
           { name: '支出类别设置', id: 5 },
           { name: '标签管理', id: 6 },
           { name: '自定义字段', id: 7 },
-          { name: '企业微信推送', id: 8 },
+          { name: '考勤设置', id: 8 },
+          { name: '企业微信推送', id: 9 },
         ],
       }
     },

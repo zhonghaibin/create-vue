@@ -936,6 +936,7 @@
       background: #f19ec2;
       padding: 6px 14px;
       border-radius: 4px;
+      margin-bottom: 1px;
     }
   }
 </style>

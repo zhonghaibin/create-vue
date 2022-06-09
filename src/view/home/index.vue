@@ -12,6 +12,18 @@
           </Option>
         </Select>
       </div>
+      <div class="box">
+        <span class="text">门店</span>
+        <Select v-model="store" style="width: 200px" transfer>
+          <Option
+            v-for="item in storeList"
+            :key="item.value"
+            :value="item.value"
+          >
+            {{ item.label }}
+          </Option>
+        </Select>
+      </div>
     </div>
     <div class="content">
       <div class="top">
@@ -38,8 +50,8 @@
         </div>
       </div>
       <div class="bottom">
-        <div class="left">
-          <div class="box color1">
+        <div class="bottom-left">
+          <div class="bottom-left-box color1">
             <div class="title">预约总数</div>
             <div class="number">1</div>
             <div class="proportion">
@@ -47,7 +59,7 @@
               <span class="red">+1</span>
             </div>
           </div>
-          <div class="box color2">
+          <div class="bottom-left-box color2">
             <div class="title">新客数量</div>
             <div class="number">1</div>
             <div class="proportion">
@@ -55,7 +67,7 @@
               <span class="red">+1</span>
             </div>
           </div>
-          <div class="box color3">
+          <div class="bottom-left-box color3">
             <div class="title">进店客流</div>
             <div class="number">1</div>
             <div class="proportion">
@@ -63,7 +75,7 @@
               <span class="red">+1</span>
             </div>
           </div>
-          <div class="box color4">
+          <div class="bottom-left-box color4">
             <div class="title">项目数量</div>
             <div class="number">1</div>
             <div class="proportion">
@@ -71,7 +83,7 @@
               <span class="red">+1</span>
             </div>
           </div>
-          <div class="box color5">
+          <div class="bottom-left-box color5">
             <div class="title">服务人次</div>
             <div class="number">1</div>
             <div class="proportion">
@@ -79,7 +91,7 @@
               <span class="red">+1</span>
             </div>
           </div>
-          <div class="box color6">
+          <div class="bottom-left-box color6">
             <div class="title">老客续单</div>
             <div class="number">1</div>
             <div class="proportion">
@@ -87,7 +99,7 @@
               <span class="red">+1</span>
             </div>
           </div>
-          <div class="box color7">
+          <div class="bottom-left-box color7">
             <div class="title">服务人数</div>
             <div class="number">1</div>
             <div class="proportion">
@@ -95,7 +107,7 @@
               <span class="red">+1</span>
             </div>
           </div>
-          <div class="box color8">
+          <div class="bottom-left-box color8">
             <div class="title">新课成单</div>
             <div class="number">1</div>
             <div class="proportion">
@@ -104,25 +116,25 @@
             </div>
           </div>
         </div>
-        <div class="right">
-          <div class="left">
+        <div class="bottom-right">
+          <div class="bottom-right-left">
             <div class="title">待办事项</div>
             <div class="content"></div>
           </div>
           <div class="store-data">
             <div class="title">
-              <div class="l">门店目标</div>
+              <div class="l">门店目标数据</div>
               <div class="r">详情></div>
             </div>
             <div class="box1">
               <div class="box2">
                 <div class="row1">
                   <div class="text1">年度业绩目标(月目标累加)：</div>
-                  <div class="text2">￥50000000,000,00</div>
+                  <div class="text2">￥50000,000,00</div>
                 </div>
                 <div class="row1">
                   <div class="text1">年度业绩目标(月目标累加)：</div>
-                  <div class="text2">￥80000000,000,00</div>
+                  <div class="text2">￥80000,000,00</div>
                   <div class="row2">
                     <div class="circle" style="width: 120px; height: 120px">
                       <span class="text">160%</span>
@@ -139,11 +151,11 @@
                         <div class="dot"></div>
                         年度耗卡目标(月目标累加)：
                       </div>
-                      <div class="text2">￥50000000,000,00</div>
+                      <div class="text2">￥50000,000,00</div>
                     </div>
                     <div class="row2">
                       <div class="text1">年度累计完成耗卡：</div>
-                      <div class="text2">￥80000000,000,00</div>
+                      <div class="text2">￥80000,000,00</div>
                     </div>
                   </div>
                   <div class="r">
@@ -163,6 +175,48 @@
                     </div>
                     <div class="row2">
                       <div class="text1">年度累计完成客流：</div>
+                      <div class="text2">417</div>
+                    </div>
+                  </div>
+                  <div class="r">
+                    <div class="circle">
+                      <span class="text">160%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="box3">
+                <div class="box4">
+                  <div class="l">
+                    <div class="row1">
+                      <div class="text1">
+                        <div class="dot"></div>
+                        年度客次目标(月目标累加)：
+                      </div>
+                      <div class="text2">￥50000,000,00</div>
+                    </div>
+                    <div class="row2">
+                      <div class="text1">年度累计完成客次：</div>
+                      <div class="text2">￥80000,000,00</div>
+                    </div>
+                  </div>
+                  <div class="r">
+                    <div class="circle">
+                      <span class="text">160%</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="box4">
+                  <div class="l">
+                    <div class="row1">
+                      <div class="text1">
+                        <div class="dot"></div>
+                        年度客数目标(月目标累加)：
+                      </div>
+                      <div class="text2">300</div>
+                    </div>
+                    <div class="row2">
+                      <div class="text1">年度累计完成客数：</div>
                       <div class="text2">417</div>
                     </div>
                   </div>
@@ -207,6 +261,8 @@
     },
     data() {
       return {
+        storeList: [],
+        store: '',
         selectList: [
           {
             value: '1',
@@ -380,12 +436,17 @@
 <style lang="less" scoped>
   .Home {
     .header {
+      display: flex;
       padding: 10px 20px;
       background: #ffffff;
       border-top-left-radius: 10px;
       border-top-right-radius: 10px;
       .box {
         color: #cc749a;
+        .text {
+          color: black;
+          padding: 0 10px;
+        }
       }
     }
     .content {
@@ -422,12 +483,13 @@
       }
       .bottom {
         display: flex;
-        .left {
-          float: left;
+        .bottom-left {
+          display: flex;
+          flex-wrap: wrap;
+          overflow: hidden;
+          justify-content: center;
           background: white;
-          width: 360px;
-          .box {
-            float: left;
+          .bottom-left-box {
             border-radius: 20px;
             margin: 6px 10px;
             width: 150px;
@@ -475,12 +537,12 @@
             background: #efe9e0;
           }
         }
-        .right {
+        .bottom-right {
           display: flex;
-          flex: 1;
-          .left {
+          .bottom-right-left {
+            background: #ffffff;
             border-radius: 10px;
-            width: 480px;
+            width: 500px;
             margin: 16px 20px 0 16px;
             padding: 4px;
             line-height: normal;
@@ -494,7 +556,6 @@
             }
           }
           .store-data {
-            flex: 1;
             background: white;
             border-radius: 10px;
             margin: 16px 0 0 0px;
@@ -523,9 +584,9 @@
               width: 100%;
               display: flex;
               .circle {
-                width: 100px;
-                height: 100px;
-                border: 10px solid #f46b53;
+                width: 75px;
+                height: 75px;
+                border: 7px solid #f46b53;
                 border-radius: 50%;
                 margin: auto; /*以下五个属性为水平垂直居中的方法*/
                 box-sizing: border-box;
@@ -534,30 +595,28 @@
                 justify-content: center;
                 cursor: pointer;
                 .text {
-                  font-size: 20px;
+                  font-size: 18px;
                   font-weight: bold;
                 }
               }
               .box2 {
-                padding: 20px;
+                padding: 10px;
                 border-radius: 10px;
-                width: 36%;
+                width: 26%;
                 float: left;
                 border: 1px dashed #ccc;
                 height: 320px;
-                margin: 20px;
+                margin: 10px;
                 .row1 {
                   margin-bottom: 20px;
                   .text1 {
                     color: #928c8a;
                     height: 30px;
-                    line-height: 30px;
-                    font-size: 14px;
+                    font-size: 12px;
                   }
                   .text2 {
                     height: 30px;
-                    line-height: 30px;
-                    font-size: 24px;
+                    font-size: 16px;
                     font-weight: bold;
                   }
                   .row2 {
@@ -570,37 +629,37 @@
 
                 float: left;
                 height: 300px;
-                margin: 20px 20px 20px 0;
+                margin: 10px 10px 10px 0;
                 flex: 1;
                 .box4 {
                   display: flex;
                   width: 100%;
-                  padding: 15px 20px;
+                  padding: 15px 10px;
                   border: 1px dashed #ccc;
                   border-radius: 10px;
                   margin-bottom: 14px;
                   .l {
-                    width: 240px;
+                    width: 166px;
 
                     .row1 {
                       .text1 {
                         color: #928c8a;
                         height: 30px;
-                        line-height: 30px;
-                        font-size: 14px;
+                        font-size: 12px;
+                        display: flex;
+                        align-items: center;
                         .dot {
                           float: left;
                           background: #f19ec2;
                           width: 5px;
-                          height: 26px;
+                          height: 24px;
                           padding: 2px;
                           margin-right: 4px;
                         }
                       }
                       .text2 {
                         height: 30px;
-                        line-height: 30px;
-                        font-size: 24px;
+                        font-size: 16px;
                         font-weight: bold;
                       }
                     }
@@ -608,13 +667,13 @@
                       .text1 {
                         color: #928c8a;
                         height: 30px;
-                        line-height: 30px;
                         font-size: 14px;
+                        display: flex;
+                        align-items: center;
                       }
                       .text2 {
                         height: 30px;
-                        line-height: 30px;
-                        font-size: 24px;
+                        font-size: 16px;
                         font-weight: bold;
                       }
                     }

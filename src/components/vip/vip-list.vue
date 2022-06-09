@@ -1,6 +1,6 @@
 <template>
   <div>
-    <VipSearch1 @search="search" />
+    <VipSearch1 @change="change" @search="search" />
     <div class="list-top">
       <span class="black">共{{ vip_total }}个会员</span>
       <span class="black">（所有会员总余额：￥{{ money }}元</span>
@@ -41,7 +41,7 @@
       :width="modal.width"
     >
       <VipDetails
-        v-if="modal.type === 'VipDetails'"
+        v-if="modal.type === 'VipDetails' && modal.show"
         @cancelModal="cancelModal"
       />
     </Modal>
@@ -49,7 +49,7 @@
 </template>
 
 <script>
-  import VipSearch1 from '@/components/vip/vip-list/vip-search-1'
+  import VipSearch1 from '@/components/vip/vip-list/vip-search'
   import { getMemberList, getMemberTotal } from '@/api/vip'
   import default_avatar from '../../assets/default_avatar.png'
   import cookie from 'js-cookie'
@@ -513,6 +513,10 @@
       this.getMemberList()
     },
     methods: {
+      change() {
+        this.getMemberTotal()
+        this.getMemberList()
+      },
       currentPage(current) {
         this.page.current = current
         this.getMemberList()
@@ -523,6 +527,8 @@
       },
       search(search) {
         this.searchData = search
+        this.page.current = 1
+        this.page.pageSize = 10
         this.getMemberList()
       },
       async getMemberList() {
@@ -543,6 +549,7 @@
       },
       showModal(title, type, data) {
         cookie.set('vid', data.id)
+        console.log(data.id)
         this.modal.show = true
         this.modal.title = title
         this.modal.type = type

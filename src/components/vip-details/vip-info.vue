@@ -100,7 +100,9 @@
       <div class="row1">
         <div class="header">
           <div class="label">过敏禁忌</div>
-          <div class="lab">不吃香菜芹菜</div>
+          <div v-for="item in labelsList" :key="item.id" class="lab">
+            {{ item.name }}
+          </div>
           <div class="lab_bt" @click="showModal('会员禁忌标签', 'TabooLabel')">
             <Icon type="ios-add ico" />
             添加禁忌
@@ -109,27 +111,62 @@
       </div>
       <div class="row2">
         <div class="header">
-          <div class="label">重要日期</div>
-          <div class="info">
-            <div class="title">结婚纪念日</div>
-            <div class="date">2020-01-01</div>
+          <div class="left-row2">
+            <span class="label">重要日期</span>
           </div>
-          <div class="lab_bt" @click="showModal('添加重要日期', 'AddDate')">
-            <Icon type="ios-add ico" />
-            添加日期
+
+          <div class="center-row2">
+            <div v-if="loading2" class="loading"><Spin /></div>
+            <div
+              v-for="(item, index) in ImportantDates.list"
+              :key="item.id"
+              class="info"
+            >
+              <div class="title">{{ item.name }}</div>
+              <div class="date">
+                {{ item.info }}
+              </div>
+              <div class="del" @click="delData(index, item)">
+                <Icon :size="18" type="ios-trash" />
+              </div>
+            </div>
+            <div style="text-align: center">
+              <Page
+                v-if="ImportantDates.list.length > 0"
+                :current="page.current"
+                :page-size="page.pageSize"
+                size="small"
+                :total="page.total"
+                @on-change="currentPage"
+                @on-page-size-change="pageSizeChange"
+              />
+            </div>
+          </div>
+          <div class="right-row2">
+            <div class="lab_bt" @click="showModal('添加重要日期', 'AddDate')">
+              <Icon type="ios-add ico" />
+              添加日期
+            </div>
           </div>
         </div>
       </div>
     </div>
     <Modal v-model="modal.show" :footer-hide="true" :title="modal.title">
       <VipInfoDetails
-        v-if="modal.type === 'VipInfoDetails'"
+        v-if="modal.type === 'VipInfoDetails' && modal.show"
         @cancelModal="cancelModal"
       />
-      <AddDate v-if="modal.type === 'AddDate'" @cancelModal="cancelModal" />
-      <TabooLabel
-        v-if="modal.type === 'TabooLabel'"
+      <AddDate
+        v-if="modal.type === 'AddDate' && modal.show"
+        :member-info="memberInfo"
         @cancelModal="cancelModal"
+        @change="change"
+      />
+      <TabooLabel
+        v-if="modal.type === 'TabooLabel' && modal.show"
+        :member-info="memberInfo"
+        @cancelModal="cancelModal"
+        @changeLabels="changeLabels"
       />
     </Modal>
   </div>
@@ -139,7 +176,7 @@
   import VipInfoDetails from '@/components/vip-details/vip-info/vip-info-details'
   import AddDate from '@/components/vip-details/vip-info/add-date'
   import TabooLabel from '@/components/vip-details/vip-info/taboo-label'
-  import { getMemberInfo } from '@/api/vip'
+  import { delVipRecord, getMemberInfo, getTags, getVipRecord } from '@/api/vip'
   import cookie from 'js-cookie'
   export default {
     name: 'VipInfo',
@@ -162,6 +199,16 @@
           type: false,
         },
         info: [],
+        labelsList: [],
+        ImportantDates: {
+          list: [],
+        },
+        page: {
+          total: 0,
+          pageSize: 10,
+          current: 1,
+        },
+        loading2: false,
       }
     },
     activated() {
@@ -169,8 +216,34 @@
     },
     created() {
       this.getMemberInfo()
+      this.getTags()
+      this.getVipRecord(2)
     },
     methods: {
+      delData(index, row) {
+        this.$Modal.confirm({
+          title: '警告？',
+          content: '确定要删除吗？',
+          onOk: () => {
+            this.delVipRecord(row.id)
+            this.ImportantDates.list.splice(index, 1)
+          },
+          onCancel: () => {},
+        })
+      },
+      change() {
+        this.modal.show = false
+        this.getVipRecord(2)
+      },
+      currentPage(current) {
+        this.page.current = current
+        this.searchData.p = current
+        this.getVipRecord(2)
+      },
+      pageSizeChange(pageSize) {
+        this.page.pageSize = pageSize
+        this.getVipRecord(2)
+      },
       showModal(title, type) {
         this.modal.show = true
         this.modal.title = title
@@ -186,11 +259,52 @@
         this.info = data
         console.log('memberInfo', data)
       },
+      changeLabels() {
+        this.modal.show = false
+        this.getTags()
+      },
+      async getTags() {
+        const { data } = await getTags({
+          vid: this.memberInfo.id,
+          mold: 2,
+          search: '',
+          page: 10000,
+        })
+        this.labelsList = data.list
+      },
+      async getVipRecord(type) {
+        this.loading2 = true
+        const { data } = await getVipRecord({
+          vid: this.memberInfo.id,
+          type: type,
+          page: 6,
+          p: 1,
+          order: 'asc',
+        })
+        this.loading2 = false
+        this.ImportantDates.list = data.list
+        this.page.total = Number(data.count)
+        this.page.current = Number(data.p)
+      },
+      async delVipRecord(id) {
+        const { status, msg } = await delVipRecord({
+          record_id: id,
+        })
+        if (status !== 1) {
+          this.$Message.error(msg)
+        } else {
+          this.$Message.success(msg)
+        }
+      },
     },
   }
 </script>
 
 <style lang="less" scoped>
+  .loading {
+    display: flex;
+    justify-content: center;
+  }
   .VipInfo {
     display: flex;
     .left {
@@ -295,42 +409,56 @@
         height: 250px;
         width: 100%;
         border-radius: 6px;
+
         .header {
+          .left-row2 {
+            .label {
+              font-weight: bold;
+              font-size: 14px;
+              padding: 2px;
+              height: 30px;
+              line-height: 30px;
+            }
+          }
+          .center-row2 {
+            flex: 1;
+            .info {
+              height: 30px;
+              line-height: 30px;
+              display: flex;
+              width: 100%;
+              padding: 0 10px;
+              .title {
+                flex: 1;
+              }
+              .date {
+              }
+              .del {
+                padding: 0 4px;
+                cursor: pointer;
+                color: red;
+              }
+            }
+          }
+          .right-row2 {
+            .lab_bt {
+              margin: 2px;
+              display: flex;
+              align-items: center;
+              width: 80px;
+              border-radius: 4px;
+              border: 1px dashed #dcdcdc;
+              height: 26px;
+              line-height: 26px;
+              cursor: pointer;
+              .ico {
+                margin-left: 6px;
+              }
+            }
+          }
           padding: 20px;
           display: flex;
-          align-items: center;
           flex-flow: wrap;
-          .label {
-            font-weight: bold;
-            font-size: 14px;
-            padding: 2px;
-          }
-          .info {
-            height: 20px;
-            line-height: 20px;
-            display: flex;
-            flex: 1;
-            padding: 0px 20px;
-            .title {
-              flex: 1;
-            }
-            .date {
-            }
-          }
-          .lab_bt {
-            margin: 2px;
-            display: flex;
-            align-items: center;
-            width: 80px;
-            border-radius: 4px;
-            border: 1px dashed #dcdcdc;
-            height: 26px;
-            line-height: 26px;
-            cursor: pointer;
-            .ico {
-              margin-left: 6px;
-            }
-          }
         }
       }
     }

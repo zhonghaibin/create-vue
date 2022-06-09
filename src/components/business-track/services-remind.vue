@@ -26,8 +26,8 @@
 </template>
 
 <script>
-  import VipServicePeriod from '@/components/vip/vip-list2/vip-service-period'
-  import VipServiceList from '@/components/vip/vip-list2/vip-service-list'
+  import VipServicePeriod from '@/components/business-track/services-remind/vip-service-period'
+  import VipServiceList from '@/components/business-track/services-remind/vip-service-list'
 
   export default {
     name: 'VipList2',

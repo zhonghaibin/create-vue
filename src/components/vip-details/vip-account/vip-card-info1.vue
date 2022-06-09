@@ -3,31 +3,31 @@
     <div class="header">
       <div class="left">
         <div class="card">
-          <div class="title">骨盆修复套餐</div>
+          <div class="title">{{ cardInfo.cname }}</div>
           <div class="content">
             <div class="row">
               <div class="l">购买价格</div>
-              <div class="r">323456</div>
+              <div class="r">{{ cardInfo.money }}</div>
             </div>
-            <div class="row">
-              <div class="l">推销人员</div>
-              <div class="r">323456</div>
-            </div>
+            <!--            <div class="row">-->
+            <!--              <div class="l">推销人员</div>-->
+            <!--              <div class="r">323456</div>-->
+            <!--            </div>-->
             <div class="row">
               <div class="l">购买时间</div>
-              <div class="r">323456</div>
+              <div class="r">{{ cardInfo.time }}</div>
             </div>
             <div class="row">
               <div class="l">启用时间</div>
-              <div class="r">323456</div>
+              <div class="r">{{ cardInfo.start_time }}</div>
             </div>
             <div class="row">
               <div class="l">到期时间</div>
-              <div class="r">323456</div>
+              <div class="r">{{ cardInfo.end_time }}</div>
             </div>
             <div class="row">
               <div class="l">套餐类型</div>
-              <div class="r">323456</div>
+              <div class="r">{{ cardInfo.tname }}</div>
             </div>
           </div>
         </div>
@@ -49,15 +49,19 @@
         >
           <VipCardList
             v-if="item.name === '次卡内容' && tab_index === '次卡内容'"
+            :card-vid="cardVid"
           />
           <VipConsumptionList
             v-if="item.name === '消费记录' && tab_index === '消费记录'"
+            :card-vid="cardVid"
           />
           <VipChangeList
             v-if="item.name === '修改记录' && tab_index === '修改记录'"
           />
           <VipNodeList
             v-if="item.name === '备注信息' && tab_index === '备注信息'"
+            :card-vid="cardVid"
+            :member-info="memberInfo"
           />
         </TabPane>
       </Tabs>
@@ -70,6 +74,7 @@
   import VipConsumptionList from '@/components/vip-details/vip-account/vip-card-info1/vip-consumption-list'
   import VipChangeList from '@/components/vip-details/vip-account/vip-card-info1/vip-change-list'
   import VipNodeList from '@/components/vip-details/vip-account/vip-card-info1/vip-node-list'
+  import { getVipCardDetails } from '@/api/vip'
   export default {
     name: 'VipCardInfo1',
     components: {
@@ -77,6 +82,16 @@
       VipConsumptionList,
       VipChangeList,
       VipNodeList,
+    },
+    props: {
+      memberInfo: {
+        type: Object,
+        default: () => {},
+      },
+      cardVid: {
+        type: Number,
+        default: () => 0,
+      },
     },
     data: function () {
       return {
@@ -99,9 +114,26 @@
             name: '备注信息',
           },
         ],
+        cardInfo: [],
+        searchData: {},
       }
     },
+    activated() {
+      this.search()
+    },
+    created() {
+      this.search()
+    },
     methods: {
+      search() {
+        this.$set(this.searchData, 'card_vid', this.cardVid)
+        this.getVipCardDetails()
+      },
+      async getVipCardDetails() {
+        const { data } = await getVipCardDetails(this.searchData)
+        console.log(data)
+        this.cardInfo = data
+      },
       handleTabClick(index) {
         this.tab_index = index
       },

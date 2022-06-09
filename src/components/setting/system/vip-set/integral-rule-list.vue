@@ -19,7 +19,7 @@
             enter-button
             placeholder="搜索规则名称"
             search
-            style="width: 300px"
+            style="width: 250px"
             @on-search="changeValue"
           />
         </div>
@@ -139,8 +139,8 @@
     methods: {
       changeValue() {},
       clearDate() {
-        this.searchData.start_time = ''
-        this.searchData.end_time = ''
+        this.searchData.start = ''
+        this.searchData.end = ''
       },
       currentPage(current) {
         this.page.current = current
@@ -223,6 +223,7 @@
       background: #f19ec2;
       padding: 6px 14px;
       border-radius: 4px;
+      margin-bottom: 1px;
     }
   }
 </style>

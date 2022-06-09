@@ -6,7 +6,7 @@
           <span class="text">时间</span>
           <DatePicker
             placeholder="开始时间-结束时间"
-            style="width: 280px"
+            style="width: 200px"
             type="datetimerange"
           />
         </div>
@@ -27,7 +27,7 @@
             enter-button
             placeholder="可搜索关键词"
             search
-            style="width: 300px"
+            style="width: 250px"
           />
         </div>
       </div>
@@ -142,8 +142,10 @@
       margin-top: 20px;
     }
     .page {
-      display: flex;
-      justify-content: center;
+      height: 40px;
+      padding: 8px 0;
+      text-align: center;
+      background: white;
     }
     .bt {
       margin-right: 20px;

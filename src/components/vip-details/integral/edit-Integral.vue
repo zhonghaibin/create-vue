@@ -3,16 +3,18 @@
     <div class="box">
       <div class="row">
         <div class="left">会员信息</div>
-        <div class="right">曾文敏 1584512412</div>
+        <div class="right">{{ memberInfo.name }} {{ memberInfo.tel }}</div>
       </div>
       <div class="row">
         <div class="left">当前积分</div>
-        <div class="right">1000</div>
+        <div class="right">
+          {{ memberInfo.integral ? memberInfo.integral : 0 }}
+        </div>
       </div>
       <div class="row">
         <div class="left">修改类型</div>
         <div class="right">
-          <Select v-model="type" style="width: 200px" transfer>
+          <Select v-model="formData.type" style="width: 200px" transfer>
             <Option
               v-for="item in type_list"
               :key="item.value"
@@ -26,36 +28,40 @@
       <div class="row">
         <div class="left">须修正积分</div>
         <div class="right">
-          <Input placeholder="" style="width: 200px" />
+          <Input
+            v-model="formData.integral"
+            placeholder=""
+            style="width: 200px"
+          />
         </div>
       </div>
       <div class="row">
         <div class="left">备注</div>
         <div class="right">
-          <Input placeholder="" style="width: 200px" />
+          <Input v-model="formData.info" placeholder="" style="width: 200px" />
         </div>
       </div>
     </div>
     <div class="footer">
-      <div class="bt">保存</div>
+      <div class="bt" @click="save">保存</div>
       <div class="bt" @click="cancel">取消</div>
     </div>
   </div>
 </template>
 
 <script>
+  import { integralEdit } from '@/api/vip'
+
   export default {
     name: 'EditIntegral',
+    props: {
+      memberInfo: {
+        type: Object,
+        default: () => {},
+      },
+    },
     data: function () {
       return {
-        template_type: '',
-        template_type_list: [
-          {
-            label: '预约提醒',
-            value: '1',
-          },
-        ],
-        type: '',
         type_list: [
           {
             label: '增加',
@@ -66,11 +72,30 @@
             value: '2',
           },
         ],
+        formData: {
+          vip_id: this.memberInfo.vip_id,
+          info: '',
+          type: '',
+          integral: '',
+        },
       }
     },
     methods: {
       cancel() {
         this.$emit('cancelModal', false)
+      },
+      save() {
+        this.integralEdit()
+      },
+      async integralEdit() {
+        const { status, msg } = await integralEdit(this.formData)
+        if (status !== 1) {
+          this.$Message.error(msg)
+        } else {
+          this.$Message.success(msg)
+          this.$emit('change')
+          this.$emit('refreshMemberInfo')
+        }
       },
     },
   }

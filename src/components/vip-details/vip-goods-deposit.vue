@@ -9,9 +9,11 @@
       >
         <VipDepositData
           v-if="item.name === '寄存数据' && tab_index === '寄存数据'"
+          :member-info="memberInfo"
         />
         <VipDepositDetails
           v-if="item.name === '寄存记录' && tab_index === '寄存记录'"
+          :member-info="memberInfo"
         />
       </TabPane>
     </Tabs>
@@ -26,6 +28,12 @@
     components: {
       VipDepositData,
       VipDepositDetails,
+    },
+    props: {
+      memberInfo: {
+        type: Object,
+        default: () => {},
+      },
     },
     data: function () {
       return {

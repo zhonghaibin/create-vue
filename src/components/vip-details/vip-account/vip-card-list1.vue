@@ -2,11 +2,24 @@
   <div class="VipCardList1">
     <div class="search">
       <div class="box">
-        <Input enter-button placeholder="输入次卡名称" search />
+        <Input
+          v-model="searchData.search"
+          clearable
+          enter-button
+          placeholder="输入次卡名称"
+          search
+          @on-clear="search"
+          @on-search="search"
+        />
       </div>
       <div class="box">
         <span class="text">状态</span>
-        <Select v-model="status" style="width: 200px" transfer>
+        <Select
+          v-model="searchData.status"
+          style="width: 200px"
+          transfer
+          @on-change="search"
+        >
           <Option
             v-for="item in status_list"
             :key="item.value"
@@ -18,28 +31,49 @@
       </div>
     </div>
     <div class="list">
-      <div class="card">
-        <div class="header">骨盆修复套餐</div>
+      <div v-for="item in list" :key="item.id" class="card">
+        <div class="header">{{ item.cname }}</div>
         <div class="content">
           <div class="row">
             <div class="left">购卡日期</div>
-            <div class="right"><div class="text">2020/02/10 15:12</div></div>
+            <div class="right">
+              <div class="text">{{ item.time }}</div>
+            </div>
           </div>
           <div class="row">
             <div class="left">卡有效期</div>
-            <div class="right"><div class="text">永久有效</div></div>
+            <div class="right">
+              <div class="text">{{ item.end_time }}</div>
+            </div>
           </div>
           <div class="row">
             <div class="left">剩余次数</div>
-            <div class="right"><div class="text">8次</div></div>
+            <div class="right">
+              <div class="text">{{ item.use_num }}次</div>
+            </div>
           </div>
           <div class="more">
-            <div class="details" @click="showModal('卡详情', 'VipCardInfo1')">
+            <div
+              class="details"
+              @click="showModal('卡详情', 'VipCardInfo1', item)"
+            >
               详情
             </div>
           </div>
         </div>
       </div>
+      <div v-if="list.length === 0" class="nodata">没有数据</div>
+    </div>
+    <div class="page">
+      <Page
+        :current="page.current"
+        :page-size="page.pageSize"
+        show-elevator
+        size="small"
+        :total="page.total"
+        @on-change="currentPage"
+        @on-page-size-change="pageSizeChange"
+      />
     </div>
     <div>
       <Modal
@@ -48,7 +82,11 @@
         :title="modal.title"
         :width="700"
       >
-        <VipCardInfo1 v-if="modal.type === 'VipCardInfo1'" />
+        <VipCardInfo1
+          v-if="modal.type === 'VipCardInfo1' && modal.show"
+          :card-vid="current_card_id"
+          :member-info="memberInfo"
+        />
       </Modal>
     </div>
   </div>
@@ -56,10 +94,18 @@
 
 <script>
   import VipCardInfo1 from '@/components/vip-details/vip-account/vip-card-info1'
+  import { getVipCardList } from '@/api/vip'
+
   export default {
     name: 'VipCardList1',
     components: {
       VipCardInfo1,
+    },
+    props: {
+      memberInfo: {
+        type: Object,
+        default: () => {},
+      },
     },
     data: function () {
       return {
@@ -74,30 +120,70 @@
           },
           {
             value: '2',
-            label: '未使用',
+            label: '已用完',
           },
           {
             value: '3',
-            label: '已过期',
+            label: '未使用',
           },
           {
             value: '4',
-            label: '已用完',
+            label: '已过期',
           },
         ],
-        status: '0',
         modal: {
           show: false,
           title: '',
           type: false,
         },
+        searchData: {
+          search: '',
+          status: '0',
+          page: 10,
+          p: 1,
+          vip_id: this.memberInfo.vip_id,
+        },
+        page: {
+          total: 0,
+          pageSize: 10,
+          current: 1,
+        },
+        list: [],
+        current_card_id: 0,
       }
     },
+    activated() {
+      this.search()
+    },
+    created() {
+      this.search()
+    },
     methods: {
-      showModal(title, type) {
+      showModal(title, type, cardInfo) {
+        this.current_card_id = Number(cardInfo.id)
         this.modal.show = true
         this.modal.title = title
         this.modal.type = type
+      },
+      currentPage(current) {
+        this.page.current = current
+        this.searchData.p = current
+        this.getVipCardList()
+      },
+      pageSizeChange(pageSize) {
+        this.page.pageSize = pageSize
+        this.searchData.page = pageSize
+        this.getVipCardList()
+      },
+      search() {
+        this.searchData.p = 1
+        this.getVipCardList()
+      },
+      async getVipCardList() {
+        const { data } = await getVipCardList(this.searchData)
+        this.list = data.list
+        this.page.total = Number(data.count)
+        this.page.current = Number(data.p)
       },
     },
   }
@@ -174,6 +260,17 @@
       .card:hover {
         border: 1px solid #fcbad7;
       }
+      .nodata {
+        text-align: center;
+        width: 100%;
+      }
+    }
+    .page {
+      clear: both;
+      height: 40px;
+      padding: 8px 0;
+      text-align: center;
+      background: white;
     }
   }
 </style>

@@ -158,7 +158,7 @@
           width: 300px;
           height: 40px;
           line-height: 40px;
-          background: #fceef4;
+          background: #ccf0d3;
           font-weight: bold;
           padding: 0px 10px;
           font-size: 14px;

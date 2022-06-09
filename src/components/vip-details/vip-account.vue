@@ -9,6 +9,7 @@
       >
         <VipCardList1
           v-if="item.name === '套餐次卡' && tab_index === '套餐次卡'"
+          :member-info="memberInfo"
         />
         <VipCardList2 v-if="item.name === '储值卡' && tab_index === '储值卡'" />
         <CouponList v-if="item.name === '优惠券' && tab_index === '优惠券'" />
@@ -30,6 +31,12 @@
       VipCardList2,
       CouponList,
       GiftList,
+    },
+    props: {
+      memberInfo: {
+        type: Object,
+        default: () => {},
+      },
     },
     data: function () {
       return {

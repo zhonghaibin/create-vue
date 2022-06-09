@@ -12,313 +12,71 @@
     </div>
     <div class="content">
       <div class="box">
-        <div class="row">
-          <div class="l">体重：</div>
-          <div class="r">
-            <Input placeholder="" style="width: 200px" />
-            公斤
-          </div>
-        </div>
-        <div class="row">
-          <div class="l">身高：</div>
-          <div class="r">
-            <Input placeholder="" style="width: 200px" />
-            CM
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="l">血型：</div>
-          <div class="r">
-            <Select v-model="blood_type" style="width: 200px" transfer>
-              <Option
-                v-for="item in blood_type_list"
-                :key="item.value"
-                :value="item.value"
-              >
-                {{ item.label }}
-              </Option>
-            </Select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="l">性格：</div>
-          <div class="r">
-            <Select v-model="character" style="width: 200px" transfer>
-              <Option
-                v-for="item in character_list"
-                :key="item.value"
-                :value="item.value"
-              >
-                {{ item.label }}
-              </Option>
-            </Select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="l">婚姻状况：</div>
-          <div class="r">
-            <Select v-model="marriage" style="width: 200px" transfer>
-              <Option
-                v-for="item in marriage_list"
-                :key="item.value"
-                :value="item.value"
-              >
-                {{ item.label }}
-              </Option>
-            </Select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="l">宗教信仰：</div>
-          <div class="r">
-            <Select v-model="religion" multiple style="width: 200px" transfer>
-              <Option
-                v-for="item in religion_list"
-                :key="item.value"
-                :value="item.value"
-              >
-                {{ item.label }}
-              </Option>
-            </Select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="l">意识观念：</div>
-          <div class="r">
-            <Select v-model="concept" multiple style="width: 200px" transfer>
-              <Option
-                v-for="item in concept_list"
-                :key="item.value"
-                :value="item.value"
-              >
-                {{ item.label }}
-              </Option>
-            </Select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="l">饮食偏重：</div>
-          <div class="r">
-            <Select v-model="dietary" multiple style="width: 200px" transfer>
-              <Option
-                v-for="item in dietary_list"
-                :key="item.value"
-                :value="item.value"
-              >
-                {{ item.label }}
-              </Option>
-            </Select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="l">喜好：</div>
-          <div class="r">
-            <Select v-model="love" multiple style="width: 200px" transfer>
-              <Option
-                v-for="item in love_list"
-                :key="item.value"
-                :value="item.value"
-              >
-                {{ item.label }}
-              </Option>
-            </Select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="l">生活：</div>
-          <div class="r">
-            <Select v-model="live" multiple style="width: 200px" transfer>
-              <Option
-                v-for="item in live_list"
-                :key="item.value"
-                :value="item.value"
-              >
-                {{ item.label }}
-              </Option>
-            </Select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="l">休闲：</div>
-          <div class="r">
-            <Select v-model="relaxation" multiple style="width: 200px" transfer>
-              <Option
-                v-for="item in relaxation_list"
-                :key="item.value"
-                :value="item.value"
-              >
-                {{ item.label }}
-              </Option>
-            </Select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="l">消费：</div>
-          <div class="r">
-            <Select v-model="consumption" style="width: 200px" transfer>
-              <Option
-                v-for="item in consumption_list"
-                :key="item.value"
-                :value="item.value"
-              >
-                {{ item.label }}
-              </Option>
-            </Select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="l">睡眠质量：</div>
-          <div class="r">
-            <Select v-model="sleep" style="width: 200px" transfer>
-              <Option
-                v-for="item in sleep_list"
-                :key="item.value"
-                :value="item.value"
-              >
-                {{ item.label }}
-              </Option>
-            </Select>
-          </div>
-        </div>
-      </div>
-      <div class="box">
-        <div class="row">
-          <div class="l">睡眠质量：</div>
-          <div class="r">
-            <Select v-model="sleep_quality" style="width: 200px" transfer>
-              <Option
-                v-for="item in sleep_quality_list"
-                :key="item.value"
-                :value="item.value"
-              >
-                {{ item.label }}
-              </Option>
-            </Select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="l">睡前习惯：</div>
+        <div v-for="(item, index) in list" :key="item.name" class="row">
+          <div class="l">{{ item.name }}：</div>
           <div class="r">
             <Select
-              v-model="before_sleeping_habits"
+              v-if="checkIsSelect(item)"
+              v-model="item.info"
               style="width: 200px"
               transfer
             >
               <Option
-                v-for="item in before_sleeping_habits_list"
-                :key="item.value"
-                :value="item.value"
+                v-for="val in getSelectOptionList(item.name)"
+                :key="val.label"
+                :value="val.label"
               >
-                {{ item.label }}
+                {{ val.label }}
               </Option>
             </Select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="l">工作性质：</div>
-          <div class="r">
-            <Select v-model="nature_office" style="width: 200px" transfer>
-              <Option
-                v-for="item in nature_office_list"
-                :key="item.value"
-                :value="item.value"
-              >
-                {{ item.label }}
-              </Option>
-            </Select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="l">资产状况：</div>
-          <div class="r">
-            <Select v-model="balance_sheets" style="width: 200px" transfer>
-              <Option
-                v-for="item in balance_sheets_list"
-                :key="item.value"
-                :value="item.value"
-              >
-                {{ item.label }}
-              </Option>
-            </Select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="l">社会背景：</div>
-          <div class="r">
-            <Select v-model="social_background" style="width: 200px" transfer>
-              <Option
-                v-for="item in social_background_list"
-                :key="item.value"
-                :value="item.value"
-              >
-                {{ item.label }}
-              </Option>
-            </Select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="l">社会地位：</div>
-          <div class="r">
-            <Select v-model="social_status" style="width: 200px" transfer>
-              <Option
-                v-for="item in social_status_list"
-                :key="item.value"
-                :value="item.value"
-              >
-                {{ item.label }}
-              </Option>
-            </Select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="l">信任度：</div>
-          <div class="r">
-            <Select v-model="credibility" style="width: 200px" transfer>
-              <Option
-                v-for="item in credibility_list"
-                :key="item.value"
-                :value="item.value"
-              >
-                {{ item.label }}
-              </Option>
-            </Select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="l">服务要求：</div>
-          <div class="r">
-            <Select v-model="service_requirement" style="width: 200px" transfer>
-              <Option
-                v-for="item in service_requirement_list"
-                :key="item.value"
-                :value="item.value"
-              >
-                {{ item.label }}
-              </Option>
-            </Select>
-          </div>
-        </div>
-        <div class="row">
-          <div class="l">单次消费：</div>
-          <div class="r">
-            <Input placeholder="" style="width: 200px" />
-            元
+            <Input
+              v-else
+              v-model="item.info"
+              placeholder=""
+              style="width: 200px"
+            >
+              <div slot="append" v-if="getUnit(item.name)">
+                {{ getUnit(item.name) }}
+              </div>
+
+              <Icon
+                v-if="item.type === 1"
+                style="cursor: pointer; font-size: 16px"
+                type="ios-close"
+                slot="append"
+                @click.native="delData(index, item)"
+              />
+            </Input>
           </div>
         </div>
       </div>
     </div>
+    <div class="footer">
+      <div class="bt" @click="save">保存</div>
+    </div>
     <Modal v-model="modal.show" :footer-hide="true" :title="modal.title">
-      <Customer v-if="modal.type === 'Customer'" @cancelModal="cancelModal" />
+      <Customer
+        v-if="modal.type === 'Customer' && modal.show"
+        :member-info="memberInfo"
+        @cancelModal="cancelModal"
+        @change="change"
+      />
     </Modal>
   </div>
 </template>
 
 <script>
   import Customer from '@/components/vip-details/customer-info/customer'
+  import { delVipRecord, getVipRecord, setVipRecordAdd } from '@/api/vip'
   export default {
     name: 'CustomerInfo',
     components: { Customer },
+    props: {
+      memberInfo: {
+        type: Object,
+        default: () => {},
+      },
+    },
     data: function () {
       return {
         modal: {
@@ -326,462 +84,628 @@
           title: '',
           type: false,
         },
-        blood_type: '',
-        blood_type_list: [
-          {
-            value: '1',
-            label: 'A型',
-          },
-          {
-            value: '2',
-            label: 'B型',
-          },
-          {
-            value: '3',
-            label: 'AB型',
-          },
-          {
-            value: '4',
-            label: 'O型',
-          },
-          {
-            value: '0',
-            label: '未告知',
-          },
-        ],
-        character: '',
-        character_list: [
-          {
-            value: '1',
-            label: '内向',
-          },
-          {
-            value: '2',
-            label: '外向',
-          },
-          {
-            value: '3',
-            label: '内外兼修',
-          },
-        ],
-        marriage: '',
-        marriage_list: [
-          {
-            value: '1',
-            label: '已婚',
-          },
-          {
-            value: '2',
-            label: '未婚',
-          },
-          {
-            value: '3',
-            label: '离异',
-          },
-          {
-            value: '4',
-            label: '再婚',
-          },
+        unitList: {
+          体重: '公斤',
+          身高: 'CM',
+        },
+        selectList: {
+          血型: [
+            {
+              value: '1',
+              label: 'A型',
+            },
+            {
+              value: '2',
+              label: 'B型',
+            },
+            {
+              value: '3',
+              label: 'AB型',
+            },
+            {
+              value: '4',
+              label: 'O型',
+            },
+            {
+              value: '0',
+              label: '未告知',
+            },
+          ],
+          性格: [
+            {
+              value: '1',
+              label: '内向',
+            },
+            {
+              value: '2',
+              label: '外向',
+            },
+            {
+              value: '3',
+              label: '内外兼修',
+            },
+          ],
+          婚姻状况: [
+            {
+              value: '1',
+              label: '已婚',
+            },
+            {
+              value: '2',
+              label: '未婚',
+            },
+            {
+              value: '3',
+              label: '离异',
+            },
+            {
+              value: '4',
+              label: '再婚',
+            },
 
+            {
+              value: '0',
+              label: '未告知',
+            },
+          ],
+          宗教信仰: [
+            {
+              value: '1',
+              label: '佛教',
+            },
+            {
+              value: '2',
+              label: '道教',
+            },
+            {
+              value: '3',
+              label: '伊斯兰教',
+            },
+            {
+              value: '4',
+              label: '天主教',
+            },
+            {
+              value: '5',
+              label: '无宗教信仰',
+            },
+            {
+              value: '0',
+              label: '未告知',
+            },
+          ],
+          意识观念: [
+            {
+              value: '1',
+              label: '健康意识',
+            },
+            {
+              value: '2',
+              label: '预防意识',
+            },
+            {
+              value: '3',
+              label: '美丽意识',
+            },
+            {
+              value: '0',
+              label: '无意识',
+            },
+          ],
+          饮食偏重: [
+            {
+              value: '1',
+              label: '早餐',
+            },
+            {
+              value: '2',
+              label: '午餐',
+            },
+            {
+              value: '3',
+              label: '宵夜',
+            },
+            {
+              value: '4',
+              label: '肉食',
+            },
+            {
+              value: '5',
+              label: '素食',
+            },
+            {
+              value: '0',
+              label: '未告知',
+            },
+          ],
+          喜好: [
+            {
+              value: '1',
+              label: '糕点',
+            },
+            {
+              value: '2',
+              label: '咖啡',
+            },
+            {
+              value: '3',
+              label: '饮料',
+            },
+            {
+              value: '4',
+              label: '水果',
+            },
+            {
+              value: '5',
+              label: '素菜',
+            },
+            {
+              value: '6',
+              label: '辛辣',
+            },
+            {
+              value: '7',
+              label: '清淡',
+            },
+            {
+              value: '8',
+              label: '咸味',
+            },
+            {
+              value: '9',
+              label: '甜食',
+            },
+            {
+              value: '10',
+              label: '煎炸',
+            },
+            {
+              value: '0',
+              label: '未告知',
+            },
+          ],
+          生活: [
+            {
+              value: '1',
+              label: '购物',
+            },
+            {
+              value: '2',
+              label: '服装',
+            },
+            {
+              value: '3',
+              label: '珠宝',
+            },
+            {
+              value: '4',
+              label: '名车',
+            },
+            {
+              value: '5',
+              label: '名表',
+            },
+            {
+              value: '6',
+              label: '健身房',
+            },
+            {
+              value: '0',
+              label: '未告知',
+            },
+          ],
+          休闲: [
+            {
+              value: '1',
+              label: '美容',
+            },
+            {
+              value: '2',
+              label: '旅游',
+            },
+            {
+              value: '3',
+              label: '音乐',
+            },
+            {
+              value: '4',
+              label: '唱歌',
+            },
+            {
+              value: '5',
+              label: '舞蹈',
+            },
+            {
+              value: '6',
+              label: '慈善',
+            },
+            {
+              value: '7',
+              label: '打麻将',
+            },
+            {
+              value: '8',
+              label: '看书',
+            },
+            {
+              value: '9',
+              label: '养花',
+            },
+            {
+              value: '0',
+              label: '未告知',
+            },
+          ],
+          消费: [
+            {
+              value: '1',
+              label: '理性',
+            },
+            {
+              value: '2',
+              label: '冲动',
+            },
+            {
+              value: '3',
+              label: '贪小便宜',
+            },
+          ],
+          睡眠质量: [
+            {
+              value: '1',
+              label: '很好',
+            },
+            {
+              value: '2',
+              label: '一般',
+            },
+            {
+              value: '3',
+              label: '失眠',
+            },
+            {
+              value: '4',
+              label: '多梦',
+            },
+            {
+              value: '0',
+              label: '未告知',
+            },
+          ],
+          睡眠时间: [
+            {
+              value: '1',
+              label: '23点前',
+            },
+            {
+              value: '2',
+              label: '23点后',
+            },
+            {
+              value: '3',
+              label: '凌晨1点后',
+            },
+            {
+              value: '4',
+              label: '不定时',
+            },
+            {
+              value: '0',
+              label: '未告知',
+            },
+          ],
+          睡前习惯: [
+            {
+              value: '1',
+              label: '睡前喝水',
+            },
+            {
+              value: '2',
+              label: '睡前吃点东西',
+            },
+            {
+              value: '3',
+              label: '早晨起床后喝水',
+            },
+            {
+              value: '0',
+              label: '未告知',
+            },
+          ],
+          工作性质: [
+            {
+              value: '1',
+              label: '室内办公',
+            },
+            {
+              value: '2',
+              label: '市区流动',
+            },
+            {
+              value: '3',
+              label: '常外地出差',
+            },
+            {
+              value: '4',
+              label: '本地做生意',
+            },
+            {
+              value: '5',
+              label: '压力大',
+            },
+            {
+              value: '0',
+              label: '未告知',
+            },
+          ],
+          资产状况: [
+            {
+              value: '1',
+              label: '工薪（10-100万）',
+            },
+            {
+              value: '2',
+              label: '中产（100-500万）',
+            },
+            {
+              value: '3',
+              label: '富人（500以上）',
+            },
+            {
+              value: '0',
+              label: '未告知',
+            },
+          ],
+          社会背景: [
+            {
+              value: '1',
+              label: '有',
+            },
+            {
+              value: '2',
+              label: '无',
+            },
+            {
+              value: '0',
+              label: '未告知',
+            },
+          ],
+          社会地位: [
+            {
+              value: '1',
+              label: '有',
+            },
+            {
+              value: '2',
+              label: '无',
+            },
+            {
+              value: '0',
+              label: '未告知',
+            },
+          ],
+          信任度: [
+            {
+              value: '1',
+              label: '认可企业',
+            },
+            {
+              value: '2',
+              label: '认可效果',
+            },
+            {
+              value: '3',
+              label: '认可服务',
+            },
+          ],
+          服务要求: [
+            {
+              value: '1',
+              label: '注重细节',
+            },
+            {
+              value: '2',
+              label: '不受力',
+            },
+            {
+              value: '3',
+              label: '有洁癖',
+            },
+            {
+              value: '4',
+              label: '要求固定理疗师',
+            },
+            {
+              value: '5',
+              label: '注重产品品质',
+            },
+          ],
+        },
+        list: [
           {
-            value: '0',
-            label: '未告知',
+            type: 3,
+            name: '体重',
+            info: '',
+            id: '',
+          },
+          {
+            type: 3,
+            name: '身高',
+            info: '',
+            id: '',
+          },
+          {
+            type: 3,
+            name: '血型',
+            info: '',
+            id: '',
+          },
+          {
+            type: 3,
+            name: '性格',
+            info: '',
+            id: '',
+          },
+          {
+            type: 3,
+            name: '婚姻状况',
+            info: '',
+            id: '',
+          },
+          {
+            type: 3,
+            name: '宗教信仰',
+            info: '',
+            id: '',
+          },
+          {
+            type: 3,
+            name: '意识观念',
+            info: '',
+            id: '',
+          },
+          {
+            type: 3,
+            name: '饮食偏重',
+            info: '',
+            id: '',
+          },
+          {
+            type: 3,
+            name: '喜好',
+            info: '',
+            id: '',
+          },
+          {
+            type: 3,
+            name: '生活',
+            info: '',
+            id: '',
+          },
+          {
+            type: 3,
+            name: '休闲',
+            info: '',
+            id: '',
+          },
+          {
+            type: 3,
+            name: '消费',
+            info: '',
+            id: '',
+          },
+          {
+            type: 3,
+            name: '睡眠质量',
+            info: '',
+            id: '',
+          },
+          {
+            type: 3,
+            name: '睡眠时间',
+            info: '',
+            id: '',
+          },
+          {
+            type: 3,
+            name: '睡前习惯',
+            info: '',
+            id: '',
+          },
+          {
+            type: 3,
+            name: '工作性质',
+            info: '',
+            id: '',
+          },
+          {
+            type: 3,
+            name: '资产状况',
+            info: '',
+            id: '',
+          },
+          {
+            type: 3,
+            name: '社会背景',
+            info: '',
+            id: '',
+          },
+          {
+            type: 3,
+            name: '社会地位',
+            info: '',
+            id: '',
+          },
+          {
+            type: 3,
+            name: '信任度',
+            info: '',
+            id: '',
+          },
+          {
+            type: 3,
+            name: '服务要求',
+            info: '',
+            id: '',
+          },
+          {
+            type: 3,
+            name: '单次消费',
+            info: '',
+            id: '',
           },
         ],
-        religion: '',
-        religion_list: [
-          {
-            value: '1',
-            label: '佛教',
-          },
-          {
-            value: '2',
-            label: '道教',
-          },
-          {
-            value: '3',
-            label: '伊斯兰教',
-          },
-          {
-            value: '4',
-            label: '天主教',
-          },
-          {
-            value: '5',
-            label: '无宗教信仰',
-          },
-          {
-            value: '0',
-            label: '未告知',
-          },
-        ],
-        concept: '',
-        concept_list: [
-          {
-            value: '1',
-            label: '健康意识',
-          },
-          {
-            value: '2',
-            label: '预防意识',
-          },
-          {
-            value: '3',
-            label: '美丽意识',
-          },
-          {
-            value: '0',
-            label: '无意识',
-          },
-        ],
-        dietary: '',
-        dietary_list: [
-          {
-            value: '1',
-            label: '早餐',
-          },
-          {
-            value: '2',
-            label: '午餐',
-          },
-          {
-            value: '3',
-            label: '宵夜',
-          },
-          {
-            value: '4',
-            label: '肉食',
-          },
-          {
-            value: '5',
-            label: '素食',
-          },
-          {
-            value: '0',
-            label: '未告知',
-          },
-        ],
-        love: '',
-        love_list: [
-          {
-            value: '1',
-            label: '糕点',
-          },
-          {
-            value: '2',
-            label: '咖啡',
-          },
-          {
-            value: '3',
-            label: '饮料',
-          },
-          {
-            value: '4',
-            label: '水果',
-          },
-          {
-            value: '5',
-            label: '素菜',
-          },
-          {
-            value: '6',
-            label: '辛辣',
-          },
-          {
-            value: '7',
-            label: '清淡',
-          },
-          {
-            value: '8',
-            label: '咸味',
-          },
-          {
-            value: '9',
-            label: '甜食',
-          },
-          {
-            value: '10',
-            label: '煎炸',
-          },
-          {
-            value: '0',
-            label: '未告知',
-          },
-        ],
-        live: '',
-        live_list: [
-          {
-            value: '1',
-            label: '购物',
-          },
-          {
-            value: '2',
-            label: '服装',
-          },
-          {
-            value: '3',
-            label: '珠宝',
-          },
-          {
-            value: '4',
-            label: '名车',
-          },
-          {
-            value: '5',
-            label: '名表',
-          },
-          {
-            value: '6',
-            label: '健身房',
-          },
-          {
-            value: '0',
-            label: '未告知',
-          },
-        ],
-        relaxation: '',
-        relaxation_list: [
-          {
-            value: '1',
-            label: '美容',
-          },
-          {
-            value: '2',
-            label: '旅游',
-          },
-          {
-            value: '3',
-            label: '音乐',
-          },
-          {
-            value: '4',
-            label: '唱歌',
-          },
-          {
-            value: '5',
-            label: '舞蹈',
-          },
-          {
-            value: '6',
-            label: '慈善',
-          },
-          {
-            value: '7',
-            label: '打麻将',
-          },
-          {
-            value: '8',
-            label: '看书',
-          },
-          {
-            value: '9',
-            label: '养花',
-          },
-          {
-            value: '0',
-            label: '未告知',
-          },
-        ],
-        consumption: '',
-        consumption_list: [
-          {
-            value: '1',
-            label: '理性',
-          },
-          {
-            value: '2',
-            label: '冲动',
-          },
-          {
-            value: '3',
-            label: '贪小便宜',
-          },
-        ],
-        sleep: '',
-        sleep_list: [
-          {
-            value: '1',
-            label: '很好',
-          },
-          {
-            value: '2',
-            label: '一般',
-          },
-          {
-            value: '3',
-            label: '失眠',
-          },
-          {
-            value: '4',
-            label: '多梦',
-          },
-          {
-            value: '0',
-            label: '未告知',
-          },
-        ],
-        sleep_quality: '',
-        sleep_quality_list: [
-          {
-            value: '1',
-            label: '23点前',
-          },
-          {
-            value: '2',
-            label: '23点后',
-          },
-          {
-            value: '3',
-            label: '凌晨1点后',
-          },
-          {
-            value: '4',
-            label: '不定时',
-          },
-          {
-            value: '0',
-            label: '未告知',
-          },
-        ],
-        before_sleeping_habits: '',
-        before_sleeping_habits_list: [
-          {
-            value: '1',
-            label: '睡前喝水',
-          },
-          {
-            value: '2',
-            label: '睡前吃点东西',
-          },
-          {
-            value: '3',
-            label: '早晨起床后喝水',
-          },
-          {
-            value: '0',
-            label: '未告知',
-          },
-        ],
-        nature_office: '',
-        nature_office_list: [
-          {
-            value: '1',
-            label: '室内办公',
-          },
-          {
-            value: '2',
-            label: '市区流动',
-          },
-          {
-            value: '3',
-            label: '常外地出差',
-          },
-          {
-            value: '4',
-            label: '本地做生意',
-          },
-          {
-            value: '5',
-            label: '压力大',
-          },
-          {
-            value: '0',
-            label: '未告知',
-          },
-        ],
-        balance_sheets: '',
-        balance_sheets_list: [
-          {
-            value: '1',
-            label: '工薪（10-100万）',
-          },
-          {
-            value: '2',
-            label: '中产（100-500万）',
-          },
-          {
-            value: '3',
-            label: '富人（500以上）',
-          },
-          {
-            value: '0',
-            label: '未告知',
-          },
-        ],
-        social_background: '',
-        social_background_list: [
-          {
-            value: '1',
-            label: '有',
-          },
-          {
-            value: '2',
-            label: '无',
-          },
-          {
-            value: '0',
-            label: '未告知',
-          },
-        ],
-        social_status: '',
-        social_status_list: [
-          {
-            value: '1',
-            label: '有',
-          },
-          {
-            value: '2',
-            label: '无',
-          },
-          {
-            value: '0',
-            label: '未告知',
-          },
-        ],
-        credibility: '',
-        credibility_list: [
-          {
-            value: '1',
-            label: '认可企业',
-          },
-          {
-            value: '2',
-            label: '认可效果',
-          },
-          {
-            value: '3',
-            label: '认可服务',
-          },
-        ],
-        service_requirement: '',
-        service_requirement_list: [
-          {
-            value: '1',
-            label: '注重细节',
-          },
-          {
-            value: '2',
-            label: '不受力',
-          },
-          {
-            value: '3',
-            label: '有洁癖',
-          },
-          {
-            value: '4',
-            label: '要求固定理疗师',
-          },
-          {
-            value: '5',
-            label: '注重产品品质',
-          },
-        ],
+        formData: {
+          vid: this.memberInfo.id,
+          data: [],
+        },
       }
     },
+    computed: {
+      checkIsSelect() {
+        return (row) => {
+          if (row.type === 3) {
+            // eslint-disable-next-line no-prototype-builtins
+            return this.selectList.hasOwnProperty(row.name)
+          } else {
+            return false
+          }
+        }
+      },
+      getSelectOptionList() {
+        return (name) => {
+          return this.selectList[name]
+        }
+      },
+      getUnit() {
+        return (name) => {
+          // eslint-disable-next-line no-prototype-builtins
+          if (this.unitList.hasOwnProperty(name)) {
+            return this.unitList[name]
+          }
+          return ''
+        }
+      },
+    },
     created() {
-      console.log('VipInfo')
+      this.getList()
     },
     methods: {
+      delData(index, row) {
+        this.$Modal.confirm({
+          title: '警告？',
+          content: '确定要删除吗？',
+          onOk: () => {
+            this.delVipRecord(row.id)
+            this.list.splice(index, 1)
+          },
+          onCancel: () => {},
+        })
+      },
+      change() {
+        this.modal.show = false
+        this.getList()
+      },
       showModal(title, type) {
         this.modal.show = true
         this.modal.title = title
@@ -790,6 +714,57 @@
       cancelModal(status) {
         this.modal.show = status
       },
+
+      save() {
+        this.formData.data = this.list
+        this.setVipRecordAdd()
+      },
+      getList() {
+        this.getVipRecord(3).then((res) => {
+          if (res.list.length > 0) {
+            this.list = res.list
+          }
+          this.getVipRecord(1).then((res) => {
+            if (res.list.length > 0) {
+              for (let i in res.list) {
+                this.list.push(res.list[i])
+              }
+            }
+
+            console.log(this.list, '_list')
+          })
+        })
+
+        console.log(this.list, 'list')
+      },
+
+      async setVipRecordAdd() {
+        const { status, msg } = await setVipRecordAdd(this.formData)
+        if (status !== 1) {
+          this.$Message.error(msg)
+        } else {
+          this.$Message.success(msg)
+        }
+      },
+      async getVipRecord(type) {
+        const { data } = await getVipRecord({
+          vid: this.memberInfo.id,
+          type: type,
+          page: '1000',
+          order: 'asc',
+        })
+        return data
+      },
+      async delVipRecord(id) {
+        const { status, msg } = await delVipRecord({
+          record_id: id,
+        })
+        if (status !== 1) {
+          this.$Message.error(msg)
+        } else {
+          this.$Message.success(msg)
+        }
+      },
     },
   }
 </script>
@@ -797,35 +772,38 @@
 <style lang="less" scoped>
   .CustomerInfo {
     .header {
+      display: flex;
+      justify-content: end;
       .right {
-        float: right;
         width: 100px;
         margin-right: 10px;
+        flex-flow: wrap;
         .add-bt {
           width: 100px;
           text-align: center;
           color: white;
           margin-right: 20px;
           cursor: pointer;
-          background: #db528d;
+          background: #f19ec2;
           padding: 6px 14px;
           border-radius: 4px;
+          margin-bottom: 1px;
         }
       }
     }
-
     .content {
+      margin: 6px 0px 18px 0px;
       display: flex;
 
       .box {
-        width: 400px;
         flex-flow: wrap;
         align-items: center;
         font-size: 14px;
         padding: 0 5px;
-        border-right: 1px solid #eeeeee;
+
+        display: flex;
+        //justify-content: center;
         .row {
-          flex: 1;
           display: flex;
 
           .l {
@@ -842,6 +820,21 @@
             line-height: 37px;
           }
         }
+      }
+    }
+    .footer {
+      display: flex;
+      justify-content: end;
+      .bt {
+        width: 100px;
+        text-align: center;
+        color: white;
+        cursor: pointer;
+        background: #f19ec2;
+        padding: 6px 14px;
+        border-radius: 4px;
+        margin-bottom: 1px;
+        margin-right: 10px;
       }
     }
   }

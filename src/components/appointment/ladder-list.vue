@@ -8,13 +8,15 @@
             enter-button
             placeholder="搜索方案名称"
             search
-            style="width: 300px"
+            style="width: 250px"
             @on-search="changeValue"
           />
         </div>
       </div>
       <div class="right">
-        <div class="add-bt">新赠方案</div>
+        <div class="add-bt" @click="showModal('阶梯提成设置', 'Ladder', 1200)">
+          新赠方案
+        </div>
       </div>
     </div>
     <div class="list">
@@ -39,13 +41,22 @@
         />
       </div>
     </div>
+    <Modal
+      v-model="modal.show"
+      :footer-hide="true"
+      :title="modal.title"
+      :width="modal.width"
+    >
+      <Ladder v-if="modal.type === 'Ladder'" @cancelModal="cancelModal" />
+    </Modal>
   </div>
 </template>
 
 <script>
+  import Ladder from '@/components/appointment/ladder-list/ladder'
   export default {
     name: 'LadderList',
-    components: {},
+    components: { Ladder },
     props: {
       memberInfo: {
         type: Object,
@@ -54,6 +65,12 @@
     },
     data: function () {
       return {
+        modal: {
+          show: false,
+          title: '',
+          type: false,
+          width: 500,
+        },
         page: {
           total: 0,
           pageSize: 10,
@@ -112,6 +129,15 @@
         this.page.pageSize = pageSize
       },
       search() {},
+      showModal(title, type, width = 500) {
+        this.modal.show = true
+        this.modal.title = title
+        this.modal.type = type
+        this.modal.width = width
+      },
+      cancelModal(status) {
+        this.modal.show = status
+      },
     },
   }
 </script>
@@ -181,6 +207,7 @@
       background: #f19ec2;
       padding: 6px 14px;
       border-radius: 4px;
+      margin-bottom: 1px;
     }
   }
 </style>

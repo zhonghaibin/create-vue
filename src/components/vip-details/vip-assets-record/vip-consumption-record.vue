@@ -5,16 +5,22 @@
         <div class="box">
           <span class="text">时间</span>
           <DatePicker
+            format="yyyy-MM-dd"
             placeholder="开始时间-结束时间"
-            style="width: 280px"
+            style="width: 200px"
+            transfer
             type="datetimerange"
+            value-format="yyyy-MM-dd"
+            @on-change="changeDatePicker"
+            @on-clear="clearDate"
+            @on-open-change="changeDatePicker"
           />
         </div>
         <div class="box">
-          <span class="text">状态</span>
-          <Select v-model="status" style="width: 200px" transfer>
+          <span class="text">消费类型</span>
+          <Select v-model="searchData.type" style="width: 200px" transfer>
             <Option
-              v-for="item in status_list"
+              v-for="item in typeList"
               :key="item.value"
               :value="item.value"
             >
@@ -24,17 +30,21 @@
         </div>
         <div class="box">
           <Input
+            v-model="searchData.search"
+            clearable
             enter-button
             placeholder="可搜索服务人员/消费内容"
             search
-            style="width: 300px"
+            style="width: 250px"
+            @on-clear="search"
+            @on-search="search"
           />
         </div>
       </div>
       <div class="right"><div class="bt">导出报表</div></div>
     </div>
     <div class="list">
-      <Table :columns="columns1" :data="data1">
+      <Table :columns="columns" :data="list" :loading="loading">
         <!-- slot对应data里面的slot-->
         <template slot="action">
           <span class="bt">查看</span>
@@ -43,69 +53,80 @@
     </div>
 
     <div class="page">
-      <Page show-elevator show-sizer size="small" :total="40" transfer />
+      <Page
+        :current="page.current"
+        :page-size="page.pageSize"
+        show-elevator
+        size="small"
+        :total="page.total"
+        @on-change="currentPage"
+        @on-page-size-change="pageSizeChange"
+      />
     </div>
   </div>
 </template>
 
 <script>
+  import { getCapital } from '@/api/vip'
+
   export default {
     name: 'VipConsumptionRecord',
+    props: {
+      memberInfo: {
+        type: Object,
+        default: () => {},
+      },
+    },
     data: function () {
       return {
-        status_list: [
+        typeList: [
           {
             value: '0',
             label: '全部',
           },
           {
             value: '1',
-            label: '项目',
+            label: '收银',
           },
           {
             value: '2',
-            label: '商品',
+            label: '套餐',
           },
           {
             value: '3',
-            label: '套餐次卡',
+            label: '充值',
           },
           {
             value: '4',
-            label: '储值卡',
-          },
-          {
-            value: '5',
-            label: '优惠券',
+            label: '退款',
           },
         ],
-        status: '0',
-        columns1: [
+        columns: [
           {
             title: '消费时间',
-            key: 'name',
+            key: 'time',
             width: '200px',
           },
           {
             title: '消费门店',
-            key: 'username',
+            key: 'shop_name',
           },
           {
             title: '服务/销售人员',
-            key: 'money',
+            key: 'service_str',
           },
           {
             title: '消费类型',
-            key: 'count',
+            key: 'title',
           },
           {
             title: '消费内容',
-            key: 'money1',
+            key: 'content',
           },
           {
             title: '消费金额',
-            key: 'source',
-            render: (h) => {
+            key: 'total',
+            render: (h, params) => {
               let html = h('div', [
                 h('div', [
                   h(
@@ -115,7 +136,7 @@
                         color: '#31708f',
                       },
                     },
-                    '￥123123'
+                    '￥' + params.row.total
                   ),
                   h(
                     'span',
@@ -127,6 +148,7 @@
                         height: '10px',
                         cursor: 'pointer',
                         marginLeft: '4px',
+                        display: 'none',
                       },
                     },
                     '业绩'
@@ -144,19 +166,64 @@
             align: 'center',
           },
         ],
-        data1: [
-          {
-            name: 'John Brown',
-            username: 18,
-            money: 'New York No. 1 Lake Park',
-            count: '2016-10-03',
-            money1: '2016-10-03',
-            source: '2016-10-03',
-          },
-        ],
+        list: [],
+        searchData: {
+          search: '',
+          start: '',
+          end: '',
+          vid: this.memberInfo.id,
+          type: '',
+          is_check: '',
+          p: 1,
+          page: 5,
+        },
+        loading: false,
+        page: {
+          total: 0,
+          pageSize: 5,
+          current: 1,
+        },
       }
     },
-    created() {},
+    created() {
+      this.search()
+    },
+    methods: {
+      clearDate() {
+        this.searchData.start = ''
+        this.searchData.end = ''
+        this.search()
+      },
+      changeDatePicker: function (date) {
+        if (date) {
+          this.searchData.start = date[0]
+          this.searchData.end = date[1]
+        }
+        this.search()
+      },
+      currentPage(current) {
+        this.page.current = current
+        this.searchData.p = current
+        this.getCapital()
+      },
+      pageSizeChange(pageSize) {
+        this.page.pageSize = pageSize
+        this.getCapital()
+      },
+
+      search() {
+        this.searchData.p = 1
+        this.getCapital()
+      },
+      async getCapital() {
+        this.loading = true
+        const { data } = await getCapital(this.searchData)
+        this.loading = false
+        this.list = data.list
+        this.page.total = Number(data.count)
+        this.page.current = Number(data.p)
+      },
+    },
   }
 </script>
 
@@ -204,8 +271,10 @@
       margin-top: 20px;
     }
     .page {
-      display: flex;
-      justify-content: center;
+      height: 40px;
+      padding: 8px 0;
+      text-align: center;
+      background: white;
     }
     .bt {
       color: blue;

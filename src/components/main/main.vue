@@ -43,7 +43,7 @@
               :message-unread-count="unreadCount"
               :user-avator="userAvator"
             />
-            <buttom />
+            <Button />
           </header-bar>
         </Header>
         <Content class="main-content-con">
@@ -72,7 +72,7 @@
   import TagsNav from '@/components/main/components/tags-nav'
   import headerBar from '@/components/main/components/header-bar'
   import User from '@/components/main/components/user'
-  import Buttom from '@/components/main/components/button'
+  import Button from '@/components/main/components/button'
   import { mapMutations, mapGetters } from 'vuex'
   import { getNewTagList, routeEqual } from '@/libs/util'
   import routers from '@/router/routers'
@@ -85,7 +85,7 @@
       SideMenu,
       headerBar,
       User,
-      Buttom,
+      Button,
     },
     data() {
       return {
@@ -95,16 +95,19 @@
       }
     },
     computed: {
-      ...mapGetters(['errorCount']),
+      ...mapGetters({
+        errorCount: 'app/errorCount',
+        menuList: 'app/menuList',
+      }),
       tagNavList() {
         return this.$store.state.app.tagNavList
       },
       userAvator() {
         return this.$store.state.user.avatar
       },
-      menuList() {
-        return this.$store.getters.menuList
-      },
+      // menuList() {
+      //   return this.$store.getters.menuList
+      // },
       unreadCount() {
         return this.$store.state.user.unreadCount
       },
@@ -140,14 +143,14 @@
       }
     },
     methods: {
-      ...mapMutations([
-        'setBreadCrumb',
-        'setTagNavList',
-        'addTag',
-        'setLocal',
-        'setHomeRoute',
-        'closeTag',
-      ]),
+      ...mapMutations({
+        setBreadCrumb: 'app/setBreadCrumb',
+        setTagNavList: 'app/setTagNavList',
+        addTag: 'app/addTag',
+        setLocal: 'app/setLocal',
+        setHomeRoute: 'app/setHomeRoute',
+        closeTag: 'app/closeTag',
+      }),
 
       turnToPage(route) {
         let { name, params, query } = {}
@@ -347,22 +350,6 @@
     background: white;
   }
 
-  /deep/.ivu-tabs.ivu-tabs-card > .ivu-tabs-bar {
-    color: #f19ec2;
-  }
-  /deep/.ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab-active {
-    color: #f19ec2;
-  }
-  /deep/ .ivu-tabs-nav .ivu-tabs-tab:hover {
-    color: #f19ec2;
-  }
-  /deep/.ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab {
-    border-color: #f19ec2;
-    border-bottom: none;
-  }
-  /deep/.ivu-tabs-bar .ivu-tabs-tab:hover {
-    border-color: #f19ec2;
-  }
   /deep/.ivu-input-search {
     background: #f19ec2 !important;
     border-color: #f19ec2 !important;

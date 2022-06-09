@@ -340,7 +340,9 @@
       this.editor = editor
     },
     methods: {
-      ...mapMutations(['closeTag']),
+      ...mapMutations({
+        closeTag: 'app/closeTag',
+      }),
       dropdowns() {
         if (this.dropdown.show) {
           this.dropdown.title = '展开'

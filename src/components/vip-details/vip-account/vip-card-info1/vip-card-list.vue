@@ -1,6 +1,6 @@
 <template>
   <div class="VipCardList">
-    <Table :columns="columns1" :data="data1">
+    <Table :columns="columns" :data="list" :loading="loading">
       <!-- slot对应data里面的slot-->
 
       <template slot="action">
@@ -11,26 +11,35 @@
 </template>
 
 <script>
+  import { getVipCardDetails } from '@/api/vip'
+
   export default {
     name: 'VipCardList',
+    props: {
+      cardVid: {
+        type: Number,
+        default: () => 0,
+      },
+    },
     data: function () {
       return {
-        columns1: [
+        loading: true,
+        columns: [
           {
             title: '项目名称',
             key: 'name',
           },
           {
             title: '类别',
-            key: 'username',
+            key: 'type_name',
           },
           {
             title: '余次',
-            key: 'money',
+            key: 'use_num',
           },
           {
             title: '单次耗卡金额',
-            key: 'count',
+            key: 'card_hkprice',
           },
           {
             title: '操作',
@@ -39,15 +48,28 @@
             align: 'center',
           },
         ],
-        data1: [
-          {
-            name: 'John Brown',
-            username: 18,
-            money: '11',
-            count: '2016-10-03',
-          },
-        ],
+        list: [],
+        searchData: {},
       }
+    },
+    activated() {
+      this.search()
+    },
+    created() {
+      this.search()
+    },
+    methods: {
+      search() {
+        this.$set(this.searchData, 'card_vid', this.cardVid)
+        this.getVipCardDetails()
+      },
+      async getVipCardDetails() {
+        this.loading = true
+        const { data } = await getVipCardDetails(this.searchData)
+        this.loading = false
+        console.log(data)
+        this.list = data.list
+      },
     },
   }
 </script>

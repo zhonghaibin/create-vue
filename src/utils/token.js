@@ -6,19 +6,20 @@ import cookie from 'js-cookie'
  * @returns {string|ActiveX.IXMLDOMNode|Promise<any>|any|IDBRequest<any>|MediaKeyStatus|FormDataEntryValue|Function|Promise<Credential | null>}
  */
 export function getToken() {
-  if (storage) {
-    if ('localStorage' === storage) {
-      return localStorage.getItem(tokenTableName)
-    } else if ('sessionStorage' === storage) {
-      return sessionStorage.getItem(tokenTableName)
-    } else if ('cookie' === storage) {
-      return cookie.get(tokenTableName)
-    } else {
-      return localStorage.getItem(tokenTableName)
-    }
-  } else {
-    return localStorage.getItem(tokenTableName)
-  }
+  return '888'
+  // if (storage) {
+  //   if ('localStorage' === storage) {
+  //     return localStorage.getItem(tokenTableName)
+  //   } else if ('sessionStorage' === storage) {
+  //     return sessionStorage.getItem(tokenTableName)
+  //   } else if ('cookie' === storage) {
+  //     return cookie.get(tokenTableName)
+  //   } else {
+  //     return localStorage.getItem(tokenTableName)
+  //   }
+  // } else {
+  //   return localStorage.getItem(tokenTableName)
+  // }
 }
 
 /**

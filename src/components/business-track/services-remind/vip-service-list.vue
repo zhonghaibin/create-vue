@@ -7,7 +7,7 @@
             enter-button
             placeholder="输入姓名/手机号/卡号"
             search
-            style="width: 300px"
+            style="width: 250px"
           />
         </div>
         <div class="cell">
@@ -63,8 +63,8 @@
 </template>
 
 <script>
-  import RemindList from '@/components/vip/vip-list2/remind-list'
-  import Remind from '@/components/vip/vip-list2/remind'
+  import RemindList from '@/components/business-track/services-remind/remind-list'
+  import Remind from '@/components/business-track/services-remind/remind'
   export default {
     name: 'VipServiceList',
     components: {

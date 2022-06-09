@@ -204,7 +204,7 @@
         <div class="foot">
           <div class="foot-row">
             打印设置份数
-            <Input placeholder="设置份数" style="width: 300px" />
+            <Input placeholder="设置份数" style="width: 250px" />
             份
           </div>
         </div>

@@ -7,7 +7,7 @@
             enter-button
             placeholder="搜索内容"
             search
-            style="width: 300px"
+            style="width: 250px"
             @on-search="changeValue"
           />
         </div>
@@ -128,7 +128,7 @@
             name: '11',
           },
         ],
-        searchData: { search: '', start_time: '', end_time: '' },
+        searchData: { search: '', start: '', end: '' },
         date: [],
       }
     },
@@ -137,8 +137,8 @@
     methods: {
       changeValue() {},
       clearDate() {
-        this.searchData.start_time = ''
-        this.searchData.end_time = ''
+        this.searchData.start = ''
+        this.searchData.end = ''
       },
       currentPage(current) {
         this.page.current = current
@@ -208,6 +208,7 @@
     }
     .right {
       display: flex;
+      flex-flow: wrap;
       .add-bt {
         color: white;
         margin-right: 20px;
@@ -215,6 +216,7 @@
         background: #f19ec2;
         padding: 6px 14px;
         border-radius: 4px;
+        margin-bottom: 1px;
       }
     }
   }

@@ -4,71 +4,123 @@
       <div class="left">
         <div class="box">
           <Input
+            v-model="searchData.search"
+            clearable
             enter-button
             placeholder="搜索商品名称"
             search
-            style="width: 300px"
+            style="width: 250px"
+            @on-clear="search"
+            @on-search="search"
           />
         </div>
       </div>
       <div class="right"></div>
     </div>
     <div class="list">
-      <Table :columns="columns1" :data="data1">
+      <Table :columns="columns" :data="list" :loading="loading">
         <!-- slot对应data里面的slot-->
         <template slot="action"></template>
       </Table>
     </div>
 
     <div class="page">
-      <Page show-elevator show-sizer size="small" :total="40" transfer />
+      <Page
+        :current="page.current"
+        :page-size="page.pageSize"
+        show-elevator
+        size="small"
+        :total="page.total"
+        @on-change="currentPage"
+        @on-page-size-change="pageSizeChange"
+      />
     </div>
   </div>
 </template>
 
 <script>
+  import { getGoodsDepositLog } from '@/api/vip'
+
   export default {
     name: 'VipDepositDetails',
+    props: {
+      memberInfo: {
+        type: Object,
+        default: () => {},
+      },
+    },
     data: function () {
       return {
-        columns1: [
+        columns: [
           {
             title: '寄存时间',
-            key: 'name',
+            key: 'addtime',
             width: '200px',
           },
           {
             title: '寄存类型',
-            key: 'username',
+            key: 'type_name',
           },
           {
             title: '寄存商品名称',
-            key: 'money',
+            key: 'goods_name',
           },
           {
             title: '寄存数量',
-            key: 'count',
+            key: 'use_num',
           },
           {
             title: '寄取后剩余数量',
             key: 'count',
           },
-          {
-            title: '操作人',
-            key: 'count',
-          },
         ],
-        data1: [
-          {
-            name: 'John Brown',
-            username: 18,
-            money: 'New York No. 1 Lake Park',
-            count: '2016-10-03',
-          },
-        ],
+        list: [],
+        searchData: {
+          p: 1,
+          vid: this.memberInfo.id,
+          search: '',
+          search2: '',
+          sid: '',
+          page: 5,
+        },
+        page: {
+          total: 0,
+          pageSize: 5,
+          current: 1,
+        },
+        loading: false,
       }
     },
-    created() {},
+    activated() {
+      this.search()
+    },
+    created() {
+      this.search()
+    },
+    methods: {
+      currentPage(current) {
+        this.page.current = current
+        this.searchData.p = current
+        this.getGoodsDepositLog()
+      },
+      pageSizeChange(pageSize) {
+        this.page.pageSize = pageSize
+        this.searchData.page = pageSize
+        this.getGoodsDepositLog()
+      },
+      search() {
+        this.searchData.p = 1
+        this.getGoodsDepositLog()
+      },
+      async getGoodsDepositLog() {
+        this.loading = true
+        const { data } = await getGoodsDepositLog(this.searchData)
+        this.loading = false
+        this.list = data.list
+        this.page.total = Number(data.count)
+        this.page.current = Number(data.p)
+      },
+    },
   }
 </script>
 
@@ -116,8 +168,11 @@
       margin-top: 20px;
     }
     .page {
-      display: flex;
-      justify-content: center;
+      clear: both;
+      height: 40px;
+      padding: 8px 0;
+      text-align: center;
+      background: white;
     }
     .bt {
       color: blue;
@@ -131,6 +186,7 @@
       background: #f19ec2;
       padding: 6px 14px;
       border-radius: 4px;
+      margin-bottom: 1px;
     }
   }
 </style>
