@@ -3,7 +3,7 @@
     <div class="baseInfo">
       <div class="row">
         <div class="cell">
-          <div class="left">股东等级：</div>
+          <div class="left">星推官等级：</div>
           <div class="right">{{ statistical.level_name }}</div>
         </div>
         <div class="cell">
@@ -17,7 +17,7 @@
       </div>
       <div class="row">
         <div class="cell">
-          <div class="left">成为股东时间：</div>
+          <div class="left">成为星推官时间：</div>
           <div class="right">{{ statistical.time }}</div>
         </div>
         <div class="cell">
@@ -31,11 +31,11 @@
       </div>
       <div class="row">
         <div class="cell">
-          <div class="left">剩余可以分红：</div>
+          <div class="left">剩余可用分红/积分：</div>
           <div class="right">{{ statistical.commission_balance }}</div>
         </div>
         <div class="cell">
-          <div class="left">累计分红：</div>
+          <div class="left">累计分红/积分：</div>
           <div class="right">{{ statistical.commission }}</div>
         </div>
         <div class="cell">
@@ -82,7 +82,14 @@
           />
         </div>
       </div>
-      <div class="right"></div>
+      <div class="right">
+        <div
+          class="add-bt"
+          @click="showModal('添加他推荐的会员', 'Referrer', 500)"
+        >
+          添加他推荐的会员
+        </div>
+      </div>
     </div>
     <div class="list">
       <Table :columns="columns" :data="list" :loading="loading">
@@ -104,14 +111,25 @@
         @on-page-size-change="pageSizeChange"
       />
     </div>
+
+    <Modal
+      v-model="modal.show"
+      :footer-hide="true"
+      :title="modal.title"
+      :width="modal.width"
+    >
+      <Referrer v-if="modal.type === 'Referrer' && modal.show" />
+    </Modal>
   </div>
 </template>
 
 <script>
+  import Referrer from '@/components/vip-details/vip-shareholder-dividends/referrer'
   import { getFromBossTotal, getFromBoss, delLower } from '@/api/vip'
 
   export default {
     name: 'VipDividendsInfo',
+    components: { Referrer },
     props: {
       memberInfo: {
         type: Object,
@@ -120,6 +138,12 @@
     },
     data: function () {
       return {
+        modal: {
+          show: false,
+          title: '',
+          type: false,
+          width: 600,
+        },
         statistical: {
           count: 0,
           jjcount: 0,
@@ -156,7 +180,7 @@
             key: 'relate',
           },
           {
-            title: '累计贡献分红',
+            title: '累计贡献分红/积分',
             key: 'tcommission',
           },
           {
@@ -196,6 +220,12 @@
       this.search()
     },
     methods: {
+      showModal(title, type, width) {
+        this.modal.show = true
+        this.modal.title = title
+        this.modal.type = type
+        this.modal.width = width
+      },
       clearDate() {
         this.searchData.start = ''
         this.searchData.end = ''
@@ -210,7 +240,7 @@
         this.$Modal.confirm({
           title: '解除关系',
           content:
-            '若解除推荐关系，已产生分红的订单进行退款时，该部分分红将不会再退回，是否确定解除推荐关系？',
+            '若解除推荐关系，已产生分红/积分的订单进行退款时，该部分分红/积分将不会再退回，是否确定解除推荐关系？',
           okText: '确定',
           cancelText: '取消',
           onOk: async () => {
@@ -290,19 +320,23 @@
     }
     .search {
       display: flex;
-      padding: 2px;
+      padding: 10px;
+      background: white;
       .left {
         flex: 1;
         display: flex;
+        align-items: center;
         .box {
           margin-right: 20px;
           .text {
             font-weight: bold;
-            margin: 0px 5px;
+            margin: 0 5px;
           }
         }
       }
       .right {
+        display: flex;
+        align-items: center;
         .bt {
           border: 1px solid #c1c1c1;
           color: #000;
@@ -327,7 +361,7 @@
       }
     }
     .list {
-      margin-top: 20px;
+      margin-top: 10px;
     }
     .page {
       clear: both;
@@ -337,7 +371,7 @@
       background: white;
     }
     .bt {
-      color: blue;
+      color: #1298e6;
       margin-right: 20px;
       cursor: pointer;
     }

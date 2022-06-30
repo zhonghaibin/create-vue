@@ -57,12 +57,14 @@
 
 <style lang="less" scoped>
   .PrintSet {
+    background: white;
     .header {
       font-size: 14px;
       font-weight: bold;
       text-indent: 1em;
       border-bottom: 1px solid #f5f5f5;
       padding-bottom: 10px;
+      padding-top: 10px;
     }
     .box {
       margin: 100px auto;

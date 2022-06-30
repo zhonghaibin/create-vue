@@ -23,7 +23,7 @@
           >
             <div slot="empty">未找到数据</div>
             <Option v-for="item in giftList" :key="item.id" :value="item.id">
-              {{ item.name }}
+              {{ item.name }} （{{ item.integral }}积分）
             </Option>
           </Select>
         </div>
@@ -37,7 +37,6 @@
     </div>
     <div class="footer">
       <div class="bt" @click="save">保存</div>
-      <div class="bt" @click="cancel">取消</div>
     </div>
   </div>
 </template>
@@ -68,9 +67,6 @@
       this.getGiftList()
     },
     methods: {
-      cancel() {
-        this.$emit('cancelModal', false)
-      },
       save() {
         this.integralBuy()
       },

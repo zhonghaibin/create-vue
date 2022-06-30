@@ -32,11 +32,11 @@
         </div>
         <div class="row">
           <div class="l">会员状态：</div>
-          <div class="r">{{ info.status === 1 ? '正常' : '禁用' }}</div>
+          <div class="r">{{ info.status === '1' ? '禁用' : '正常' }}</div>
         </div>
         <div class="row">
           <div class="l">会员性别：</div>
-          <div class="r">{{ info.sex === 1 ? '女性' : '男性' }}</div>
+          <div class="r">{{ info.sex === '1' ? '女性' : '男性' }}</div>
         </div>
         <div class="row">
           <div class="l">会员密码：</div>
@@ -154,18 +154,17 @@
     <Modal v-model="modal.show" :footer-hide="true" :title="modal.title">
       <VipInfoDetails
         v-if="modal.type === 'VipInfoDetails' && modal.show"
-        @cancelModal="cancelModal"
+        :member-info="memberInfo"
+        @refreshMemberInfo="refreshMemberInfo"
       />
       <AddDate
         v-if="modal.type === 'AddDate' && modal.show"
         :member-info="memberInfo"
-        @cancelModal="cancelModal"
         @change="change"
       />
       <TabooLabel
         v-if="modal.type === 'TabooLabel' && modal.show"
         :member-info="memberInfo"
-        @cancelModal="cancelModal"
         @changeLabels="changeLabels"
       />
     </Modal>
@@ -220,6 +219,12 @@
       this.getVipRecord(2)
     },
     methods: {
+      refreshMemberInfo() {
+        this.modal.show = false
+        this.getMemberInfo()
+
+        this.$emit('refreshMemberInfo')
+      },
       delData(index, row) {
         this.$Modal.confirm({
           title: '警告？',
@@ -249,9 +254,7 @@
         this.modal.title = title
         this.modal.type = type
       },
-      cancelModal(status) {
-        this.modal.show = status
-      },
+
       async getMemberInfo() {
         const { data } = await getMemberInfo({
           vid: cookie.get('vid'),
@@ -306,6 +309,7 @@
     justify-content: center;
   }
   .VipInfo {
+    padding: 20px;
     display: flex;
     .left {
       width: 52%;

@@ -83,8 +83,9 @@
             <div class="left">*所属门店</div>
             <div class="center">
               <Select
-                v-model="formData.shop_id"
+                v-model="formData.sid"
                 clearable
+                :disabled="type"
                 filterable
                 :loading="loading"
                 style="width: 200px"
@@ -102,44 +103,8 @@
             </div>
             <div class="right"></div>
           </div>
-        </div>
-      </div>
-      <div class="box">
-        <div class="header">选填信息</div>
-        <div class="content">
-          <div class="row">
-            <div class="left">初始累计消费</div>
-            <div class="center">
-              <Input placeholder="请输入金额" style="width: 200px" />
-            </div>
-            <div class="right"></div>
-          </div>
-          <div class="row">
-            <div class="left">初始累计积分</div>
-            <div class="center">
-              <Input placeholder="请输入积分" style="width: 200px" />
-            </div>
-            <div class="right"></div>
-          </div>
-          <div class="row">
-            <div class="left">会员生日</div>
-            <div class="center">
-              <DatePicker
-                v-model="formData.birthday"
-                format="yyyy-MM-dd"
-                placeholder="请选择时间"
-                style="width: 200px"
-                transfer
-                type="date"
-                :value="formData.birthday"
-                value-format="yyyy-MM-dd"
-                @on-change="formData.birthday = $event"
-              />
-            </div>
-            <div class="right"></div>
-          </div>
           <div v-if="formData.type !== '0'" class="row">
-            <div class="left">会员等级</div>
+            <div class="left">*会员等级</div>
             <div class="center">
               <Select
                 v-model="formData.tid"
@@ -161,7 +126,7 @@
             <div class="right"></div>
           </div>
           <div class="row">
-            <div class="left">会员有效期</div>
+            <div class="left">*会员有效期</div>
             <div class="center">
               <DatePicker
                 v-model="formData.end_time"
@@ -178,15 +143,15 @@
             <div class="right">
               <Checkbox
                 v-model="formData.choose"
-                false-value="1"
-                true-value="0"
+                :false-value="1"
+                :true-value="0"
               >
                 <span>永久有效</span>
               </Checkbox>
             </div>
           </div>
           <div class="row">
-            <div class="left">会员状态</div>
+            <div class="left">*会员状态</div>
             <div class="center">
               <Select v-model="formData.status" style="width: 200px">
                 <Option
@@ -200,6 +165,29 @@
             </div>
             <div class="right"></div>
           </div>
+        </div>
+      </div>
+      <div class="box">
+        <div class="header">选填信息</div>
+        <div class="content">
+          <div class="row">
+            <div class="left">会员生日</div>
+            <div class="center">
+              <DatePicker
+                v-model="formData.birthday"
+                format="yyyy-MM-dd"
+                placeholder="请选择时间"
+                style="width: 200px"
+                transfer
+                type="date"
+                :value="formData.birthday"
+                value-format="yyyy-MM-dd"
+                @on-change="formData.birthday = $event"
+              />
+            </div>
+            <div class="right"></div>
+          </div>
+
           <div class="row">
             <div class="left">专属顾问</div>
             <div class="center">
@@ -321,7 +309,6 @@
     </div>
     <div class="footer">
       <div class="bt" @click="save">保存</div>
-      <div class="bt" @click="cancel">取消</div>
     </div>
   </div>
 </template>
@@ -330,14 +317,21 @@
   import {
     checkTel,
     getShopList,
-    getSourceList,
+    getMemberSourceList,
     getStaffList,
-    getTypeList,
+    getMemberGradeList,
     setVip,
+    vipEdit,
   } from '@/api/vip'
 
   export default {
     name: 'VipInfoDetails',
+    props: {
+      memberInfo: {
+        type: Object,
+        default: () => {},
+      },
+    },
     data: function () {
       return {
         loading: false,
@@ -381,12 +375,12 @@
           name: '',
           tid: '',
           tel: '',
-          choose: '1',
+          choose: 1,
           end_time: '',
           vip_id: '',
           discount: '',
           sex: '',
-          status: '0',
+          status: '1',
           birthday: '',
           birthday_type: '1',
           pwd: '',
@@ -408,34 +402,48 @@
           blevel_bank: '',
           choose1: '0',
           blevel_time: '',
+          outside_memberid: '',
+          sid: '',
         },
         formCheckTel: {
           tel: '',
           vip_id: '',
           outside_memberid: '',
         },
+        type: false,
       }
     },
     created() {
-      this.getSourceList()
+      this.getMemberSourceList()
       this.getShopList()
       this.getStaffList()
+      this.type = false
+      if (this.memberInfo && Object.keys(this.memberInfo).length > 0) {
+        this.type = true
+        this.selectShop(this.memberInfo.sid)
+        this.formData = this.memberInfo
+        this.formData.vip_id = this.memberInfo.vip_id
+        this.formCheckTel.outside_memberid = this.memberInfo.outside_memberid
+        this.formCheckTel.vip_id = this.memberInfo.vip_id
+      }
     },
     methods: {
       save() {
         console.log('save', this.formData)
-        this.setVip()
+        if (this.type) {
+          this.vipEdit()
+        } else {
+          this.setVip()
+        }
       },
-      cancel() {
-        this.$emit('cancelModal', false)
-      },
+
       tel() {
         this.formCheckTel.tel = this.formData.tel
         this.checkTel()
       },
-      async getSourceList() {
+      async getMemberSourceList() {
         this.loading = true
-        const { data } = await getSourceList({
+        const { data } = await getMemberSourceList({
           search: '',
           page: '1000',
         })
@@ -451,13 +459,13 @@
         this.loading = false
         this.shopList = data.list
       },
-      selectShop(shop_id) {
-        this.getTypeList(shop_id)
+      selectShop(sid) {
+        this.getMemberGradeList(sid)
       },
-      async getTypeList(shop_id) {
+      async getMemberGradeList(sid) {
         this.loading = true
-        const { data } = await getTypeList({
-          sid: shop_id,
+        const { data } = await getMemberGradeList({
+          sid: sid,
           search: '',
           page: 1000,
           p: 1,
@@ -485,6 +493,9 @@
           return false
         }
         let info = data.outside_data
+        if (info.outside_memberid) {
+          this.formData.outside_memberid = info.outside_memberid
+        }
         if (info.address) {
           this.formData.address = info.address
         }
@@ -508,6 +519,15 @@
         } else {
           this.$Message.success(msg)
           this.$emit('change')
+        }
+      },
+      async vipEdit() {
+        const { status, msg } = await vipEdit(this.formData)
+        if (status !== 1) {
+          this.$Message.error(msg)
+        } else {
+          this.$Message.success(msg)
+          this.$emit('refreshMemberInfo')
         }
       },
     },

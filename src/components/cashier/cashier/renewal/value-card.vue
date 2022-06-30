@@ -1,0 +1,184 @@
+<template>
+  <div class="ValueCard">
+    <div class="search">
+      <div class="box">
+        <Select v-model="status" style="width: 200px" transfer>
+          <Option
+            v-for="item in statusList"
+            :key="item.value"
+            :value="item.value"
+          >
+            {{ item.label }}
+          </Option>
+        </Select>
+      </div>
+      <div class="box">
+        <Input
+          enter-button
+          placeholder="输入储值卡名称"
+          search
+          style="width: 220px"
+        />
+      </div>
+    </div>
+    <div class="list">
+      <div class="card">
+        <div class="header">骨盆修复套餐</div>
+        <div class="content">
+          <div class="row">
+            <div class="left">售价</div>
+            <div class="right"><div class="text">￥2342.33</div></div>
+          </div>
+          <div class="row">
+            <div class="left">余次</div>
+            <div class="right"><div class="text">8次</div></div>
+          </div>
+          <div class="row">
+            <div class="left">时限</div>
+            <div class="right"><div class="text">永久有效</div></div>
+          </div>
+          <div class="more">
+            <div class="details" @click="showModal('续充', '')">续充</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <Modal
+        v-model="modal.show"
+        :footer-hide="true"
+        :title="modal.title"
+        :width="700"
+      >
+        1
+      </Modal>
+    </div>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'ValueCard',
+    components: {},
+    data: function () {
+      return {
+        statusList: [
+          {
+            value: '0',
+            label: '全部',
+          },
+          {
+            value: '1',
+            label: '使用中',
+          },
+          {
+            value: '2',
+            label: '未使用',
+          },
+          {
+            value: '3',
+            label: '已过期',
+          },
+          {
+            value: '4',
+            label: '已用完',
+          },
+        ],
+        status: '0',
+        modal: {
+          show: false,
+          title: '',
+          type: false,
+        },
+      }
+    },
+    methods: {
+      showModal(title, type) {
+        this.modal.show = true
+        this.modal.title = title
+        this.modal.type = type
+      },
+    },
+  }
+</script>
+
+<style lang="less" scoped>
+  .ValueCard {
+    .search {
+      display: flex;
+      padding: 10px;
+      background: white;
+
+      .box {
+        display: flex;
+        align-items: center;
+        margin-right: 20px;
+        .money {
+          height: 32px;
+          line-height: 32px;
+          font-weight: bold;
+          padding-right: 20px;
+          color: #c75181;
+        }
+
+        .text {
+          font-weight: bold;
+          margin: 0 5px;
+        }
+      }
+    }
+    .list {
+      display: flex;
+      flex-flow: wrap;
+      .card {
+        border-radius: 8px;
+        border: 1px solid #dcdee2;
+        cursor: pointer;
+        background: white;
+        margin: 10px 10px 10px 0;
+        width: 240px;
+        .header {
+          border-top-left-radius: 8px;
+          border-top-right-radius: 8px;
+
+          height: 30px;
+          line-height: 30px;
+          padding: 0 10px;
+          font-size: 14px;
+          text-align: center;
+          background: #fdf1f6;
+        }
+
+        .content {
+          padding: 8px 8px;
+
+          .row {
+            line-height: 26px;
+            height: 26px;
+            display: flex;
+
+            .left {
+              flex: 1;
+              margin-left: 12px;
+            }
+
+            .right {
+              display: flex;
+              justify-content: flex-end;
+            }
+          }
+
+          .more {
+            display: flex;
+            justify-content: flex-end;
+
+            .details {
+              color: #1298e6;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+    }
+  }
+</style>

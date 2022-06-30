@@ -133,7 +133,6 @@
 
     <div class="footer">
       <div class="bt">保存</div>
-      <div class="bt" @click="cancel">取消</div>
     </div>
     <Modal
       v-model="modal.show"
@@ -141,7 +140,7 @@
       :title="modal.title"
       :width="800"
     >
-      <Goods v-if="modal.type === 'Goods'" @cancelModal="cancelModal" />
+      <Goods v-if="modal.type === 'Goods'" />
     </Modal>
   </div>
 </template>
@@ -196,12 +195,6 @@
         this.modal.show = true
         this.modal.title = title
         this.modal.type = type
-      },
-      cancelModal(status) {
-        this.modal.show = status
-      },
-      cancel() {
-        this.$emit('cancelModal', false)
       },
     },
   }

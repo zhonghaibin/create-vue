@@ -1,8 +1,8 @@
 <template>
   <div class="VipServiceList">
-    <div class="list-top">
-      <div class="bt-left">
-        <div class="cell">
+    <div class="search">
+      <div class="left">
+        <div class="box">
           <Input
             enter-button
             placeholder="输入姓名/手机号/卡号"
@@ -10,7 +10,7 @@
             style="width: 250px"
           />
         </div>
-        <div class="cell">
+        <div class="box">
           <span>提醒状态</span>
           <Select style="width: 100px" transfer>
             <Option v-for="item in status_list" :key="item.id" :value="item.id">
@@ -18,7 +18,7 @@
             </Option>
           </Select>
         </div>
-        <div class="cell">
+        <div class="box">
           <span>服务项目</span>
           <Select style="width: 120px" transfer>
             <Option v-for="item in status_list" :key="item.id" :value="item.id">
@@ -27,7 +27,7 @@
           </Select>
           <Input placeholder="输入项目名称筛选" style="width: 200px" />
         </div>
-        <div class="cell">
+        <div class="box">
           <span>距离下次时间</span>
           <Select style="width: 120px" transfer>
             <Option v-for="item in time_list" :key="item.id" :value="item.id">
@@ -36,8 +36,8 @@
           </Select>
         </div>
       </div>
-      <div class="bt-right">
-        <Button class="bt" type="primary">导出</Button>
+      <div class="right">
+        <div class="add-bt">导出</div>
       </div>
     </div>
     <div class="list">
@@ -160,7 +160,7 @@
                     'div',
                     {
                       style: {
-                        color: 'blue',
+                        color: '#1298e6',
                         cursor: 'pointer',
                       },
                       on: {
@@ -220,27 +220,45 @@
 
 <style lang="less" scoped>
   .VipServiceList {
-    .list-top {
-      margin-top: 14px;
-      margin-bottom: 6px;
-      height: 36px;
-      line-height: 36px;
-      font-size: 12px;
+    .search {
       display: flex;
-      .bt-left {
-        display: flex;
+      padding: 10px;
+      background: white;
+      .left {
         flex: 1;
-        .cell {
-          padding: 2px;
-          margin-right: 16px;
-          span {
-            padding-right: 4px;
+        display: flex;
+        align-items: center;
+        .box {
+          margin-right: 20px;
+          .text {
+            font-weight: bold;
+            margin: 0 5px;
           }
         }
       }
-      .bt-right {
+      .right {
+        display: flex;
+        align-items: center;
         .bt {
-          margin-left: auto;
+          border: 1px solid #c1c1c1;
+          color: #000;
+          display: inline-block;
+          margin-bottom: 0;
+          font-weight: 400;
+          text-align: center;
+          vertical-align: middle;
+          touch-action: manipulation;
+          cursor: pointer;
+          white-space: nowrap;
+          line-height: 1.5;
+          -webkit-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+          padding: 5px 15px 6px;
+          font-size: 12px;
+          border-radius: 4px;
+          transition: color 0.2s linear, background-color 0.2s linear,
+            border 0.2s linear, box-shadow 0.2s linear;
         }
       }
     }
@@ -249,10 +267,19 @@
         //text-align: center;
       }
       .bt {
-        color: blue;
+        color: #1298e6;
         margin-right: 20px;
         cursor: pointer;
       }
+    }
+    .add-bt {
+      color: white;
+      margin-right: 20px;
+      cursor: pointer;
+      background: #f19ec2;
+      padding: 6px 14px;
+      border-radius: 4px;
+      margin-bottom: 1px;
     }
   }
 </style>

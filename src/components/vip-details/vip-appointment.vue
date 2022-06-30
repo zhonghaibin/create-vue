@@ -19,7 +19,7 @@
         <Input
           v-model="searchData.search"
           enter-button
-          placeholder="可搜索服务人员/消费内容"
+          placeholder="可搜索服务人员/预约内容"
           search
           style="width: 250px"
           @on-search="search"
@@ -60,7 +60,7 @@
         columns: [
           {
             title: '预约时间',
-            key: 'timeer',
+            key: 'make_time',
             width: '200px',
           },
           {
@@ -149,17 +149,18 @@
   .VipAppointment {
     .search {
       display: flex;
-      padding: 2px 10px;
+      padding: 10px;
+      background: white;
       .box {
         margin-right: 20px;
         .text {
           font-weight: bold;
-          margin: 0px 5px;
+          margin: 0 5px;
         }
       }
     }
     .list {
-      margin-top: 20px;
+      margin-top: 10px;
       .page {
         height: 40px;
         padding: 8px 0;

@@ -38,7 +38,6 @@
         :card-vid="cardVid"
         :member-info="memberInfo"
         :remarks="remarks"
-        @cancelModal="cancelModal"
         @saveModal="saveModal"
       />
     </Modal>
@@ -111,9 +110,6 @@
       this.search()
     },
     methods: {
-      cancelModal(status) {
-        this.modal.show = status
-      },
       saveModal() {
         this.search()
       },
@@ -173,7 +169,7 @@
 <style lang="less" scoped>
   .VipNodeList {
     .bt {
-      color: blue;
+      color: #1298e6;
       margin-right: 20px;
       cursor: pointer;
     }

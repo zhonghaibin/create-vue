@@ -1,11 +1,43 @@
 <template>
-  <div></div>
+  <div class="box">
+    <div class="column">项目预约</div>
+    <Tabs v-model="tab_index" type="card" @on-click="handleTabClick">
+      <TabPane
+        v-for="item in tab_list"
+        :key="item.id"
+        :label="item.name"
+        :name="item.name"
+      >
+        <CardTable
+          v-if="item.name === '项目预约' && tab_index === '项目预约'"
+        />
+        <CardTableList
+          v-if="item.name === '列表展示' && tab_index === '列表展示'"
+        />
+      </TabPane>
+    </Tabs>
+  </div>
 </template>
-
 <script>
+  import CardTable from '@/components/appointment/card/card-table'
+  import CardTableList from '@/components/appointment/card/card-table-list'
   export default {
-    name: 'Card',
+    name: 'Course',
+    components: { CardTable, CardTableList },
+    data: function () {
+      return {
+        tab_index: '项目预约',
+        tab_list: [
+          { name: '项目预约', id: 1 },
+          { name: '列表展示', id: 2 },
+        ],
+      }
+    },
+    methods: {
+      handleTabClick(index) {
+        this.tab_index = index
+      },
+    },
   }
 </script>
-
-<style scoped></style>
+<style lang="less" scoped></style>

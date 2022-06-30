@@ -112,18 +112,12 @@
       :title="modal.title"
       :width="modal.width"
     >
-      <Results v-if="modal.type === 'Results'" @cancelModal="cancelModal" />
-      <ConsumptionCard
-        v-if="modal.type === 'ConsumptionCard'"
-        @cancelModal="cancelModal"
-      />
-      <NominalFee
-        v-if="modal.type === 'NominalFee'"
-        @cancelModal="cancelModal"
-      />
-      <Deduct v-if="modal.type === 'Deduct'" @cancelModal="cancelModal" />
-      <BatchSet v-if="modal.type === 'BatchSet'" @cancelModal="cancelModal" />
-      <BatchEdit v-if="modal.type === 'BatchEdit'" @cancelModal="cancelModal" />
+      <Results v-if="modal.type === 'Results'" />
+      <ConsumptionCard v-if="modal.type === 'ConsumptionCard'" />
+      <NominalFee v-if="modal.type === 'NominalFee'" />
+      <Deduct v-if="modal.type === 'Deduct'" />
+      <BatchSet v-if="modal.type === 'BatchSet'" />
+      <BatchEdit v-if="modal.type === 'BatchEdit'" />
     </Modal>
   </div>
 </template>
@@ -203,7 +197,7 @@
                           'span',
                           {
                             style: {
-                              color: '#0b00fd',
+                              color: '#1298e6',
                               cursor: 'pointer',
                             },
                             attrs: {
@@ -248,7 +242,7 @@
                           'span',
                           {
                             style: {
-                              color: '#0b00fd',
+                              color: '#1298e6',
                               cursor: 'pointer',
                             },
                             attrs: {
@@ -291,7 +285,7 @@
                           'span',
                           {
                             style: {
-                              color: '#0b00fd',
+                              color: '#1298e6',
                               cursor: 'pointer',
                             },
                             attrs: {
@@ -346,7 +340,7 @@
                           'span',
                           {
                             style: {
-                              color: '#0b00fd',
+                              color: '#1298e6',
                               cursor: 'pointer',
                             },
                             attrs: {
@@ -390,7 +384,7 @@
                           'span',
                           {
                             style: {
-                              color: '#0b00fd',
+                              color: '#1298e6',
                               cursor: 'pointer',
                             },
                             attrs: {
@@ -433,7 +427,7 @@
                           'span',
                           {
                             style: {
-                              color: '#0b00fd',
+                              color: '#1298e6',
                               cursor: 'pointer',
                             },
                             attrs: {
@@ -489,7 +483,7 @@
                           'span',
                           {
                             style: {
-                              color: '#0b00fd',
+                              color: '#1298e6',
                               cursor: 'pointer',
                             },
                             attrs: {
@@ -533,7 +527,7 @@
                           'span',
                           {
                             style: {
-                              color: '#0b00fd',
+                              color: '#1298e6',
                               cursor: 'pointer',
                             },
                             attrs: {
@@ -576,7 +570,7 @@
                           'span',
                           {
                             style: {
-                              color: '#0b00fd',
+                              color: '#1298e6',
                               cursor: 'pointer',
                             },
                             attrs: {
@@ -619,7 +613,7 @@
                           'span',
                           {
                             style: {
-                              color: '#0b00fd',
+                              color: '#1298e6',
                               cursor: 'pointer',
                             },
                             attrs: {
@@ -663,7 +657,7 @@
                           'span',
                           {
                             style: {
-                              color: '#0b00fd',
+                              color: '#1298e6',
                               cursor: 'pointer',
                             },
                             attrs: {
@@ -707,7 +701,7 @@
                           'span',
                           {
                             style: {
-                              color: '#0b00fd',
+                              color: '#1298e6',
                               cursor: 'pointer',
                             },
                             attrs: {
@@ -762,7 +756,7 @@
                           'span',
                           {
                             style: {
-                              color: '#0b00fd',
+                              color: '#1298e6',
                               cursor: 'pointer',
                             },
                             attrs: {
@@ -806,7 +800,7 @@
                           'span',
                           {
                             style: {
-                              color: '#0b00fd',
+                              color: '#1298e6',
                               cursor: 'pointer',
                             },
                             attrs: {
@@ -857,9 +851,7 @@
         this.modal.type = type
         this.modal.width = width
       },
-      cancelModal(status) {
-        this.modal.show = status
-      },
+
       changeValue() {},
       currentPage(current) {
         this.page.current = current
@@ -876,20 +868,23 @@
   .ServiceList {
     .search {
       display: flex;
-      padding: 2px 10px;
+      padding: 10px;
+      background: white;
       .left {
         flex: 1;
         display: flex;
+        align-items: center;
         .box {
           margin-right: 20px;
           .text {
             font-weight: bold;
-            margin: 0px 5px;
+            margin: 0 5px;
           }
         }
       }
       .right {
         display: flex;
+        align-items: center;
         flex-flow: wrap;
         .bt {
           border: 1px solid #c1c1c1;
@@ -915,7 +910,7 @@
       }
     }
     .list {
-      margin-top: 20px;
+      margin-top: 10px;
       .page {
         height: 40px;
         padding: 8px 0;
@@ -925,7 +920,7 @@
     }
 
     .bt {
-      color: blue;
+      color: #1298e6;
       margin-right: 20px;
       cursor: pointer;
     }

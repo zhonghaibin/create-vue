@@ -30,7 +30,7 @@
       </div>
     </div>
     <Modal v-model="modal.show" :footer-hide="true" :title="modal.title">
-      <Source v-if="modal.type === 'Source'" @cancelModal="cancelModal" />
+      <Source v-if="modal.type === 'Source'" />
     </Modal>
   </div>
 </template>
@@ -103,9 +103,6 @@
         this.modal.title = title
         this.modal.type = type
       },
-      cancelModal(status) {
-        this.modal.show = status
-      },
     },
   }
 </script>
@@ -114,19 +111,23 @@
   .SourceList {
     .search {
       display: flex;
-      padding: 2px 10px;
+      padding: 10px;
+      background: white;
       .left {
         flex: 1;
         display: flex;
+        align-items: center;
         .box {
           margin-right: 20px;
           .text {
             font-weight: bold;
-            margin: 0px 5px;
+            margin: 0 5px;
           }
         }
       }
       .right {
+        display: flex;
+        align-items: center;
         .bt {
           border: 1px solid #c1c1c1;
           color: #000;
@@ -151,7 +152,6 @@
       }
     }
     .list {
-      margin-top: 20px;
       .page {
         height: 40px;
         padding: 8px 0;
@@ -161,7 +161,7 @@
     }
 
     .bt {
-      color: blue;
+      color: #1298e6;
       margin-right: 20px;
       cursor: pointer;
     }

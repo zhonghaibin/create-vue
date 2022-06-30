@@ -35,14 +35,14 @@
 </script>
 <style lang="less" scoped>
   .TodayEvent {
+    background: white;
     display: flex;
     flex-flow: wrap;
+    padding-bottom: 20px;
     .box {
-      margin: 10px;
-      width: 48%;
+      padding: 20px 20px 0 20px;
+      width: 50%;
       border-radius: 6px;
-      height: 300px;
-      padding: 2px;
     }
   }
 </style>

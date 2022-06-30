@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <VipSearch1 @change="change" @search="search" />
+  <div class="index">
+    <VipSearch @change="change" @search="search" />
     <div class="list-top">
       <span class="black">共{{ vip_total }}个会员</span>
       <span class="black">（所有会员总余额：￥{{ money }}元</span>
@@ -16,7 +16,20 @@
           <span class="bt" @click="showModal('客户详情', 'VipDetails', row)">
             详情
           </span>
-          <span class="bt">更多</span>
+          <Poptip placement="right">
+            <div slot="content">
+              <div class="more">
+                <p
+                  v-for="(item, index) in moreList"
+                  :key="index"
+                  @click="choose(item, row)"
+                >
+                  {{ item.label }}
+                </p>
+              </div>
+            </div>
+            <span class="bt">更多</span>
+          </Poptip>
         </template>
       </Table>
       <div class="page">
@@ -40,28 +53,37 @@
       :title="modal.title"
       :width="modal.width"
     >
-      <VipDetails
-        v-if="modal.type === 'VipDetails' && modal.show"
-        @cancelModal="cancelModal"
+      <VipDetails v-if="modal.type === 'VipDetails' && modal.show" />
+      <VipInfoDetails
+        v-if="modal.type === 'VipInfoDetails' && modal.show"
+        :member-info="memberInfo"
+        @refreshMemberInfo="refreshMemberInfo"
       />
     </Modal>
   </div>
 </template>
 
 <script>
-  import VipSearch1 from '@/components/vip/vip-list/vip-search'
+  import VipSearch from '@/components/vip/vip-list/vip-search'
   import { getMemberList, getMemberTotal } from '@/api/vip'
   import default_avatar from '../../assets/default_avatar.png'
   import cookie from 'js-cookie'
   import VipDetails from '@/components/vip-details/vip-details'
+  import VipInfoDetails from '@/components/vip-details/vip-info/vip-info-details'
   export default {
     name: 'VipList1',
     components: {
-      VipSearch1,
+      VipSearch,
       VipDetails,
+      VipInfoDetails,
     },
     data: function () {
       return {
+        moreList: [
+          { label: '编辑', value: '1' },
+          { label: '开单', value: '2' },
+          { label: '补卡', value: '3' },
+        ],
         page: {
           total: 0,
           pageSize: 10,
@@ -73,6 +95,7 @@
         arrears: 0,
         money: 0,
         loading: true,
+        memberInfo: {},
         columns: [
           {
             title: '会员信息',
@@ -124,7 +147,7 @@
                       'div',
                       {
                         style: {
-                          color: '#f62727',
+                          color: '#80808c',
                           paddingTop: '10px',
                         },
                       },
@@ -134,7 +157,7 @@
                       'div',
                       {
                         style: {
-                          color: '#f62727',
+                          color: '#80808c',
                         },
                       },
                       params.row.tel
@@ -143,7 +166,7 @@
                       'div',
                       {
                         style: {
-                          color: '#f62727',
+                          color: '#80808c',
                         },
                       },
                       params.row.vip_id
@@ -184,6 +207,7 @@
                   {
                     style: {
                       display: 'block',
+                      color: '#80808c',
                     },
                   },
                   '持卡:' + params.row.card_num + '张'
@@ -194,6 +218,7 @@
                   {
                     style: {
                       display: 'block',
+                      color: '#80808c',
                     },
                   },
                   '余额:' + params.row.money
@@ -203,6 +228,7 @@
                   {
                     style: {
                       display: 'block',
+                      color: '#80808c',
                     },
                   },
                   '积分:' + params.row.integral
@@ -212,7 +238,7 @@
                     'span',
                     {
                       style: {
-                        color: '#31708f',
+                        color: '#80808c',
                       },
                     },
                     '欠款:'
@@ -242,7 +268,7 @@
                     'span',
                     {
                       style: {
-                        color: '#31708f',
+                        color: '#80808c',
                       },
                     },
                     '消费总计:'
@@ -270,7 +296,7 @@
                     'span',
                     {
                       style: {
-                        color: '#31708f',
+                        color: '#80808c',
                       },
                     },
                     '到店次数:'
@@ -288,7 +314,7 @@
                     'span',
                     {
                       style: {
-                        color: '#31708f',
+                        color: '#80808c',
                       },
                     },
                     '本月到店:'
@@ -316,7 +342,7 @@
                     'div',
                     {
                       style: {
-                        color: '#31708f',
+                        color: '#80808c',
                       },
                     },
                     params.row.arrival_new_time
@@ -327,7 +353,7 @@
                     'span',
                     {
                       style: {
-                        color: '#31708f',
+                        color: '#80808c',
                       },
                     },
                     '服务人员:'
@@ -345,7 +371,7 @@
                     'span',
                     {
                       style: {
-                        color: '#31708f',
+                        color: '#80808c',
                       },
                     },
                     '消费:'
@@ -377,10 +403,10 @@
                     'div',
                     {
                       style: {
-                        color: '#31708f',
+                        color: '#80808c',
                       },
                     },
-                    params.row.birthday_type === 1 ? '阳历' : '阴历'
+                    params.row.birthday_type === '1' ? '阳历' : '阴历'
                   ),
                 ]),
                 h('div', [
@@ -388,7 +414,7 @@
                     'span',
                     {
                       style: {
-                        color: '#31708f',
+                        color: '#80808c',
                       },
                     },
                     params.row.birthday
@@ -399,7 +425,7 @@
                     'span',
                     {
                       style: {
-                        color: '#31708f',
+                        color: '#80808c',
                       },
                     },
                     '据生日'
@@ -439,7 +465,7 @@
                       'span',
                       {
                         style: {
-                          color: '#31708f',
+                          color: '#80808c',
                         },
                       },
                       '已绑定'
@@ -467,7 +493,7 @@
                       'span',
                       {
                         style: {
-                          color: '#31708f',
+                          color: '#80808c',
                         },
                       },
                       '已绑定'
@@ -547,6 +573,7 @@
         this.vip_total = data.vip_total
         this.arrears = data.arrears
       },
+
       showModal(title, type, data) {
         cookie.set('vid', data.id)
         console.log(data.id)
@@ -555,44 +582,73 @@
         this.modal.type = type
         this.modal.width = window.innerWidth - 300
       },
-      cancelModal(status) {
-        this.modal.show = status
+
+      choose(item, row) {
+        this.memberInfo = row
+        switch (item.label) {
+          case '编辑':
+            this.showModal('编辑会员资料', 'VipInfoDetails', row)
+            break
+          case '开单':
+            this.jumpRouter('/cashier/index')
+            break
+          case '补卡':
+            break
+        }
+        console.log(item)
+      },
+      jumpRouter(path) {
+        this.$router.push(path)
+      },
+      refreshMemberInfo() {
+        this.modal.show = false
+        this.getMemberList()
       },
     },
   }
 </script>
 
 <style lang="less" scoped>
-  .list-top {
-    margin-top: 14px;
-    height: 36px;
-    line-height: 36px;
-    font-size: 12px;
-    .black {
-      color: black;
-      font-weight: bold;
-    }
-    .red {
-      color: #e8694a;
-      font-weight: bold;
-      margin-left: 20px;
-    }
-  }
-  .list {
-    /deep/.ivu-table-row {
-    }
-    /deep/.ivu-table td {
-    }
-    .page {
-      height: 40px;
-      padding: 8px 0;
-      text-align: center;
+  .index {
+    .list-top {
       background: white;
+      padding: 0 10px;
+      margin-top: 10px;
+      height: 36px;
+      line-height: 36px;
+      font-size: 12px;
+      .black {
+        color: black;
+        font-weight: bold;
+      }
+      .red {
+        color: #e8694a;
+        font-weight: bold;
+        margin-left: 20px;
+      }
     }
-    .bt {
-      color: blue;
-      margin-right: 20px;
-      cursor: pointer;
+    .list {
+      .page {
+        height: 40px;
+        padding: 8px 0;
+        text-align: center;
+        background: white;
+      }
+      .bt {
+        color: #1298e6;
+        margin-right: 20px;
+        cursor: pointer;
+      }
+    }
+    .more {
+      text-align: center;
+      p {
+        padding: 4px;
+        cursor: pointer;
+      }
+      p:hover {
+        color: #1298e6;
+      }
     }
   }
 </style>

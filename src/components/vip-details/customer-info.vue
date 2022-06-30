@@ -12,7 +12,7 @@
     </div>
     <div class="content">
       <div class="box">
-        <div v-for="(item, index) in list" :key="item.name" class="row">
+        <div v-for="(item, index) in list" :key="item.index" class="row">
           <div class="l">{{ item.name }}：</div>
           <div class="r">
             <Select
@@ -58,7 +58,6 @@
       <Customer
         v-if="modal.type === 'Customer' && modal.show"
         :member-info="memberInfo"
-        @cancelModal="cancelModal"
         @change="change"
       />
     </Modal>
@@ -521,7 +520,8 @@
             },
           ],
         },
-        list: [
+        list: [],
+        defaultList: [
           {
             type: 3,
             name: '体重',
@@ -711,18 +711,18 @@
         this.modal.title = title
         this.modal.type = type
       },
-      cancelModal(status) {
-        this.modal.show = status
-      },
 
       save() {
         this.formData.data = this.list
         this.setVipRecordAdd()
       },
       getList() {
+        this.list = []
         this.getVipRecord(3).then((res) => {
           if (res.list.length > 0) {
             this.list = res.list
+          } else {
+            this.list = this.defaultList
           }
           this.getVipRecord(1).then((res) => {
             if (res.list.length > 0) {
@@ -771,9 +771,10 @@
 
 <style lang="less" scoped>
   .CustomerInfo {
+    padding: 10px;
     .header {
       display: flex;
-      justify-content: end;
+      justify-content: flex-end;
       .right {
         width: 100px;
         margin-right: 10px;
@@ -792,7 +793,7 @@
       }
     }
     .content {
-      margin: 6px 0px 18px 0px;
+      margin: 6px 0 18px 0;
       display: flex;
 
       .box {
@@ -824,7 +825,7 @@
     }
     .footer {
       display: flex;
-      justify-content: end;
+      justify-content: flex-end;
       .bt {
         width: 100px;
         text-align: center;

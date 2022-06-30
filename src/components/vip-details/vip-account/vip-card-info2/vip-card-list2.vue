@@ -54,7 +54,7 @@
 <style lang="less" scoped>
   .VipCardList2 {
     .bt {
-      color: blue;
+      color: #1298e6;
       margin-right: 20px;
       cursor: pointer;
     }

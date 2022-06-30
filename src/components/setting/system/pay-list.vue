@@ -1,7 +1,9 @@
 <template>
   <div class="PayList">
     <div class="search">
-      <div class="left"></div>
+      <div class="left">
+        <span style="color: red">*支付方式只能添加或者修改或下架,不能除!</span>
+      </div>
       <div class="right">
         <div class="add-bt" @click="showModal('添加自定义支付方式', 'Pay')">
           添加支付方式
@@ -30,7 +32,7 @@
       </div>
     </div>
     <Modal v-model="modal.show" :footer-hide="true" :title="modal.title">
-      <Pay v-if="modal.type === 'Pay'" @cancelModal="cancelModal" />
+      <Pay v-if="modal.type === 'Pay'" />
     </Modal>
   </div>
 </template>
@@ -112,9 +114,6 @@
         this.modal.title = title
         this.modal.type = type
       },
-      cancelModal(status) {
-        this.modal.show = status
-      },
     },
   }
 </script>
@@ -123,19 +122,24 @@
   .PayList {
     .search {
       display: flex;
-      padding: 2px 10px;
+      padding: 10px;
+      background: white;
+      align-items: center;
       .left {
         flex: 1;
         display: flex;
+        align-items: center;
         .box {
           margin-right: 20px;
           .text {
             font-weight: bold;
-            margin: 0px 5px;
+            margin: 0 5px;
           }
         }
       }
       .right {
+        display: flex;
+        align-items: center;
         .bt {
           border: 1px solid #c1c1c1;
           color: #000;
@@ -160,7 +164,6 @@
       }
     }
     .list {
-      margin-top: 20px;
       .page {
         height: 40px;
         padding: 8px 0;
@@ -170,7 +173,7 @@
     }
 
     .bt {
-      color: blue;
+      color: #1298e6;
       margin-right: 20px;
       cursor: pointer;
     }

@@ -34,7 +34,6 @@
       </div>
       <div class="right">
         <div class="bt" @click="save">保存</div>
-        <div class="bt" @click="cancel">取消</div>
       </div>
     </div>
   </div>
@@ -71,9 +70,7 @@
       delData(index) {
         this.list.splice(index, 1)
       },
-      cancel() {
-        this.$emit('cancelModal', false)
-      },
+
       add() {
         this.list.push({
           type: 2,

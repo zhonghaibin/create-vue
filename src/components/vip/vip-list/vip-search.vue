@@ -1,37 +1,37 @@
 <template>
   <div class="VipSearch">
     <div class="topic-nav">
-      <Row :gutter="16">
-        <Col order="4" span="4">
-          <Input
-            v-model="formData.search"
-            clearable
-            enter-button
-            placeholder="输入姓名/手机号/卡号"
-            search
-            @on-clear="changeValue"
-            @on-search="changeValue"
-          />
-        </Col>
-        <Col order="3" span="2">
+      <div class="left">
+        <Input
+          v-model="formData.search"
+          clearable
+          enter-button
+          placeholder="输入姓名/手机号/卡号"
+          search
+          @on-clear="changeValue"
+          @on-search="changeValue"
+        />
+      </div>
+      <div class="right">
+        <div class="cell">
           <Button
             icon="md-person-add"
             type="primary"
-            @click="showModal('添加会员', 'VipInfoDetails')"
+            @click="showModal('新增会员', 'VipInfoDetails')"
           >
-            添加会员
+            新增会员
           </Button>
-        </Col>
-        <Col order="2" span="2">
+        </div>
+        <div class="cell">
           <Button icon="ios-cloud-upload" type="primary">导入会员</Button>
-        </Col>
-        <Col order="1" span="2">
+        </div>
+        <div class="cell">
           <Button icon="ios-cloud-download" type="primary">导出会员</Button>
-        </Col>
-        <Col order="0" span="2">
+        </div>
+        <div class="cell">
           <Button icon="md-mail" type="primary">批量群发</Button>
-        </Col>
-      </Row>
+        </div>
+      </div>
     </div>
     <div class="search">
       <div class="row">
@@ -217,6 +217,19 @@
           未设置
         </div>
       </div>
+
+      <div class="row">
+        <div class="label">所属门店:</div>
+        <div class="all" @click="clearValue(['sid'])">全部</div>
+        <div
+          v-for="item in shopList"
+          :key="item.id"
+          :class="['text', formData.sid === item.id ? 'active' : '']"
+          @click="shop(item)"
+        >
+          {{ item.name }}
+        </div>
+      </div>
     </div>
     <Modal
       v-model="modal.show"
@@ -228,7 +241,6 @@
     >
       <VipInfoDetails
         v-if="modal.type === 'VipInfoDetails' && modal.show"
-        @cancelModal="cancelModal"
         @change="change"
       />
     </Modal>
@@ -236,7 +248,11 @@
 </template>
 
 <script>
-  import { getMemberGradeList, getMemberSourceList } from '@/api/vip'
+  import {
+    getMemberGradeList,
+    getMemberSourceList,
+    getShopList,
+  } from '@/api/vip'
   import VipInfoDetails from '@/components/vip-details/vip-info/vip-info-details'
   export default {
     name: 'VipSearch',
@@ -266,6 +282,7 @@
           period: '',
           day: '',
           frequency: '',
+          sid: '',
         },
         beforeShopList: [
           {
@@ -329,6 +346,7 @@
         ],
         memberGradeList: [],
         memberSourceList: [],
+        shopList: [],
         periodList: [
           {
             label: '近三天过',
@@ -344,6 +362,7 @@
     created() {
       this.getMemberGradeList()
       this.getMemberSourceList()
+      this.getShopList()
     },
     methods: {
       change() {
@@ -355,9 +374,7 @@
         this.modal.title = title
         this.modal.type = type
       },
-      cancelModal(status) {
-        this.modal.show = status
-      },
+
       beforeShop(item) {
         this.formData.day = item.value
         this.memberList()
@@ -380,6 +397,10 @@
       },
       memberSource(item) {
         this.formData.source_id = item.id
+        this.memberList()
+      },
+      shop(item) {
+        this.formData.sid = item.id
         this.memberList()
       },
       period(item) {
@@ -414,22 +435,43 @@
         })
         this.memberSourceList = data.list
       },
+      async getShopList() {
+        this.loading = true
+        const { data } = await getShopList({
+          search: '',
+          page: 100,
+          p: 1,
+        })
+        this.shopList = data.list
+      },
     },
   }
 </script>
 
 <style lang="less" scoped>
   .VipSearch {
+    padding: 10px 0;
+    background: white;
     .topic-nav {
-      border-bottom: 1px solid #e9e7e7;
-      padding: 4px 2px 16px 2px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      .left {
+      }
+      .right {
+        display: flex;
+        align-items: center;
+        .cell {
+          margin-left: 10px;
+        }
+      }
     }
 
     .search {
-      display: flex;
       flex-flow: wrap;
       display: -webkit-flex;
-
+      padding: 10px 0;
+      background: white;
       .row {
         align-items: center;
         width: 50%;

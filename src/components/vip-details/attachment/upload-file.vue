@@ -25,7 +25,6 @@
     </div>
     <div class="footer">
       <div class="bt" @click="save">保存</div>
-      <div class="bt" @click="cancel">取消</div>
     </div>
   </div>
 </template>
@@ -59,9 +58,8 @@
     },
     activated() {},
     created() {
-      onsole.log(this.data, 'data')
       this.defaultList = []
-      if (Object.keys(this.data).length > 0) {
+      if (this.data && Object.keys(this.data).length > 0) {
         this.formData.file_id = this.data.id
         this.formData.name = this.data.name
         this.formData.file = this.data.file
@@ -74,9 +72,6 @@
       }
     },
     methods: {
-      cancel() {
-        this.$emit('cancelModal', false)
-      },
       removeFile(res) {
         console.log(res, 'removeFile')
         this.formData.file = ''

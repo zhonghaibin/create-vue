@@ -20,11 +20,11 @@
         <!--          <span class="text">赠送来源</span>-->
         <!--          <Select v-model="gift_source" style="width: 200px" transfer>-->
         <!--            <Option-->
-        <!--              v-for="item in gift_source_list"-->
-        <!--              :key="item.value"-->
-        <!--              :value="item.value"-->
+        <!--              v-for="project in gift_source_list"-->
+        <!--              :key="project.value"-->
+        <!--              :value="project.value"-->
         <!--            >-->
-        <!--              {{ item.label }}-->
+        <!--              {{ project.label }}-->
         <!--            </Option>-->
         <!--          </Select>-->
         <!--        </div>-->
@@ -203,19 +203,23 @@
   .VipGiftRecord {
     .search {
       display: flex;
-      padding: 2px;
+      padding: 10px;
+      background: white;
       .left {
         flex: 1;
         display: flex;
+        align-items: center;
         .box {
           margin-right: 20px;
           .text {
             font-weight: bold;
-            margin: 0px 5px;
+            margin: 0 5px;
           }
         }
       }
       .right {
+        display: flex;
+        align-items: center;
         .bt {
           border: 1px solid #c1c1c1;
           color: #000;
@@ -240,7 +244,7 @@
       }
     }
     .list {
-      margin-top: 20px;
+      margin-top: 10px;
     }
     .page {
       height: 40px;

@@ -1,29 +1,25 @@
 <template>
   <div class="box">
-    <Row>
-      <Col>
-        <Tabs v-model="tab_index" size="small" @on-click="handleTabClick">
-          <TabPane
-            v-for="item in tab_list"
-            :key="item.id"
-            :label="item.name"
-            :name="item.name"
-          >
-            <VipReturnVisitList
-              v-if="item.name === '回访记录' && tab_index === '回访记录'"
-              :member-info="memberInfo"
-            />
-            <VipNurseList
-              v-if="item.name === '护理档案' && tab_index === '护理档案'"
-            />
-            <VipRemindList
-              v-if="item.name === '提醒记录' && tab_index === '提醒记录'"
-              :member-info="memberInfo"
-            />
-          </TabPane>
-        </Tabs>
-      </Col>
-    </Row>
+    <Tabs v-model="tab_index" size="small" @on-click="handleTabClick">
+      <TabPane
+        v-for="item in tab_list"
+        :key="item.id"
+        :label="item.name"
+        :name="item.name"
+      >
+        <VipReturnVisitList
+          v-if="item.name === '回访记录' && tab_index === '回访记录'"
+          :member-info="memberInfo"
+        />
+        <VipNurseList
+          v-if="item.name === '护理档案' && tab_index === '护理档案'"
+        />
+        <VipRemindList
+          v-if="item.name === '提醒记录' && tab_index === '提醒记录'"
+          :member-info="memberInfo"
+        />
+      </TabPane>
+    </Tabs>
   </div>
 </template>
 <script>

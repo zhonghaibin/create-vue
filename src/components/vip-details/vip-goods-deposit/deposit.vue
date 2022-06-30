@@ -39,7 +39,6 @@
 
     <div class="footer">
       <div class="bt" @click="save">保存</div>
-      <div class="bt" @click="cancel">取消</div>
     </div>
   </div>
 </template>
@@ -75,9 +74,6 @@
       this.getGoodsList()
     },
     methods: {
-      cancel() {
-        this.$emit('cancelModal', false)
-      },
       save() {
         this.setDeposit()
       },

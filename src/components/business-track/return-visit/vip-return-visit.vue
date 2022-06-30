@@ -67,7 +67,6 @@
 
     <div class="footer">
       <div class="bt">保存</div>
-      <div class="bt" @click="cancel">取消</div>
     </div>
   </div>
 </template>
@@ -87,9 +86,6 @@
       this.uploadList = this.$refs.upload.fileList
     },
     methods: {
-      cancel() {
-        this.$emit('cancelModal', false)
-      },
       handleView(name) {
         this.imgName = name
         this.visible = true

@@ -1,38 +1,32 @@
 <template>
   <div class="box">
-    <Row>
-      <Col class="column" span="12">业务跟踪</Col>
-    </Row>
-    <Row>
-      <Col>
-        <div ref="tab" class="tab">
-          <Tabs v-model="tab_index" type="card" @on-click="handleTabClick">
-            <TabPane
-              v-for="item in tab_list"
-              :key="item.id"
-              :label="item.name"
-              :name="item.name"
-            >
-              <TodayEvent
-                v-if="item.name === '今日事项' && tab_index === '今日事项'"
-              />
-              <ShopRemindList
-                v-if="item.name === '到店预警' && tab_index === '到店预警'"
-              />
-              <ImportantDateList
-                v-if="item.name === '重要日期' && tab_index === '重要日期'"
-              />
-              <ReturnVisit
-                v-if="item.name === '回访汇总' && tab_index === '回访汇总'"
-              />
-              <ServicesRemind
-                v-if="item.name === '服务提醒' && tab_index === '服务提醒'"
-              />
-            </TabPane>
-          </Tabs>
-        </div>
-      </Col>
-    </Row>
+    <div class="column">业务跟踪</div>
+    <div ref="tab" class="tab">
+      <Tabs v-model="tab_index" type="card" @on-click="handleTabClick">
+        <TabPane
+          v-for="item in tab_list"
+          :key="item.id"
+          :label="item.name"
+          :name="item.name"
+        >
+          <TodayEvent
+            v-if="item.name === '今日事项' && tab_index === '今日事项'"
+          />
+          <ShopRemindList
+            v-if="item.name === '到店预警' && tab_index === '到店预警'"
+          />
+          <ImportantDateList
+            v-if="item.name === '重要日期' && tab_index === '重要日期'"
+          />
+          <ReturnVisit
+            v-if="item.name === '回访汇总' && tab_index === '回访汇总'"
+          />
+          <ServicesRemind
+            v-if="item.name === '服务提醒' && tab_index === '服务提醒'"
+          />
+        </TabPane>
+      </Tabs>
+    </div>
   </div>
 </template>
 <script>
@@ -83,8 +77,6 @@
 </script>
 <style lang="less" scoped>
   .tab {
-    margin-top: 20px;
-    background: white;
     padding-bottom: 10px;
     /deep/ .ivu-tabs-ink-bar {
       background: #cc749a;

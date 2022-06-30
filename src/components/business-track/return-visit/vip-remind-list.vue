@@ -73,10 +73,7 @@
         :title="modal.title"
         :width="700"
       >
-        <VipRemind
-          v-if="modal.type === 'VipRemind'"
-          @cancelModal="cancelModal"
-        />
+        <VipRemind v-if="modal.type === 'VipRemind'" />
       </Modal>
     </div>
   </div>
@@ -184,9 +181,7 @@
         this.modal.title = title
         this.modal.type = type
       },
-      cancelModal(status) {
-        this.modal.show = status
-      },
+
       changeValue() {},
       clearDate() {
         this.searchData.start = ''
@@ -215,19 +210,23 @@
   .VipRemindList {
     .search {
       display: flex;
-      padding: 2px 10px;
+      padding: 10px;
+      background: white;
       .left {
         flex: 1;
         display: flex;
+        align-items: center;
         .box {
           margin-right: 20px;
           .text {
             font-weight: bold;
-            margin: 0px 5px;
+            margin: 0 5px;
           }
         }
       }
       .right {
+        display: flex;
+        align-items: center;
         .bt {
           border: 1px solid #c1c1c1;
           color: #000;
@@ -252,7 +251,7 @@
       }
     }
     .list {
-      margin-top: 20px;
+      margin-top: 10px;
       .page {
         height: 40px;
         padding: 8px 0;
@@ -262,7 +261,7 @@
     }
 
     .bt {
-      color: blue;
+      color: #1298e6;
       margin-right: 20px;
       cursor: pointer;
     }

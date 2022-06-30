@@ -53,7 +53,7 @@
         </div>
         <div class="right"></div>
       </div>
-      <div class="row" style="border: 0px">
+      <div class="row" style="border: 0">
         <div class="left"></div>
         <div class="center"></div>
         <div class="right"><div class="bt">保存</div></div>
@@ -86,6 +86,8 @@
 
 <style lang="less" scoped>
   .Attendance {
+    background: white;
+    padding: 10px;
     .bt {
       color: white;
       margin-right: 20px;

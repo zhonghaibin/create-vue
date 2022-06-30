@@ -239,7 +239,9 @@
 <style lang="less" scoped>
   .Print {
     .box {
+      padding-top: 10px;
       display: flex;
+      background: white;
       .left {
         border: 1px solid #eaeaea;
         padding: 4px 10px;

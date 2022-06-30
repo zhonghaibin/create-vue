@@ -10,7 +10,6 @@
     </div>
     <div class="footer">
       <div class="bt">保存</div>
-      <div class="bt" @click="cancel">取消</div>
     </div>
   </div>
 </template>
@@ -29,16 +28,10 @@
       }
     },
     methods: {
-      cancel() {
-        this.$emit('cancelModal', false)
-      },
       showModal(title, type) {
         this.modal.show = true
         this.modal.title = title
         this.modal.type = type
-      },
-      cancelModal(status) {
-        this.modal.show = status
       },
     },
   }

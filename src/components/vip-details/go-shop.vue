@@ -47,13 +47,12 @@
     </div>
     <div class="footer">
       <div class="bt" @click="save">保存</div>
-      <div class="bt" @click="cancel">取消</div>
     </div>
   </div>
 </template>
 
 <script>
-  import { getShopList, getTypeList, setTransferShop } from '@/api/vip'
+  import { getShopList, getMemberGradeList, setTransferShop } from '@/api/vip'
 
   export default {
     name: 'GoShop',
@@ -79,9 +78,6 @@
       this.getShopList()
     },
     methods: {
-      cancel() {
-        this.$emit('cancelModal', false)
-      },
       save() {
         this.setTransferShop()
       },
@@ -114,11 +110,11 @@
         this.shopList = data.list
       },
       selectShop(shop_id) {
-        this.getTypeList(shop_id)
+        this.getMemberGradeList(shop_id)
       },
-      async getTypeList(shop_id) {
+      async getMemberGradeList(shop_id) {
         this.loading = true
-        const { data } = await getTypeList({
+        const { data } = await getMemberGradeList({
           sid: shop_id,
           search: '',
           page: 1000,

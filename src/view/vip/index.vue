@@ -1,29 +1,23 @@
 <template>
   <div class="box">
-    <Row>
-      <Col class="column" span="12">会员管理</Col>
-    </Row>
-    <Row>
-      <Col>
-        <div ref="tab" class="tab">
-          <Tabs v-model="tab_index" type="card" @on-click="handleTabClick">
-            <TabPane
-              v-for="item in tab_list"
-              :key="item.id"
-              :label="item.name"
-              :name="item.name"
-            >
-              <VipList
-                v-if="item.name === '会员列表' && tab_index === '会员列表'"
-              />
-              <PrecisionFilter
-                v-if="item.name === '精准筛选' && tab_index === '精准筛选'"
-              />
-            </TabPane>
-          </Tabs>
-        </div>
-      </Col>
-    </Row>
+    <div class="column">会员管理</div>
+    <div ref="tab" class="tab">
+      <Tabs v-model="tab_index" type="card" @on-click="handleTabClick">
+        <TabPane
+          v-for="item in tab_list"
+          :key="item.id"
+          :label="item.name"
+          :name="item.name"
+        >
+          <VipList
+            v-if="item.name === '会员列表' && tab_index === '会员列表'"
+          />
+          <PrecisionFilter
+            v-if="item.name === '精准筛选' && tab_index === '精准筛选'"
+          />
+        </TabPane>
+      </Tabs>
+    </div>
   </div>
 </template>
 <script>
@@ -65,8 +59,6 @@
 </script>
 <style lang="less" scoped>
   .tab {
-    margin-top: 20px;
-    background: white;
     padding-bottom: 10px;
     /deep/ .ivu-tabs-ink-bar {
       background: #cc749a;

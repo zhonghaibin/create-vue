@@ -75,10 +75,7 @@
         :title="modal.title"
         :width="700"
       >
-        <CouponInfo
-          v-if="modal.type === 'CouponInfo'"
-          @cancelModal="cancelModal"
-        />
+        <CouponInfo v-if="modal.type === 'CouponInfo'" />
       </Modal>
     </div>
   </div>
@@ -171,9 +168,6 @@
         this.modal.title = title
         this.modal.type = type
       },
-      cancelModal(status) {
-        this.modal.show = status
-      },
     },
   }
 </script>
@@ -182,7 +176,8 @@
   .CouponList {
     .search {
       display: flex;
-      padding: 2px 10px;
+      padding: 10px;
+      background: white;
 
       .box {
         display: flex;
@@ -190,12 +185,12 @@
 
         .text {
           font-weight: bold;
-          margin: 0px 5px;
+          margin: 0 5px;
         }
       }
     }
     .list {
-      margin-top: 20px;
+      margin-top: 10px;
       display: flex;
       flex-flow: wrap;
 
@@ -214,7 +209,7 @@
           line-height: 40px;
           background: #ddf1f9;
           font-weight: bold;
-          padding: 0px 10px;
+          padding: 0 10px;
           font-size: 14px;
           .use {
             float: right;
@@ -254,7 +249,7 @@
             justify-content: flex-end;
 
             .details {
-              color: blue;
+              color: #1298e6;
               cursor: pointer;
             }
           }

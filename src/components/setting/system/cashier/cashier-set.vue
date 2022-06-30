@@ -71,15 +71,20 @@
 
 <style lang="less" scoped>
   .CashierSet {
+    background: white;
+    padding: 20px;
     .box {
+      border-top: 1px solid #eeeeee;
+      border-left: 1px solid #eeeeee;
+      border-right: 1px solid #eeeeee;
       .row {
         height: 50px;
-        padding: 10px 2px;
         display: flex;
         font-size: 12px;
         border-bottom: 1px solid #f3f3f3;
         align-items: center;
         .left {
+          padding: 10px;
           flex: 1;
         }
         .right {

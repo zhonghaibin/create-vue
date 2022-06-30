@@ -3,20 +3,26 @@
     <div class="search">
       <div class="left">
         <div class="box">
-          <span class="text">门店</span>
-          <Select v-model="store" style="width: 200px" transfer>
-            <Option
-              v-for="item in storeList"
-              :key="item.value"
-              :value="item.value"
-            >
-              {{ item.label }}
+          <span class="text">选择门店：</span>
+          <Select
+            v-model="searchData.sid"
+            clearable
+            filterable
+            style="width: 200px"
+          >
+            <div slot="empty">未找到数据</div>
+            <Option v-for="item in shopList" :key="item.id" :value="item.id">
+              {{ item.name }}
             </Option>
           </Select>
         </div>
         <div class="box">
           <span class="text">预警不超过</span>
-          <Input placeholder="输入预警天数" style="width: 100px" />
+          <Input
+            v-model="searchData.day"
+            placeholder="输入预警天数"
+            style="width: 100px"
+          />
           天
         </div>
       </div>
@@ -25,7 +31,7 @@
       </div>
     </div>
     <div class="list">
-      <Table :columns="columns" :data="list">
+      <Table :columns="columns" :data="list" :loading="loading">
         <!-- slot对应data里面的slot-->
         <template slot="action">
           <span class="bt">添加回访</span>
@@ -49,6 +55,8 @@
 </template>
 
 <script>
+  import { cashierWarning, getShopList } from '@/api/vip'
+
   export default {
     name: 'ShopRemindList',
     components: {},
@@ -60,7 +68,8 @@
     },
     data: function () {
       return {
-        storeList: [],
+        loading: false,
+        shopList: [],
         store: '',
         page: {
           total: 0,
@@ -86,7 +95,7 @@
                       display: 'block',
                     },
                   },
-                  '曾文敏'
+                  params.row.name
                 ),
 
                 h(
@@ -96,10 +105,9 @@
                       display: 'block',
                     },
                   },
-                  '13813131313'
+                  params.row.tel
                 ),
               ])
-              console.log(params)
               return html
             },
           },
@@ -113,19 +121,19 @@
           },
           {
             title: '消费总次数',
-            key: 'info',
+            key: 'order_num',
           },
           {
             title: '超出天数',
-            key: 'info',
+            key: 'over_time',
           },
           {
             title: '专属产康师',
-            key: 'info',
+            key: 'adviser_name',
           },
           {
             title: '专属顾问',
-            key: 'info',
+            key: 'dispose_staff_name',
           },
           {
             title: '操作',
@@ -134,27 +142,27 @@
             align: 'center',
           },
         ],
-        list: [
-          {
-            name: 1,
-          },
-        ],
-        searchData: { search: '' },
-        date: [],
+        list: [],
+        searchData: {
+          search: '',
+          p: 1,
+          page: 5,
+          sid: '',
+          day: '',
+        },
       }
     },
     activated() {},
-    created() {},
+    created() {
+      this.getShopList()
+      this.search()
+    },
     methods: {
       showModal(title, type) {
         this.modal.show = true
         this.modal.title = title
         this.modal.type = type
       },
-      cancelModal(status) {
-        this.modal.show = status
-      },
-      changeValue() {},
 
       currentPage(current) {
         this.page.current = current
@@ -162,7 +170,25 @@
       pageSizeChange(pageSize) {
         this.page.pageSize = pageSize
       },
-      search() {},
+      search() {
+        this.searchData.p = 1
+        this.cashierWarning()
+      },
+      async cashierWarning() {
+        this.loading = true
+        const { data } = await cashierWarning(this.searchData)
+        this.loading = false
+        this.list = data.list
+        this.page.total = Number(data.count)
+        this.page.current = Number(data.p)
+      },
+      async getShopList() {
+        const { data } = await getShopList({
+          search: '',
+          page: '1000',
+        })
+        this.shopList = data.list
+      },
     },
   }
 </script>
@@ -171,19 +197,23 @@
   .ShopRemindList {
     .search {
       display: flex;
-      padding: 2px 10px;
+      padding: 10px;
+      background: white;
       .left {
         flex: 1;
         display: flex;
+        align-items: center;
         .box {
           margin-right: 20px;
           .text {
             font-weight: bold;
-            margin: 0px 5px;
+            margin: 0 5px;
           }
         }
       }
       .right {
+        display: flex;
+        align-items: center;
         .bt {
           border: 1px solid #c1c1c1;
           color: #000;
@@ -208,7 +238,6 @@
       }
     }
     .list {
-      margin-top: 20px;
       .page {
         height: 40px;
         padding: 8px 0;
@@ -218,7 +247,7 @@
     }
 
     .bt {
-      color: blue;
+      color: #1298e6;
       margin-right: 20px;
       cursor: pointer;
     }

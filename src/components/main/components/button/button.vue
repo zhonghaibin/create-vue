@@ -2,8 +2,8 @@
   <div class="button">
     <div class="cell">
       <div class="bt">
-        <Icon type="md-cog" />
-        控制中心
+        <Icon type="md-school" />
+        视频教程
       </div>
     </div>
     <div class="cell">

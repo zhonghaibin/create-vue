@@ -76,7 +76,7 @@
 
 <style lang="less" scoped>
   .bt {
-    color: blue;
+    color: #1298e6;
     margin-right: 20px;
     cursor: pointer;
   }

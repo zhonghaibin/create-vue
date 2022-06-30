@@ -61,7 +61,6 @@
       <div class="left"></div>
       <div class="right">
         <div class="bt" @click="save">保存</div>
-        <div class="bt" @click="cancel">取消</div>
       </div>
     </div>
   </div>
@@ -126,9 +125,7 @@
           })
         }
       },
-      cancel() {
-        this.$emit('cancelModal', false)
-      },
+
       save() {
         this.formData.vid = this.memberInfo.id
         this.formData.mold = 2
@@ -169,7 +166,9 @@
         this.searchData.vid = this.memberInfo.id
         this.searchData.mold = 2
         const { data } = await getTags(this.searchData)
-        this.labelsList = data.list
+        if (data.list && data.list.length > 0) {
+          this.labelsList = data.list
+        }
       },
       async setTags() {
         const { msg, status } = await setTags(this.formData)

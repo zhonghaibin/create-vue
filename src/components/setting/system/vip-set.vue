@@ -1,54 +1,39 @@
 <template>
   <div class="Cashier">
-    <Row>
-      <Col>
-        <Tabs
-          v-model="tab_index"
-          class="tab"
-          size="small"
-          @on-click="handleTabClick"
-        >
-          <TabPane
-            v-for="item in tab_list"
-            :key="item.id"
-            :label="item.name"
-            :name="item.name"
-          >
-            <SourceList
-              v-if="
-                item.name === '来源渠道设置' && tab_index === '来源渠道设置'
-              "
-            />
-            <IntegralRuleList
-              v-if="
-                item.name === '积分规则设置' && tab_index === '积分规则设置'
-              "
-            />
-            <IntegralEmptyRuleList
-              v-if="
-                item.name === '积分清空规则设置' &&
-                tab_index === '积分清空规则设置'
-              "
-            />
-            <LifeCycleList
-              v-if="
-                item.name === '生命周期设置' && tab_index === '生命周期设置'
-              "
-            />
-            <CustomerSwitchList
-              v-if="
-                item.name === '顾客开关设置' && tab_index === '顾客开关设置'
-              "
-            />
-            <VipGradeList
-              v-if="
-                item.name === '会员级别设置' && tab_index === '会员级别设置'
-              "
-            />
-          </TabPane>
-        </Tabs>
-      </Col>
-    </Row>
+    <Tabs
+      v-model="tab_index"
+      class="tab"
+      size="small"
+      @on-click="handleTabClick"
+    >
+      <TabPane
+        v-for="item in tab_list"
+        :key="item.id"
+        :label="item.name"
+        :name="item.name"
+      >
+        <SourceList
+          v-if="item.name === '来源渠道设置' && tab_index === '来源渠道设置'"
+        />
+        <IntegralRuleList
+          v-if="item.name === '积分规则设置' && tab_index === '积分规则设置'"
+        />
+        <IntegralEmptyRuleList
+          v-if="
+            item.name === '积分清空规则设置' && tab_index === '积分清空规则设置'
+          "
+        />
+        <LifeCycleList
+          v-if="item.name === '生命周期设置' && tab_index === '生命周期设置'"
+        />
+        <CustomerSwitchList
+          v-if="item.name === '顾客开关设置' && tab_index === '顾客开关设置'"
+        />
+        <VipGradeList
+          v-if="item.name === '会员级别设置' && tab_index === '会员级别设置'"
+        />
+      </TabPane>
+    </Tabs>
   </div>
 </template>
 <script>
@@ -90,7 +75,6 @@
 </script>
 <style lang="less" scoped>
   /deep/.tab {
-    background: white;
     padding-bottom: 10px;
     /deep/ .ivu-tabs-ink-bar {
       background: #cc749a;

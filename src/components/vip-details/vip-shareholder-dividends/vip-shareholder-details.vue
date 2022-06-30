@@ -3,25 +3,25 @@
     <div class="baseInfo">
       <div class="row">
         <div class="cell">
-          <div class="left">累计分红：</div>
+          <div class="left">累计分红/积分：</div>
           <div class="right">{{ statistical.commission }}</div>
         </div>
         <div class="cell">
-          <div class="left">近一个月分红：</div>
+          <div class="left">近一个月分红/积分：</div>
           <div class="right">{{ statistical.month_commission }}</div>
         </div>
         <div class="cell">
-          <div class="left">剩余分红金额：</div>
+          <div class="left">剩余分红/积分：</div>
           <div class="right">{{ statistical.commission_balance }}</div>
         </div>
       </div>
       <div class="row">
         <div class="cell">
-          <div class="left">直接推荐分红比例：</div>
+          <div class="left">直接推荐分红/积分比例：</div>
           <div class="right">{{ statistical.zjrate }}</div>
         </div>
         <div class="cell">
-          <div class="left">间接推荐分红比例：</div>
+          <div class="left">间接推荐分红/积分比例：</div>
           <div class="right">{{ statistical.jjrate }}</div>
         </div>
         <div class="cell">
@@ -123,7 +123,7 @@
         loading: false,
         columns: [
           {
-            title: '分红/消费时间',
+            title: '分红/积分消费时间',
             key: 'create_time',
             width: '200px',
           },
@@ -158,15 +158,15 @@
             },
           },
           {
-            title: '分红/消费来源',
+            title: '分红/积分消费来源',
             key: 'content',
           },
           {
-            title: '分红/消费金额',
+            title: '分红/积分消费金额',
             key: 'pay_money',
           },
           {
-            title: '我的分红',
+            title: '我的累计分红/积分',
             key: 'commission',
           },
           {
@@ -277,19 +277,23 @@
     }
     .search {
       display: flex;
-      padding: 2px;
+      padding: 10px;
+      background: white;
       .left {
         flex: 1;
         display: flex;
+        align-items: center;
         .box {
           margin-right: 20px;
           .text {
             font-weight: bold;
-            margin: 0px 5px;
+            margin: 0 5px;
           }
         }
       }
       .right {
+        display: flex;
+        align-items: center;
         .bt {
           border: 1px solid #c1c1c1;
           color: #000;
@@ -314,7 +318,7 @@
       }
     }
     .list {
-      margin-top: 20px;
+      margin-top: 10px;
     }
     .page {
       clear: both;
@@ -324,7 +328,7 @@
       background: white;
     }
     .bt {
-      color: blue;
+      color: #1298e6;
       margin-right: 20px;
       cursor: pointer;
     }

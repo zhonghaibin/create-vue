@@ -16,7 +16,13 @@
         </div>
         <div class="box">
           <span class="text">时间</span>
-          <Select v-model="date" clearable filterable style="width: 80px">
+          <Select
+            v-model="date"
+            clearable
+            filterable
+            style="width: 80px"
+            transfer
+          >
             <div slot="empty">未找到数据</div>
             <Option
               v-for="item in dateList"
@@ -258,23 +264,40 @@
       <Table :columns="columns1" :data="data1">
         <!-- slot对应data里面的slot-->
         <template slot="action">
-          <span class="bt">详情</span>
+          <span class="bt" @click="showModal('详情', 'BusinessDetails')">
+            详情
+          </span>
           <span class="bt">更多</span>
         </template>
       </Table>
+      <div class="page">
+        <Page show-elevator show-sizer size="small" :total="40" transfer />
+      </div>
     </div>
-
-    <div class="page">
-      <Page show-elevator show-sizer size="small" :total="40" transfer />
-    </div>
+    <Modal
+      v-model="modal.show"
+      :footer-hide="true"
+      :scrollable="true"
+      :title="modal.title"
+      :width="1000"
+    >
+      <BusinessDetails v-if="modal.type === 'BusinessDetails' && modal.show" />
+    </Modal>
   </div>
 </template>
 
 <script>
+  import BusinessDetails from '@/components/business-track/business-details-list/business-details'
   export default {
     name: 'BusinessDetailsList',
+    components: { BusinessDetails },
     data: function () {
       return {
+        modal: {
+          show: false,
+          title: '',
+          type: false,
+        },
         storeList: [],
         store: '',
         dateList: [
@@ -402,18 +425,22 @@
       }
     },
     created() {},
-    methods: {},
+    methods: {
+      showModal(title, type) {
+        this.modal.show = true
+        this.modal.title = title
+        this.modal.type = type
+      },
+    },
   }
 </script>
 
 <style lang="less" scoped>
   .BusinessDetailsList {
     .baseInfo {
-      border-radius: 10px;
       padding: 10px 14px;
-      margin: 5px 5px 10px 5px;
       display: flex;
-
+      background: white;
       .box {
         flex: 1;
         margin-right: 24px;
@@ -471,19 +498,23 @@
     }
     .search {
       display: flex;
-      padding: 2px;
+      padding: 10px;
+      background: white;
       .left {
         flex: 1;
         display: flex;
+        align-items: center;
         .box {
           margin-right: 8px;
           .text {
             font-weight: bold;
-            margin: 0px 5px;
+            margin: 0 5px;
           }
         }
       }
       .right {
+        display: flex;
+        align-items: center;
         .bt {
           border: 1px solid #c1c1c1;
           color: #000;
@@ -508,14 +539,15 @@
       }
     }
     .list {
-      margin-top: 20px;
-    }
-    .page {
-      display: flex;
-      justify-content: center;
+      .page {
+        height: 40px;
+        padding: 8px 0;
+        text-align: center;
+        background: white;
+      }
     }
     .bt {
-      color: blue;
+      color: #1298e6;
       margin-right: 20px;
       cursor: pointer;
     }

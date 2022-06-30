@@ -27,7 +27,7 @@ export default [
     path: '/cashier',
     name: 'cashier',
     meta: {
-      icon: 'logo-usd',
+      icon: 'ios-cart',
       title: '收银订单',
       showAlways: true,
     },
@@ -132,10 +132,202 @@ export default [
     ],
   },
   {
+    path: '/inventory',
+    name: 'inventory',
+    meta: {
+      icon: 'md-clipboard',
+      title: '商品库存',
+      showAlways: true,
+    },
+    component: Main,
+    children: [
+      {
+        path: 'overview',
+        name: 'inventory.overview',
+        meta: {
+          icon: '',
+          title: '商品总览',
+        },
+        component: () => import('@/view/inventory/overview'),
+      },
+      {
+        path: 'inventory',
+        name: 'inventory.inventory',
+        meta: {
+          icon: '',
+          title: '库存管理',
+        },
+        component: () => import('@/view/inventory/inventory'),
+      },
+      {
+        path: 'put-storage',
+        name: 'inventory.put-storage',
+        meta: {
+          icon: '',
+          title: '商品入库',
+        },
+        component: () => import('@/view/inventory/put-storage'),
+      },
+      {
+        path: 'out-storage',
+        name: 'inventory.out-storage',
+        meta: {
+          icon: '',
+          title: '商品出库',
+        },
+        component: () => import('@/view/inventory/out-storage'),
+      },
+      {
+        path: 'out-storage',
+        name: 'inventory.allocate',
+        meta: {
+          icon: '',
+          title: '调拨管理',
+        },
+        component: () => import('@/view/inventory/allocate'),
+      },
+      {
+        path: 'out-storage',
+        name: 'inventory.take-stock',
+        meta: {
+          icon: '',
+          title: '库存盘点',
+        },
+        component: () => import('@/view/inventory/take-stock'),
+      },
+      {
+        path: 'out-storage',
+        name: 'inventory.cost',
+        meta: {
+          icon: '',
+          title: '成本核算',
+        },
+        component: () => import('@/view/inventory/cost'),
+      },
+      {
+        path: 'base-set',
+        name: 'inventory.base-set',
+        meta: {
+          icon: '',
+          title: '基础设置',
+        },
+        component: () => import('@/view/inventory/base-set'),
+      },
+    ],
+  },
+  {
+    path: '/statistics',
+    name: 'statistics',
+    meta: {
+      icon: 'md-pie',
+      title: '数据统计',
+      showAlways: true,
+    },
+    component: Main,
+    children: [
+      {
+        path: 'business-data',
+        name: 'statistics.business-data',
+        meta: {
+          icon: '',
+          title: '经营数据',
+        },
+        component: () => import('@/view/statistics/business-data'),
+      },
+      {
+        path: 'staff-data',
+        name: 'statistics.staff-data',
+        meta: {
+          icon: '',
+          title: '员工数据',
+        },
+        component: () => import('@/view/statistics/staff-data'),
+      },
+      {
+        path: 'target',
+        name: 'statistics.target',
+        meta: {
+          icon: '',
+          title: '目标管理',
+        },
+        component: () => import('@/view/statistics/target'),
+      },
+      {
+        path: 'statement',
+        name: 'statistics.statement',
+        meta: {
+          icon: '',
+          title: '各类报表',
+        },
+        component: () => import('@/view/statistics/statement'),
+      },
+      {
+        path: 'diy-data',
+        name: 'statistics.diy-data',
+        meta: {
+          icon: '',
+          title: '自定义数据',
+        },
+        component: () => import('@/view/statistics/diy-data'),
+      },
+    ],
+  },
+  {
+    path: '/market',
+    name: 'market',
+    meta: {
+      icon: 'md-cog',
+      title: '营销中心',
+      showAlways: true,
+    },
+    component: Main,
+    children: [
+      {
+        path: 'app-center',
+        name: 'market.app-center',
+        meta: {
+          icon: '',
+          title: '应用中心',
+        },
+        component: () => import('@/view/market/app-center'),
+      },
+    ],
+  },
+  {
+    path: '/revenue',
+    name: 'revenue',
+    meta: {
+      icon: 'logo-yen',
+      title: '收支管理',
+      showAlways: true,
+    },
+    component: Main,
+    children: [
+      {
+        path: 'revenue-list',
+        name: 'revenue.revenue-list',
+        meta: {
+          icon: '',
+          title: '收支管理',
+        },
+        component: () => import('@/view/revenue/revenue-list'),
+      },
+      {
+        path: 'other-revenue-list',
+        name: 'revenue.other-revenue-list',
+        meta: {
+          icon: '',
+          title: '其他收入',
+        },
+        component: () => import('@/view/revenue/other-revenue-list'),
+      },
+    ],
+  },
+  {
     path: '/setting',
     name: 'setting',
     meta: {
-      icon: 'md-aperture',
+      icon: 'md-settings',
       title: '核心设置',
       showAlways: true,
     },
@@ -160,13 +352,13 @@ export default [
         component: () => import('@/view/setting/commission/index'),
       },
       {
-        path: 'item',
-        name: 'setting.item',
+        path: 'project',
+        name: 'setting.project',
         meta: {
           icon: '',
           title: '品项设置',
         },
-        component: () => import('@/view/setting/item/index'),
+        component: () => import('@/view/setting/project/index'),
       },
       {
         path: 'log',

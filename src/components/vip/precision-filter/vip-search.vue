@@ -372,6 +372,19 @@
                     },
                   ],
                 },
+                {
+                  id: 4,
+                  label: '所属门店',
+                  name: 'store',
+                  children: [
+                    {
+                      id: 1,
+                      label: '惠城总店',
+                      value: '惠城总店',
+                      type: 'text',
+                    },
+                  ],
+                },
               ],
             },
             {
@@ -1557,7 +1570,7 @@
     }
     .terms {
       border-top: 1px dashed #ccc;
-      margin-top: 20px;
+      margin-top: 10px;
       .ivu-tag {
         border: 1px solid #f19ec2;
         color: #f19ec2;

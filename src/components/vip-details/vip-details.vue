@@ -20,7 +20,13 @@
               </div>
             </div>
             <div class="row2">
-              <div class="member_no">卡号{{ memberInfo.vip_id }}</div>
+              <div
+                class="member_no"
+                @click="showModal('更换会员卡号', 'EditCardNo')"
+              >
+                卡号{{ memberInfo.vip_id }}
+                <Icon type="md-create" />
+              </div>
               <div class="bind">
                 <div class="box">
                   <div class="img">
@@ -47,7 +53,7 @@
         <div class="right">
           <div class="row1">
             <div class="bt" @click="jump('预约记录')">预约</div>
-            <div class="bt" @click="jumpCashier">收银</div>
+            <div class="bt" @click="jumpRouter('cashier/index')">收银</div>
             <div class="bt">赠送</div>
             <div class="bt" @click="showModal('添加提醒', 'VipRemind')">
               提醒
@@ -108,6 +114,7 @@
             <VipInfo
               v-if="currentTabPane(item, '会员资料')"
               :member-info="memberInfo"
+              @refreshMemberInfo="getMemberInfo"
             />
             <VipData
               v-if="currentTabPane(item, '会员数据')"
@@ -130,7 +137,7 @@
               :member-info="memberInfo"
             />
             <VipShareholderDividends
-              v-if="currentTabPane(item, '股东分红')"
+              v-if="currentTabPane(item, '推荐奖励')"
               :member-info="memberInfo"
             />
             <Attachment
@@ -139,6 +146,10 @@
             />
             <VipGoodsDeposit
               v-if="currentTabPane(item, '商品寄存')"
+              :member-info="memberInfo"
+            />
+            <QuestionnaireSurvey
+              v-if="currentTabPane(item, '问卷调查')"
               :member-info="memberInfo"
             />
           </TabPane>
@@ -152,49 +163,48 @@
       :scrollable="true"
       :title="modal.title"
     >
+      <EditCardNo
+        v-if="modal.type === 'EditCardNo' && modal.show"
+        :member-info="memberInfo"
+        @change="change"
+        @refreshMemberInfo="getMemberInfo"
+      />
       <PersonalityLabel
         v-if="modal.type === 'PersonalityLabel' && modal.show"
         :member-info="memberInfo"
-        @cancelModal="cancelModal"
         @changeLabels="changeLabels"
       />
       <Exchange
         v-if="modal.type === 'Exchange' && modal.show"
         :member-info="memberInfo"
-        @cancelModal="cancelModal"
         @change="change"
         @refreshMemberInfo="getMemberInfo"
       />
       <EditIntegral
         v-if="modal.type === 'EditIntegral' && modal.show"
         :member-info="memberInfo"
-        @cancelModal="cancelModal"
         @change="change"
         @refreshMemberInfo="getMemberInfo"
       />
       <GoShop
         v-if="modal.type === 'GoShop' && modal.show"
         :member-info="memberInfo"
-        @cancelModal="cancelModal"
         @change="change"
         @refreshMemberInfo="getMemberInfo"
       />
       <Deposit
         v-if="modal.type === 'Deposit' && modal.show"
         :member-info="memberInfo"
-        @cancelModal="cancelModal"
         @changeDeposit="change"
       />
       <VipReturnVisit
         v-if="modal.type === 'VipReturnVisit' && modal.show"
         :member-info="memberInfo"
-        @cancelModal="cancelModal"
         @change="change"
       />
       <VipRemind
         v-if="modal.type === 'VipRemind' && modal.show"
         :member-info="memberInfo"
-        @cancelModal="cancelModal"
         @change="change"
       />
     </Modal>
@@ -219,12 +229,15 @@
   import ReturnVisit from '@/components/vip-details/return-visit'
   import VipReturnVisit from '@/components/vip-details/return-visit/vip-return-visit'
   import VipRemind from '@/components/vip-details/return-visit/vip-remind'
+  import EditCardNo from '@/components/vip-details/edit-card-no'
   import { getMemberInfo } from '@/api/vip'
   import default_avatar from '@/assets/default_avatar.png'
   import cookie from 'js-cookie'
+  import QuestionnaireSurvey from '@/components/vip-details/questionnaire-survey'
   export default {
     name: 'VipDetails',
     components: {
+      QuestionnaireSurvey,
       VipAccount,
       VipInfo,
       VipData,
@@ -242,6 +255,7 @@
       Deposit,
       ReturnVisit,
       VipRemind,
+      EditCardNo,
     },
     data: function () {
       return {
@@ -285,7 +299,7 @@
           },
           {
             id: 8,
-            name: '股东分红',
+            name: '推荐奖励',
           },
           {
             id: 9,
@@ -294,6 +308,10 @@
           {
             id: 10,
             name: '商品寄存',
+          },
+          {
+            id: 11,
+            name: '问卷调查',
           },
         ],
         memberInfo: {},
@@ -323,12 +341,9 @@
       this.getMemberInfo()
     },
     methods: {
-      cancel() {
-        this.$emit('cancelModal', false)
-      },
-      jumpCashier() {
+      jumpRouter(path) {
         this.cancel()
-        this.$router.push('/cashier/index')
+        this.$router.push(path)
       },
       change() {
         this.modal.show = false
@@ -344,9 +359,6 @@
         this.modal.show = true
         this.modal.title = title
         this.modal.type = type
-      },
-      cancelModal(status) {
-        this.modal.show = status
       },
       jump(string) {
         this.tab_index = string
@@ -378,7 +390,7 @@
       height: 100%;
       .header {
         display: flex;
-
+        margin-bottom: 10px;
         .left {
           width: 390px;
 
@@ -451,6 +463,7 @@
               .member_no {
                 font-size: 12px;
                 font-weight: bold;
+                cursor: pointer;
               }
 
               .bind {
@@ -482,10 +495,11 @@
             .row3 {
               display: flex;
               font-weight: bold;
-              padding: 10px 0px;
+              padding: 10px 0;
+              justify-content: space-between;
 
               .title {
-                padding: 0px 6px;
+                padding: 0 6px;
               }
             }
           }
@@ -556,14 +570,10 @@
           }
         }
       }
-
-      .tab {
-        margin-top: 20px;
-        background: white;
-        /deep/ .ivu-tabs-ink-bar {
-          background: #cc749a;
-        }
-      }
     }
+  }
+  /deep/.ivu-tabs-bar {
+    border-bottom: 1px solid #dcdee2;
+    margin-bottom: 0;
   }
 </style>

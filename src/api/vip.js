@@ -1,5 +1,6 @@
 import request from '@/utils/request'
 
+//会员等级列表
 export function getMemberGradeList(params) {
   return request({
     url: '/Newuser/vip/type',
@@ -7,6 +8,7 @@ export function getMemberGradeList(params) {
     params,
   })
 }
+//会员来源列表
 export function getMemberSourceList(params) {
   return request({
     url: '/Newuser/vip/source',
@@ -14,7 +16,7 @@ export function getMemberSourceList(params) {
     params,
   })
 }
-
+//会员列表
 export function getMemberList(params) {
   return request({
     url: '/Newuser/vip/index',
@@ -22,7 +24,7 @@ export function getMemberList(params) {
     params,
   })
 }
-
+//会员列表统计
 export function getMemberTotal(params) {
   return request({
     url: '/Newuser/vip/index_total',
@@ -30,6 +32,7 @@ export function getMemberTotal(params) {
     params,
   })
 }
+//会员资料
 export function getMemberInfo(params) {
   return request({
     url: '/Newuser/vip/details',
@@ -37,7 +40,7 @@ export function getMemberInfo(params) {
     params,
   })
 }
-
+//回访列表
 export function getMemberVisitList(params) {
   return request({
     url: '/Newuser/vip/visit_list',
@@ -45,6 +48,7 @@ export function getMemberVisitList(params) {
     params,
   })
 }
+//预约记录列表
 export function getMemberAppointmentList(params) {
   return request({
     url: '/Newuser/WxMrke/index2',
@@ -52,6 +56,7 @@ export function getMemberAppointmentList(params) {
     params,
   })
 }
+//会员套餐列表
 export function getVipCardList(params) {
   return request({
     url: '/Newuser/combo/vip_card',
@@ -59,6 +64,7 @@ export function getVipCardList(params) {
     params,
   })
 }
+//会员套餐详情
 export function getVipCardDetails(params) {
   return request({
     url: '/Newuser/combo/vip_card_details',
@@ -66,7 +72,7 @@ export function getVipCardDetails(params) {
     params,
   })
 }
-
+//会员套餐消费记录
 export function getVipCardOrderInfo(params) {
   return request({
     url: '/Newuser/combo/order_info',
@@ -74,7 +80,7 @@ export function getVipCardOrderInfo(params) {
     params,
   })
 }
-
+//会员套餐备注列表
 export function getVipCardRemarks(params) {
   return request({
     url: '/Newuser/combo/vip_card_remarks',
@@ -82,6 +88,7 @@ export function getVipCardRemarks(params) {
     params,
   })
 }
+//会员套餐备注提交
 export function setVipCardRemarks(params) {
   return request({
     url: '/Newuser/combo/vip_card_remarks_add',
@@ -89,6 +96,7 @@ export function setVipCardRemarks(params) {
     data: params,
   })
 }
+//套餐备注删除
 export function delVipCardRemarks(params) {
   return request({
     url: '/Newuser/combo/vip_card_remarks_del',
@@ -96,6 +104,7 @@ export function delVipCardRemarks(params) {
     data: params,
   })
 }
+//会员标签列表
 export function getTags(params) {
   return request({
     url: '/Newuser/vip/tags',
@@ -103,7 +112,7 @@ export function getTags(params) {
     params,
   })
 }
-
+//会员标签提交
 export function setTags(params) {
   return request({
     url: '/Newuser/vip/add_tags',
@@ -111,7 +120,7 @@ export function setTags(params) {
     data: params,
   })
 }
-
+//标签列表-按类分组
 export function getTagsTypeList(params) {
   return request({
     url: '/Newuser/setting/tags_type_list',
@@ -119,7 +128,7 @@ export function getTagsTypeList(params) {
     params,
   })
 }
-
+//会员数据
 export function getInfo(params) {
   return request({
     url: '/Newuser/vip/info',
@@ -127,7 +136,7 @@ export function getInfo(params) {
     params,
   })
 }
-
+//商品寄存列表
 export function getGoodsDeposit(params) {
   return request({
     url: '/Newuser/goods/deposit',
@@ -135,6 +144,7 @@ export function getGoodsDeposit(params) {
     params,
   })
 }
+//商品寄存操作记录
 export function getGoodsDepositLog(params) {
   return request({
     url: '/Newuser/goods/deposit_log',
@@ -142,6 +152,7 @@ export function getGoodsDepositLog(params) {
     params,
   })
 }
+//商品列表
 export function getGoodsList(params) {
   return request({
     url: '/Newuser/goods/index',
@@ -149,6 +160,7 @@ export function getGoodsList(params) {
     params,
   })
 }
+//商品寄存新增
 export function setDeposit(params) {
   return request({
     url: '/Newuser/goods/deposit_add',
@@ -156,6 +168,7 @@ export function setDeposit(params) {
     data: params,
   })
 }
+//寄存商品操作
 export function setDepositAct(params) {
   return request({
     url: '/Newuser/goods/deposit_act',
@@ -163,6 +176,7 @@ export function setDepositAct(params) {
     data: params,
   })
 }
+//附件列表
 export function getFiles(params) {
   return request({
     url: 'Newuser/vip/files',
@@ -170,6 +184,7 @@ export function getFiles(params) {
     params,
   })
 }
+//会员附件添加/编辑
 export function setFilesAct(params) {
   return request({
     url: 'Newuser/vip/files_act',
@@ -177,6 +192,7 @@ export function setFilesAct(params) {
     data: params,
   })
 }
+//附件删除
 export function delFiles(params) {
   return request({
     url: 'Newuser/vip/files_del',
@@ -184,6 +200,7 @@ export function delFiles(params) {
     params,
   })
 }
+//股东分红----股东信息----统计
 export function getFromBossTotal(params) {
   return request({
     url: 'Newuser/Vip/from_boss_total',
@@ -191,6 +208,7 @@ export function getFromBossTotal(params) {
     params,
   })
 }
+//股东分红------股东信息---推荐人列表
 export function getFromBoss(params) {
   return request({
     url: 'Newuser/Vip/from_boss',
@@ -198,6 +216,7 @@ export function getFromBoss(params) {
     params,
   })
 }
+//股东信息----解除关系
 export function delLower(params) {
   return request({
     url: 'Newuser/vip/lower_del',
@@ -205,6 +224,7 @@ export function delLower(params) {
     data: params,
   })
 }
+//股东信息----分红统计
 export function getCommissionTotal(params) {
   return request({
     url: 'Newuser/rec/commission_total',
@@ -212,6 +232,7 @@ export function getCommissionTotal(params) {
     params,
   })
 }
+//股东分红/会员分佣
 export function getCommission(params) {
   return request({
     url: 'Newuser/rec/commission',
@@ -219,6 +240,7 @@ export function getCommission(params) {
     params,
   })
 }
+//添加/编辑回访
 export function setVisitAct(params) {
   return request({
     url: 'Newuser/vip/visit_act',
@@ -226,6 +248,7 @@ export function setVisitAct(params) {
     data: params,
   })
 }
+//回访删除
 export function delVisitAct(params) {
   return request({
     url: 'Newuser/vip/visit_del',
@@ -233,7 +256,7 @@ export function delVisitAct(params) {
     data: params,
   })
 }
-
+//员工列表
 export function getStaffList(params) {
   return request({
     url: 'Newuser/staff/index',
@@ -241,6 +264,7 @@ export function getStaffList(params) {
     params,
   })
 }
+//会员提醒列表
 export function getWarningList(params) {
   return request({
     url: 'Newuser/VipRecord/warning_list',
@@ -248,7 +272,7 @@ export function getWarningList(params) {
     params,
   })
 }
-
+//添加会员提醒
 export function setWarningAct(params) {
   return request({
     url: 'Newuser/VipRecord/warning_act',
@@ -256,7 +280,7 @@ export function setWarningAct(params) {
     data: params,
   })
 }
-
+//取消会员提醒
 export function setWarningCancel(params) {
   return request({
     url: 'Newuser/VipRecord/warning_cancel',
@@ -264,6 +288,7 @@ export function setWarningCancel(params) {
     data: params,
   })
 }
+//会员提醒状态修改
 export function setWarningStatus(params) {
   return request({
     url: 'Newuser/VipRecord/warning_status',
@@ -271,7 +296,7 @@ export function setWarningStatus(params) {
     data: params,
   })
 }
-
+//资产记录---消费记录
 export function getCapital(params) {
   return request({
     url: 'Newuser/rec/capital',
@@ -279,6 +304,7 @@ export function getCapital(params) {
     params,
   })
 }
+//资产记录---获赠记录
 export function getGiveList(params) {
   return request({
     url: 'Newuser/vip/give_list',
@@ -286,6 +312,7 @@ export function getGiveList(params) {
     params,
   })
 }
+//资产记录----积分记录
 export function getIntegralList(params) {
   return request({
     url: 'Newuser/integral/index',
@@ -293,6 +320,7 @@ export function getIntegralList(params) {
     params,
   })
 }
+//客情（重要日期）编辑/添加
 export function setVipRecordAdd(params) {
   return request({
     url: 'Newuser/VipRecord/add',
@@ -300,7 +328,7 @@ export function setVipRecordAdd(params) {
     data: params,
   })
 }
-
+//客情（重要日期）列表
 export function getVipRecord(params) {
   return request({
     url: 'Newuser/VipRecord/index',
@@ -308,7 +336,7 @@ export function getVipRecord(params) {
     params,
   })
 }
-
+//客情（重要日期）记录删除
 export function delVipRecord(params) {
   return request({
     url: 'Newuser/VipRecord/del',
@@ -316,7 +344,7 @@ export function delVipRecord(params) {
     data: params,
   })
 }
-
+//礼品列表
 export function getGiftList(params) {
   return request({
     url: 'Newuser/gift/index',
@@ -324,6 +352,7 @@ export function getGiftList(params) {
     params,
   })
 }
+//积分兑换
 export function integralBuy(params) {
   return request({
     url: 'Newuser/integral/buy',
@@ -331,6 +360,7 @@ export function integralBuy(params) {
     data: params,
   })
 }
+//修改积分
 export function integralEdit(params) {
   return request({
     url: 'Newuser/integral/edit',
@@ -338,6 +368,7 @@ export function integralEdit(params) {
     data: params,
   })
 }
+//会员转店
 export function setTransferShop(params) {
   return request({
     url: 'Newuser/vip/transfer_shop',
@@ -345,6 +376,7 @@ export function setTransferShop(params) {
     data: params,
   })
 }
+//门店列表
 export function getShopList(params) {
   return request({
     url: 'Newuser/main/shop_list',
@@ -352,21 +384,7 @@ export function getShopList(params) {
     params,
   })
 }
-export function getTypeList(params) {
-  return request({
-    url: 'Newuser/vip/type',
-    method: 'get',
-    params,
-  })
-}
-export function getSourceList(params) {
-  return request({
-    url: 'Newuser/vip/source',
-    method: 'get',
-    params,
-  })
-}
-
+//添加会员
 export function setVip(params) {
   return request({
     url: '/Newuser/vip/add',
@@ -374,9 +392,34 @@ export function setVip(params) {
     data: params,
   })
 }
+//编辑会员
+export function vipEdit(params) {
+  return request({
+    url: '/Newuser/vip/edit',
+    method: 'post',
+    data: params,
+  })
+}
+//会员编辑/添加的手机校验
 export function checkTel(params) {
   return request({
     url: 'Newuser/vip/check_tel',
+    method: 'get',
+    params,
+  })
+}
+//会员换卡号操作
+export function updateVipId(params) {
+  return request({
+    url: '/Newuser/vip/update_vip_id',
+    method: 'post',
+    data: params,
+  })
+}
+//到店预警
+export function cashierWarning(params) {
+  return request({
+    url: 'Newuser/Cashier/warning',
     method: 'get',
     params,
   })

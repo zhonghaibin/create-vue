@@ -67,10 +67,7 @@
       </div>
     </div>
     <Modal v-model="modal.show" :footer-hide="true" :title="modal.title">
-      <VipReturnVisit
-        v-if="modal.type === 'VipReturnVisit'"
-        @cancelModal="cancelModal"
-      />
+      <VipReturnVisit v-if="modal.type === 'VipReturnVisit'" />
     </Modal>
   </div>
 </template>
@@ -155,6 +152,30 @@
             title: '附件',
             key: 'money1',
             render: (h, params) => {
+              let arr = []
+              if (params.row.img) {
+                arr = [
+                  h(
+                    'span',
+                    {
+                      on: {
+                        click: () => {
+                          this.file = params.row.img
+                          this.showModal('预览查看', 'Look')
+                        },
+                      },
+                      style: {
+                        color: '#1298e6',
+                        cursor: 'pointer',
+                      },
+                    },
+                    '预览查看'
+                  ),
+                ]
+              } else {
+                arr = [h('span', '无')]
+              }
+
               let html = h(
                 'div',
                 {
@@ -163,31 +184,7 @@
                     alignItems: 'center',
                   },
                 },
-                [
-                  h(
-                    'div',
-                    {
-                      style: {
-                        width: '40px',
-                        height: '40px',
-                        position: 'relative',
-                        borderRadius: '100%',
-                      },
-                    },
-                    [
-                      h('img', {
-                        attrs: {
-                          src: params.row.img,
-                        },
-                        style: {
-                          width: '40px',
-                          height: '40px',
-                          overflow: 'hidden',
-                        },
-                      }),
-                    ]
-                  ),
-                ]
+                arr
               )
 
               return html
@@ -227,9 +224,7 @@
         this.modal.title = title
         this.modal.type = type
       },
-      cancelModal(status) {
-        this.modal.show = status
-      },
+
       changeValue() {
         this.search()
       },
@@ -272,19 +267,23 @@
   .VipReturnVisitList {
     .search {
       display: flex;
-      padding: 2px 10px;
+      padding: 10px;
+      background: white;
       .left {
         flex: 1;
         display: flex;
+        align-items: center;
         .box {
           margin-right: 20px;
           .text {
             font-weight: bold;
-            margin: 0px 5px;
+            margin: 0 5px;
           }
         }
       }
       .right {
+        display: flex;
+        align-items: center;
         .bt {
           border: 1px solid #c1c1c1;
           color: #000;
@@ -309,7 +308,7 @@
       }
     }
     .list {
-      margin-top: 20px;
+      margin-top: 10px;
       .page {
         height: 40px;
         padding: 8px 0;
@@ -319,7 +318,7 @@
     }
 
     .bt {
-      color: blue;
+      color: #1298e6;
       margin-right: 20px;
       cursor: pointer;
     }

@@ -1,9 +1,7 @@
 <template>
-  <div class="Cashier">
+  <div ref="box1" class="box">
+    <div class="column">开单收银</div>
     <div class="top">
-      <Row>
-        <Col class="column" span="12">开单收银</Col>
-      </Row>
       <div class="vin-info">
         <div class="header">
           <div class="left">
@@ -15,7 +13,9 @@
             />
           </div>
           <div class="right">
-            <div class="bt">新增会员</div>
+            <div class="bt" @click="showModal('新增会员', 'VipInfoDetails')">
+              新增会员
+            </div>
           </div>
         </div>
         <div class="content">
@@ -136,29 +136,54 @@
         </div>
       </div>
     </div>
-
-    <Row>
-      <Col>
-        <div ref="tab" class="tab">
-          <Tabs v-model="tab_index" type="card" @on-click="handleTabClick">
-            <TabPane
-              v-for="item in tab_list"
-              :key="item.id"
-              :label="item.name"
-              :name="item.name"
-            />
-          </Tabs>
-        </div>
-      </Col>
-    </Row>
+    <div>
+      <Tabs v-model="tab_index" type="card" @on-click="handleTabClick">
+        <TabPane
+          v-for="item in tab_list"
+          :key="item.id"
+          :label="item.name"
+          :name="item.name"
+        >
+          <StampCard v-if="item.name === '划卡' && tab_index === '划卡'" />
+          <Buy v-if="item.name === '购买' && tab_index === '购买'" />
+          <Renewal v-if="item.name === '卡续充' && tab_index === '卡续充'" />
+          <IntegralRecharge
+            v-if="item.name === '积分充值' && tab_index === '积分充值'"
+          />
+        </TabPane>
+      </Tabs>
+    </div>
+    <Modal
+      v-model="modal.show"
+      :footer-hide="true"
+      :scrollable="modal.scrollable"
+      :styles="modal.styles"
+      :title="modal.title"
+      :width="modal.width"
+    >
+      <VipInfoDetails v-if="modal.type === 'VipInfoDetails' && modal.show" />
+    </Modal>
   </div>
 </template>
 <script>
+  import StampCard from '@/components/cashier/cashier/stamp-card'
+  import Buy from '@/components/cashier/cashier/buy'
+  import Renewal from '@/components/cashier/cashier/renewal'
+  import IntegralRecharge from '@/components/cashier/cashier/integral-recharge'
+  import VipInfoDetails from '@/components/vip-details/vip-info/vip-info-details'
   export default {
     name: 'Cashier',
-    components: {},
+    components: { IntegralRecharge, StampCard, Buy, Renewal, VipInfoDetails },
     data: function () {
       return {
+        modal: {
+          show: false,
+          title: '',
+          type: false,
+          width: 600,
+          scrollable: true,
+          styles: { top: '50px' },
+        },
         tab_index: '划卡',
         tab_list: [
           { name: '划卡', id: 1 },
@@ -171,43 +196,25 @@
       }
     },
     mounted() {
-      this.$nextTick(() => {
-        this.tabHeight()
-      })
+      this.$nextTick(() => {})
     },
     methods: {
-      tabHeight() {
-        let orgTreeHeight = window.innerHeight
-        let divHeight = orgTreeHeight - 400
-        this.$refs.tab.style.minHeight = divHeight + 'px'
-        console.log(orgTreeHeight, divHeight)
-      },
-      handleTabClick() {
-        this.tabHeight()
-        this.tab_index = cashier
+      handleTabClick() {},
+      showModal(title, type) {
+        this.modal.show = true
+        this.modal.title = title
+        this.modal.type = type
       },
     },
   }
 </script>
 <style lang="less" scoped>
-  .tab {
-    margin-top: 20px;
-    background: white;
-    padding-bottom: 10px;
-    /deep/ .ivu-tabs-ink-bar {
-      background: #cc749a;
-    }
-  }
-  .Cashier {
+  .box {
     .top {
       background: white;
-      padding: 4px 16px 20px 16px;
-      .column {
-        font-weight: bold;
-        font-size: 14px;
-        padding: 10px 2px;
-        height: 100%;
-      }
+      padding: 10px 16px 20px 16px;
+      border-radius: 8px;
+      margin-bottom: 10px;
       .vin-info {
         .header {
           display: flex;
@@ -229,7 +236,7 @@
           }
         }
         .content {
-          padding: 20px 10px;
+          padding: 16px 10px;
           display: flex;
           .head {
             .img {
@@ -251,12 +258,12 @@
               display: flex;
               .l {
                 flex: 1;
-                padding: 0 10px;
+                padding: 2px 12px;
               }
               .r {
                 padding: 0 10px;
                 .text {
-                  color: blue;
+                  color: #1298e6;
                   cursor: pointer;
                 }
               }
@@ -270,10 +277,12 @@
             .left {
               width: 80px;
               margin-left: 120px;
+              height: 40px;
+              line-height: 40px;
             }
             .remark {
               width: 100%;
-              height: 46px;
+              height: 40px;
               border: 1px dashed #505050;
               border-radius: 10px;
             }

@@ -47,7 +47,7 @@
       :title="modal.title"
       :width="modal.width"
     >
-      <Ladder v-if="modal.type === 'Ladder'" @cancelModal="cancelModal" />
+      <Ladder v-if="modal.type === 'Ladder'" />
     </Modal>
   </div>
 </template>
@@ -135,9 +135,6 @@
         this.modal.type = type
         this.modal.width = width
       },
-      cancelModal(status) {
-        this.modal.show = status
-      },
     },
   }
 </script>
@@ -146,15 +143,17 @@
   .LadderList {
     .search {
       display: flex;
-      padding: 2px 10px;
+      padding: 10px;
+      background: white;
       .left {
         flex: 1;
         display: flex;
+        align-items: center;
         .box {
           margin-right: 20px;
           .text {
             font-weight: bold;
-            margin: 0px 5px;
+            margin: 0 5px;
           }
         }
       }
@@ -186,7 +185,7 @@
       }
     }
     .list {
-      margin-top: 20px;
+      margin-top: 10px;
       .page {
         height: 40px;
         padding: 8px 0;
@@ -196,7 +195,7 @@
     }
 
     .bt {
-      color: blue;
+      color: #1298e6;
       margin-right: 20px;
       cursor: pointer;
     }

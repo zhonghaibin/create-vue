@@ -100,6 +100,8 @@
 
 <style lang="less" scoped>
   .VipList1 {
+    background: white;
+    padding: 10px;
     .list-top {
       margin-top: 14px;
       margin-bottom: 6px;

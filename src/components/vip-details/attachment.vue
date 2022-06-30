@@ -52,7 +52,6 @@
         v-if="modal.type === 'UploadFile' && modal.show"
         :data="data"
         :member-info="memberInfo"
-        @cancelModal="cancelModal"
         @change="change"
       />
       <img
@@ -113,9 +112,6 @@
         this.modal.type = type
         this.data = data
         this.file = data.file
-      },
-      cancelModal(status) {
-        this.modal.show = status
       },
 
       currentPage(current) {

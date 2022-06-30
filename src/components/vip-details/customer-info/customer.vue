@@ -16,6 +16,12 @@
             style="width: 200px"
           />
         </div>
+        <div v-if="index == 0" style="font-size: 20px; color: #f19ec2">
+          <Icon type="md-add" @click="add" />
+        </div>
+        <div v-if="index > 0" style="font-size: 20px; color: #f19ec2">
+          <Icon type="ios-trash" @click="delData(index)" />
+        </div>
       </div>
       <div class="row">
         <div class="bt" @click="add">
@@ -26,7 +32,6 @@
     </div>
     <div class="footer">
       <div class="bt" @click="save">保存</div>
-      <div class="bt" @click="cancel">取消</div>
     </div>
   </div>
 </template>
@@ -59,8 +64,8 @@
       }
     },
     methods: {
-      cancel() {
-        this.$emit('cancelModal', false)
+      delData(index) {
+        this.list.splice(index, 1)
       },
       add() {
         this.list.push({

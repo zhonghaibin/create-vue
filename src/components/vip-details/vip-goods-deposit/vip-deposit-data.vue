@@ -47,14 +47,12 @@
       <Deposit
         v-if="modal.type === 'Deposit' && modal.show"
         :member-info="memberInfo"
-        @cancelModal="cancelModal"
         @changeDeposit="changeDeposit"
       />
       <Take
         v-if="modal.type === 'Take' && modal.show"
         :deposit="deposit"
         :member-info="memberInfo"
-        @cancelModal="cancelModal"
         @changeDeposit="changeDeposit"
       />
     </Modal>
@@ -137,9 +135,7 @@
         this.modal.type = type
         this.deposit = data
       },
-      cancelModal(status) {
-        this.modal.show = status
-      },
+
       currentPage(current) {
         this.page.current = current
         this.searchData.p = current
@@ -174,19 +170,23 @@
   .VipDividendsInfo {
     .search {
       display: flex;
-      padding: 2px 10px;
+      padding: 10px;
+      background: white;
       .left {
         flex: 1;
         display: flex;
+        align-items: center;
         .box {
           margin-right: 20px;
           .text {
             font-weight: bold;
-            margin: 0px 5px;
+            margin: 0 5px;
           }
         }
       }
       .right {
+        display: flex;
+        align-items: center;
         .bt {
           border: 1px solid #c1c1c1;
           color: #000;
@@ -211,7 +211,7 @@
       }
     }
     .list {
-      margin-top: 20px;
+      margin-top: 10px;
     }
     .page {
       clear: both;
@@ -221,7 +221,7 @@
       background: white;
     }
     .bt {
-      color: blue;
+      color: #1298e6;
       margin-right: 4px;
       cursor: pointer;
     }

@@ -69,10 +69,4 @@
   }
 </script>
 
-<style lang="less" scoped>
-  /deep/.ivu-tabs-nav {
-    .ivu-tabs-tab-active {
-      color: #cc749a;
-    }
-  }
-</style>
+<style lang="less" scoped></style>

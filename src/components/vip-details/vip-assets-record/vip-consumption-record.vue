@@ -113,7 +113,26 @@
           },
           {
             title: '服务/销售人员',
-            key: 'service_str',
+            render: (h, params) => {
+              let list = []
+              params.row.staff.forEach((item) => {
+                list.push(
+                  h(
+                    'div',
+                    {
+                      style: {
+                        color: '#31708f',
+                      },
+                    },
+                    item
+                  )
+                )
+              })
+
+              let html = h('div', [h('div', list)])
+
+              return html
+            },
           },
           {
             title: '消费类型',
@@ -121,7 +140,26 @@
           },
           {
             title: '消费内容',
-            key: 'content',
+            render: (h, params) => {
+              let list = []
+              params.row.content.forEach((item) => {
+                list.push(
+                  h(
+                    'div',
+                    {
+                      style: {
+                        color: '#31708f',
+                      },
+                    },
+                    item
+                  )
+                )
+              })
+
+              let html = h('div', [h('div', list)])
+
+              return html
+            },
           },
           {
             title: '消费金额',
@@ -231,19 +269,23 @@
   .VipConsumptionRecord {
     .search {
       display: flex;
-      padding: 2px;
+      padding: 10px;
+      background: white;
       .left {
         flex: 1;
         display: flex;
+        align-items: center;
         .box {
           margin-right: 20px;
           .text {
             font-weight: bold;
-            margin: 0px 5px;
+            margin: 0 5px;
           }
         }
       }
       .right {
+        display: flex;
+        align-items: center;
         .bt {
           border: 1px solid #c1c1c1;
           color: #000;
@@ -268,7 +310,7 @@
       }
     }
     .list {
-      margin-top: 20px;
+      margin-top: 10px;
     }
     .page {
       height: 40px;
@@ -277,7 +319,7 @@
       background: white;
     }
     .bt {
-      color: blue;
+      color: #1298e6;
       margin-right: 20px;
       cursor: pointer;
     }

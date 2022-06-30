@@ -56,7 +56,6 @@
 
     <div class="footer">
       <div class="bt" @click="setWarningAct">保存</div>
-      <div class="bt" @click="cancel">取消</div>
     </div>
   </div>
 </template>
@@ -93,9 +92,6 @@
       this.getStaffList()
     },
     methods: {
-      cancel() {
-        this.$emit('cancelModal', false)
-      },
       save() {
         this.setWarningAct()
       },

@@ -1,35 +1,27 @@
 <template>
   <div class="box">
-    <Row>
-      <Col class="column" span="12">提成设置</Col>
-    </Row>
-    <Row>
-      <Col>
-        <Tabs v-model="tab_index" type="card" @on-click="handleTabClick">
-          <TabPane
-            v-for="item in tab_list"
-            :key="item.id"
-            :label="item.name"
-            :name="item.name"
-          >
-            <ServiceList
-              v-if="item.name === '项目提成' && tab_index === '项目提成'"
-            />
-            <ServiceList
-              v-if="
-                item.name === '套餐次卡提成' && tab_index === '套餐次卡提成'
-              "
-            />
-            <ServiceList
-              v-if="item.name === '商品提成' && tab_index === '商品提成'"
-            />
-            <LadderList
-              v-if="item.name === '阶梯提成' && tab_index === '阶梯提成'"
-            />
-          </TabPane>
-        </Tabs>
-      </Col>
-    </Row>
+    <div class="column">提成设置</div>
+    <Tabs v-model="tab_index" type="card" @on-click="handleTabClick">
+      <TabPane
+        v-for="item in tab_list"
+        :key="item.id"
+        :label="item.name"
+        :name="item.name"
+      >
+        <ServiceList
+          v-if="item.name === '项目提成' && tab_index === '项目提成'"
+        />
+        <ServiceList
+          v-if="item.name === '套餐次卡提成' && tab_index === '套餐次卡提成'"
+        />
+        <ServiceList
+          v-if="item.name === '商品提成' && tab_index === '商品提成'"
+        />
+        <LadderList
+          v-if="item.name === '阶梯提成' && tab_index === '阶梯提成'"
+        />
+      </TabPane>
+    </Tabs>
   </div>
 </template>
 <script>

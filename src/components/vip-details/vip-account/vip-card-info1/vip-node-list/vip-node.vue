@@ -56,9 +56,6 @@
       }
     },
     methods: {
-      cancel() {
-        this.$emit('cancelModal', false)
-      },
       save() {
         console.log('remarks', this.remarks)
         this.formData.card_vid = this.cardVid

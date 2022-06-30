@@ -1,54 +1,45 @@
 <template>
   <div class="box">
-    <Row>
-      <Col class="column" span="12">系统设置</Col>
-    </Row>
-    <Row>
-      <Col>
-        <div ref="tab" class="tab">
-          <Tabs v-model="tab_index" type="card" @on-click="handleTabClick">
-            <TabPane
-              v-for="item in tab_list"
-              :key="item.id"
-              :label="item.name"
-              :name="item.name"
-            >
-              <PayList
-                v-if="item.name === '支付方式' && tab_index === '支付方式'"
-              />
-              <Appointment
-                v-if="item.name === '预约设置' && tab_index === '预约设置'"
-              />
-              <Cashier
-                v-if="item.name === '收银设置' && tab_index === '收银设置'"
-              />
-              <VipSet
-                v-if="item.name === '会员设置' && tab_index === '会员设置'"
-              />
-              <SpendTypeList
-                v-if="
-                  item.name === '支出类别设置' && tab_index === '支出类别设置'
-                "
-              />
-              <TagList
-                v-if="item.name === '标签管理' && tab_index === '标签管理'"
-              />
-              <CustomFieldList
-                v-if="item.name === '自定义字段' && tab_index === '自定义字段'"
-              />
-              <Attendance
-                v-if="item.name === '考勤设置' && tab_index === '考勤设置'"
-              />
-              <PushTemplateList
-                v-if="
-                  item.name === '企业微信推送' && tab_index === '企业微信推送'
-                "
-              />
-            </TabPane>
-          </Tabs>
-        </div>
-      </Col>
-    </Row>
+    <div class="column">系统设置</div>
+    <div ref="tab" class="tab">
+      <Tabs v-model="tab_index" type="card" @on-click="handleTabClick">
+        <TabPane
+          v-for="item in tab_list"
+          :key="item.id"
+          :label="item.name"
+          :name="item.name"
+        >
+          <PayList
+            v-if="item.name === '支付方式' && tab_index === '支付方式'"
+          />
+          <Appointment
+            v-if="item.name === '预约设置' && tab_index === '预约设置'"
+          />
+          <Cashier
+            v-if="item.name === '收银设置' && tab_index === '收银设置'"
+          />
+          <VipSet v-if="item.name === '会员设置' && tab_index === '会员设置'" />
+          <SpendTypeList
+            v-if="item.name === '支出类别设置' && tab_index === '支出类别设置'"
+          />
+          <TagList
+            v-if="item.name === '标签管理' && tab_index === '标签管理'"
+          />
+          <CustomFieldList
+            v-if="item.name === '自定义字段' && tab_index === '自定义字段'"
+          />
+          <Attendance
+            v-if="item.name === '考勤设置' && tab_index === '考勤设置'"
+          />
+          <QuestionnaireSurveyList
+            v-if="item.name === '问卷调查' && tab_index === '问卷调查'"
+          />
+          <PushTemplateList
+            v-if="item.name === '企业微信推送' && tab_index === '企业微信推送'"
+          />
+        </TabPane>
+      </Tabs>
+    </div>
   </div>
 </template>
 <script>
@@ -61,6 +52,7 @@
   import Cashier from '@/components/setting/system/cashier'
   import VipSet from '@/components/setting/system/vip-set'
   import Attendance from '@/components/setting/system/attendance'
+  import QuestionnaireSurveyList from '@/components/setting/system/questionnaire-survey-list'
   export default {
     name: 'Index',
     components: {
@@ -73,6 +65,7 @@
       Cashier,
       VipSet,
       Attendance,
+      QuestionnaireSurveyList,
     },
     data: function () {
       return {
@@ -86,7 +79,8 @@
           { name: '标签管理', id: 6 },
           { name: '自定义字段', id: 7 },
           { name: '考勤设置', id: 8 },
-          { name: '企业微信推送', id: 9 },
+          { name: '问卷调查', id: 9 },
+          { name: '企业微信推送', id: 10 },
         ],
       }
     },
@@ -112,8 +106,6 @@
 </script>
 <style lang="less" scoped>
   .tab {
-    margin-top: 20px;
-    background: white;
     padding-bottom: 10px;
     /deep/ .ivu-tabs-ink-bar {
       background: #cc749a;

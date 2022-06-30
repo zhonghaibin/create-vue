@@ -8,11 +8,11 @@
         :name="item.name"
       >
         <VipDividendsInfo
-          v-if="item.name === '股东信息' && tab_index === '股东信息'"
+          v-if="item.name === '星推官信息' && tab_index === '星推官信息'"
           :member-info="memberInfo"
         />
         <VipShareholderDetails
-          v-if="item.name === '分红记录' && tab_index === '分红记录'"
+          v-if="item.name === '分红/积分记录' && tab_index === '分红/积分记录'"
           :member-info="memberInfo"
         />
       </TabPane>
@@ -37,15 +37,15 @@
     },
     data: function () {
       return {
-        tab_index: '股东信息',
+        tab_index: '星推官信息',
         lab_list: [
           {
             id: 1,
-            name: '股东信息',
+            name: '星推官信息',
           },
           {
             id: 2,
-            name: '分红记录',
+            name: '分红/积分记录',
           },
         ],
       }

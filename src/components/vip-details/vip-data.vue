@@ -79,19 +79,19 @@
     <div class="card">
       <div class="header">
         <div class="ico"><Icon type="ios-photos" /></div>
-        <div class="title">股东收益</div>
+        <div class="title">推荐收益</div>
       </div>
       <div class="content">
         <div class="row">
-          <div class="left">可提现分红</div>
+          <div class="left">可提现/使用分红/积分</div>
           <div class="right">{{ statistical.commission_balance }}</div>
         </div>
         <div class="row">
-          <div class="left">累计分红</div>
+          <div class="left">累计分红/积分</div>
           <div class="right">{{ statistical.commission }}</div>
         </div>
         <div class="row">
-          <div class="left">分享闺蜜卡领取次数</div>
+          <div class="left">分享体验卡领取次数</div>
           <div class="right">{{ statistical.swiping_count }}</div>
         </div>
         <div class="row">
@@ -161,7 +161,7 @@
     padding-bottom: 10px;
     .card {
       flex: 1;
-      margin: 20px 90px 0px 30px;
+      margin: 20px 90px 0 30px;
       border-radius: 20px;
       border: 1px solid #dcdee2;
       box-shadow: 1px 1px 5px rgb(0 0 0 / 30%);
@@ -190,7 +190,7 @@
       }
       .content {
         border-top: 1px dashed #cccc;
-        margin: 0px 20px;
+        margin: 0 20px;
         padding-top: 20px;
         .row {
           display: flex;
@@ -216,7 +216,7 @@
           .right {
             .bt {
               cursor: pointer;
-              color: blue;
+              color: #1298e6;
             }
           }
         }

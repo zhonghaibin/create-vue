@@ -43,6 +43,12 @@
           <i-switch v-model="switch1" @on-change="change" />
         </div>
       </div>
+      <div class="row">
+        <div class="left">预约免审设置</div>
+        <div class="right">
+          <i-switch v-model="switch1" @on-change="change" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -68,10 +74,16 @@
 
 <style lang="less" scoped>
   .Appointment {
+    background: white;
+    padding: 20px;
+
     .box {
+      border-top: 1px solid #eeeeee;
+      border-left: 1px solid #eeeeee;
+      border-right: 1px solid #eeeeee;
       .row {
         height: 40px;
-        padding: 4px 2px;
+        padding: 4px 10px;
         display: flex;
         font-size: 12px;
         border-bottom: 1px solid #ececec;

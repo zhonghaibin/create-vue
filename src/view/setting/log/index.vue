@@ -1,5 +1,6 @@
 <template>
-  <div class="index">
+  <div class="box">
+    <div class="column">操作记录</div>
     <div class="search">
       <div class="left">
         <div class="box">
@@ -51,7 +52,7 @@
         </div>
       </div>
       <div class="right">
-        <div class="add-bt">导出记录</div>
+        <div class="add-bt">导出</div>
       </div>
     </div>
     <div class="list">
@@ -119,7 +120,11 @@
             key: 'info',
           },
         ],
-        list: [],
+        list: [
+          {
+            info: 1,
+          },
+        ],
         searchData: { search: '', start: '', end: '' },
       }
     },
@@ -151,22 +156,26 @@
 </script>
 
 <style lang="less" scoped>
-  .index {
+  .box {
     .search {
       display: flex;
-      padding: 2px 10px;
+      padding: 10px;
+      background: white;
       .left {
         flex: 1;
         display: flex;
+        align-items: center;
         .box {
           margin-right: 20px;
           .text {
             font-weight: bold;
-            margin: 0px 5px;
+            margin: 0 5px;
           }
         }
       }
       .right {
+        display: flex;
+        align-items: center;
         .bt {
           border: 1px solid #c1c1c1;
           color: #000;
@@ -191,7 +200,7 @@
       }
     }
     .list {
-      margin-top: 20px;
+      margin-top: 10px;
       .page {
         height: 40px;
         padding: 8px 0;
@@ -201,7 +210,7 @@
     }
 
     .bt {
-      color: blue;
+      color: #1298e6;
       margin-right: 20px;
       cursor: pointer;
     }

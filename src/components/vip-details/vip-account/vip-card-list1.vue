@@ -193,17 +193,18 @@
   .VipCardList1 {
     .search {
       display: flex;
-      padding: 2px 10px;
+      padding: 10px;
+      background: white;
 
       .box {
         .text {
           font-weight: bold;
-          margin: 0px 5px;
+          margin: 0 5px;
         }
       }
     }
     .list {
-      margin-top: 20px;
+      margin-top: 10px;
       display: flex;
       flex-flow: wrap;
 
@@ -250,7 +251,7 @@
             justify-content: flex-end;
 
             .details {
-              color: blue;
+              color: #1298e6;
               cursor: pointer;
             }
           }

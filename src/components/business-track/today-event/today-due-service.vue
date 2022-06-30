@@ -98,10 +98,10 @@
     background-color: #efe9e0;
   }
   .TodayDueService {
-    border: 1px solid #dadada;
+    border: 1px solid #eeeeee;
     border-radius: 6px;
     height: 300px;
-    padding: 2px;
+    background: white;
     .header {
       display: flex;
       height: 40px;
@@ -123,7 +123,7 @@
         align-items: center;
         .bt {
           padding: 5px;
-          color: blue;
+          color: #1298e6;
           cursor: pointer;
         }
       }

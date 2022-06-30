@@ -78,6 +78,7 @@
   import routers from '@/router/routers'
   import minLogo from '@/assets/minLogo.png'
   import maxLogo from '@/assets/maxLogo.png'
+
   export default {
     name: 'Main',
     components: {
@@ -201,6 +202,7 @@
     margin: 0;
     padding: 0;
   }
+
   #app {
     width: 100%;
     height: 100%;
@@ -211,14 +213,17 @@
     .spin-icon-load {
       animation: ani-demo-spin 1s linear infinite;
     }
+
     .logo-con {
       padding: 5px;
 
       .logo-info {
         display: flex;
         align-items: center;
+
         .logo {
           padding-left: 10px;
+
           img {
             height: 50px;
             width: auto;
@@ -226,6 +231,7 @@
             margin: 0 auto;
           }
         }
+
         .name {
           flex: 1;
           padding-left: 10px;
@@ -233,6 +239,7 @@
           color: white;
         }
       }
+
       img {
         height: 40px;
         width: auto;
@@ -240,23 +247,28 @@
         margin: 0 auto;
       }
     }
+
     .header-con {
       width: 100%;
     }
+
     .main-layout-con {
       height: 100%;
     }
+
     .main-content-con {
       height: ~'calc(100% - 60px)';
       overflow: hidden;
     }
+
     .tag-nav-wrapper {
       padding: 0;
       height: 40px;
       background: #f0f0f0;
     }
+
     .content-wrapper {
-      padding: 18px;
+      padding: 6px 18px;
       height: ~'calc(100% - 80px)';
       overflow: auto;
     }
@@ -274,12 +286,15 @@
       background: #f19ec2;
       min-width: 0;
     }
+
     .ivu-menu-item > i {
       margin-right: 12px !important;
     }
+
     .ivu-menu-submenu > .ivu-menu > .ivu-menu-item > i {
       margin-right: 8px !important;
     }
+
     .collased-menu-dropdown {
       width: 100%;
       margin: 0;
@@ -291,15 +306,19 @@
       list-style: none;
       cursor: pointer;
       transition: background 0.2s ease-in-out;
+
       &:hover {
         background: rgba(100, 100, 100, 0.1);
       }
+
       & * {
         color: #515a6e;
       }
+
       .ivu-menu-item > i {
         margin-right: 12px !important;
       }
+
       .ivu-menu-submenu > .ivu-menu > .ivu-menu-item > i {
         margin-right: 8px !important;
       }
@@ -309,31 +328,40 @@
       max-height: 400px;
     }
 
-    /deep/.ivu-menu-light {
+    /deep/ .ivu-menu-light {
       background: #f19ec2;
     }
+
     .icon {
       font-size: 20px;
     }
-    /deep/.ivu-menu-submenu-title {
+
+    /deep/ .ivu-menu-submenu-title {
       color: white;
     }
-    /deep/.ivu-menu-submenu-title:hover {
+
+    /deep/ .ivu-menu-submenu-title:hover {
       background: white;
       color: #cc749a;
     }
-    /deep/.ivu-menu-item {
+
+    /deep/ .ivu-menu-item {
       color: white;
     }
-    /deep/.ivu-menu-item:hover {
+
+    /deep/ .ivu-menu-item:hover {
       background: white;
       color: #cc749a;
     }
-    /deep/.ivu-menu-light.ivu-menu-vertical
+
+    /deep/
+      .ivu-menu-light.ivu-menu-vertical
       .ivu-menu-item-active:not(.ivu-menu-submenu) {
       color: #cc749a;
     }
-    /deep/.ivu-menu-light.ivu-menu-vertical
+
+    /deep/
+      .ivu-menu-light.ivu-menu-vertical
       .ivu-menu-item-active:not(.ivu-menu-submenu):after {
       background: #cc749a;
     }
@@ -346,30 +374,71 @@
       padding: 10px 2px;
       height: 100%;
     }
-    padding: 4px 16px;
+  }
+
+  /deep/ .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab-active {
+    height: 32px;
+    padding-bottom: 5px;
+    background: white;
+    transform: translateZ(0);
+    border-color: #f19ec2 !important;
+    color: #f19ec2;
+  }
+
+  /deep/.ivu-tabs-bar {
+    margin-bottom: 0;
+  }
+
+  /deep/ .ivu-tabs-tab:hover {
+    border-color: #f19ec2 !important;
+    color: #f19ec2 !important;
+  }
+
+  /deep/.ivu-tabs-nav .ivu-tabs-tab-active {
+    color: #f19ec2;
+  }
+
+  /deep/ .ivu-tabs-mini .ivu-tabs-nav-container {
+    font-size: 14px;
     background: white;
   }
 
-  /deep/.ivu-input-search {
+  /deep/ .ivu-tabs-ink-bar {
+    height: 2px;
+    box-sizing: border-box;
+    background-color: #f19ec2;
+    position: absolute;
+    left: 0;
+    bottom: 1px;
+    z-index: 1;
+    transition: transform 0.3s ease-in-out;
+    transform-origin: 0 0;
+  }
+
+  /deep/ .ivu-input-search {
     background: #f19ec2 !important;
     border-color: #f19ec2 !important;
   }
 
-  /deep/.ivu-btn-primary {
+  /deep/ .ivu-btn-primary {
     background: #f19ec2;
     border-color: #f19ec2;
   }
-  /deep/.ivu-table-wrapper {
+
+  /deep/ .ivu-table-wrapper {
     border: none;
   }
-  /deep/.ivu-table-header {
+
+  /deep/ .ivu-table-header {
     color: #000000;
   }
-  /deep/.ivu-table th {
+
+  /deep/ .ivu-table th {
     background-color: #ffe1ef;
     //text-align: center;
   }
-  /deep/.ivu-layout-header {
+
+  /deep/ .ivu-layout-header {
     background: #f19ec2;
     padding: 0;
     height: 60px;

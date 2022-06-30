@@ -49,7 +49,6 @@
 
     <div class="footer">
       <div class="bt" @click="save">保存</div>
-      <div class="bt" @click="cancel">取消</div>
     </div>
   </div>
 </template>
@@ -92,9 +91,8 @@
     },
     created() {
       this.getStaffList()
-      console.log(this.data, 'data')
       this.defaultList = []
-      if (Object.keys(this.data).length > 0) {
+      if (this.data && Object.keys(this.data).length > 0) {
         this.formData.img_id = this.data.img_id
         this.formData.name = this.data.name
         this.formData.info = this.data.info
@@ -110,9 +108,6 @@
       console.log(this.defaultList, 'this.defaultList')
     },
     methods: {
-      cancel() {
-        this.$emit('cancelModal', false)
-      },
       removeFile(res) {
         console.log(res, 'removeFile')
         this.formData.img_id = ''
