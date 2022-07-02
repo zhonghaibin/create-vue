@@ -164,7 +164,7 @@
       margin: 20px 90px 0 30px;
       border-radius: 20px;
       border: 1px solid #dcdee2;
-      box-shadow: 1px 1px 5px rgb(0 0 0 / 30%);
+      box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
 
       height: 480px;
       cursor: pointer;

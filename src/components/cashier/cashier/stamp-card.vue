@@ -375,7 +375,7 @@
       left: 0;
       right: 0;
       padding: 10px 0;
-      box-shadow: 0 1px 10px rgb(0 0 0 / 30%);
+      box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
 
       background: white;
       .footer-left {
@@ -389,7 +389,7 @@
       .footer-right {
         display: flex;
         align-items: center;
-        justify-content: end;
+        justify-content: flex-end;
         flex: 1;
         .money {
           flex: 1;

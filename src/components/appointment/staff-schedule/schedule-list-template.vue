@@ -174,21 +174,25 @@
         batch: false,
       }
     },
-    activated() {},
+    activated() {
+      this.batch = false
+    },
+    destroyed() {
+      this.batch = false
+    },
     created() {
       this.getMonthDate()
     },
     mounted() {
       this.setHeight()
-      let that = this
-      document.onkeydown = function () {
+      document.onkeydown = () => {
         if (event.keyCode === 17) {
-          that.batch = true
+          this.batch = true
         }
       }
-      document.onkeyup = function () {
+      document.onkeyup = () => {
         if (event.keyCode === 17) {
-          that.batch = false
+          this.batch = false
         }
       }
     },
@@ -316,8 +320,8 @@
         text-align: center;
 
         td {
-          border: none;
           border: 1px solid #ffffff;
+          cursor: pointer;
         }
         th {
           border: none;

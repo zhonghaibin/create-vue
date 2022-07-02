@@ -620,6 +620,7 @@
   .CardTable {
     position: relative;
     display: flex;
+    justify-content: space-between;
     .left-box {
       width: 80%;
       .search {
@@ -778,7 +779,6 @@
       margin-left: 10px;
       width: 320px;
       float: right;
-      padding: 0 10px;
 
       .box {
         border-radius: 8px;

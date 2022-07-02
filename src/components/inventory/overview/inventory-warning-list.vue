@@ -204,6 +204,7 @@
   .InventoryWarningList {
     position: relative;
     display: flex;
+    justify-content: space-between;
     .left-box {
       width: 80%;
       .search {
@@ -267,8 +268,8 @@
       }
     }
     .right-box {
+      width: 20%;
       margin-left: 10px;
-      width: 320px;
       float: right;
     }
 

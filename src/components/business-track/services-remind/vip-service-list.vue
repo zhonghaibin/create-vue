@@ -263,9 +263,6 @@
       }
     }
     .list {
-      /deep/.ivu-table td {
-        //text-align: center;
-      }
       .bt {
         color: #1298e6;
         margin-right: 20px;

@@ -212,7 +212,7 @@
         margin: 12px 60px 20px 20px;
         border-radius: 8px;
         border: 1px solid #dcdee2;
-        box-shadow: 1px 1px 5px rgb(0 0 0 / 30%);
+        box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
         cursor: pointer;
 
         .header {

@@ -197,9 +197,6 @@
             text-align: center;
             border-radius: 6px;
             cursor: pointer;
-            /deep/.ivu-icon {
-              font-size: 16px;
-            }
           }
         }
       }

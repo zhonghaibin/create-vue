@@ -272,99 +272,58 @@
       height: ~'calc(100% - 80px)';
       overflow: auto;
     }
+  }
 
-    .left-sider {
-      .ivu-layout-sider-children {
-        overflow-y: scroll;
-        margin-right: -18px;
-      }
-    }
+  /deep/ .ivu-tabs-bar {
+    margin-bottom: 0;
+  }
 
-    .ivu-layout-sider {
-      transition: all 0.2s ease-in-out;
-      position: relative;
-      background: #f19ec2;
-      min-width: 0;
-    }
+  /deep/ .ivu-tabs-tab:hover {
+    border-color: #f19ec2 !important;
+    color: #f19ec2 !important;
+  }
 
-    .ivu-menu-item > i {
-      margin-right: 12px !important;
-    }
+  /deep/ .ivu-tabs-nav .ivu-tabs-tab-active {
+    color: #f19ec2;
+  }
 
-    .ivu-menu-submenu > .ivu-menu > .ivu-menu-item > i {
-      margin-right: 8px !important;
-    }
+  /deep/ .ivu-tabs-mini .ivu-tabs-nav-container {
+    font-size: 14px;
+    background: white;
+  }
 
-    .collased-menu-dropdown {
-      width: 100%;
-      margin: 0;
-      line-height: normal;
-      padding: 7px 0 6px 16px;
-      clear: both;
-      font-size: 12px !important;
-      white-space: nowrap;
-      list-style: none;
-      cursor: pointer;
-      transition: background 0.2s ease-in-out;
+  /deep/ .ivu-menu-light {
+    background: #f19ec2;
+  }
 
-      &:hover {
-        background: rgba(100, 100, 100, 0.1);
-      }
+  /deep/ .ivu-menu-submenu-title {
+    color: white;
+  }
 
-      & * {
-        color: #515a6e;
-      }
+  /deep/ .ivu-menu-submenu-title:hover {
+    background: white;
+    color: #cc749a;
+  }
 
-      .ivu-menu-item > i {
-        margin-right: 12px !important;
-      }
+  /deep/ .ivu-menu-item {
+    color: white;
+  }
 
-      .ivu-menu-submenu > .ivu-menu > .ivu-menu-item > i {
-        margin-right: 8px !important;
-      }
-    }
+  /deep/ .ivu-menu-item:hover {
+    background: white;
+    color: #cc749a;
+  }
 
-    .ivu-select-dropdown.ivu-dropdown-transfer {
-      max-height: 400px;
-    }
+  /deep/
+    .ivu-menu-light.ivu-menu-vertical
+    .ivu-menu-item-active:not(.ivu-menu-submenu) {
+    color: #cc749a;
+  }
 
-    /deep/ .ivu-menu-light {
-      background: #f19ec2;
-    }
-
-    .icon {
-      font-size: 20px;
-    }
-
-    /deep/ .ivu-menu-submenu-title {
-      color: white;
-    }
-
-    /deep/ .ivu-menu-submenu-title:hover {
-      background: white;
-      color: #cc749a;
-    }
-
-    /deep/ .ivu-menu-item {
-      color: white;
-    }
-
-    /deep/ .ivu-menu-item:hover {
-      background: white;
-      color: #cc749a;
-    }
-
-    /deep/
-      .ivu-menu-light.ivu-menu-vertical
-      .ivu-menu-item-active:not(.ivu-menu-submenu) {
-      color: #cc749a;
-    }
-
-    /deep/
-      .ivu-menu-light.ivu-menu-vertical
-      .ivu-menu-item-active:not(.ivu-menu-submenu):after {
-      background: #cc749a;
-    }
+  /deep/
+    .ivu-menu-light.ivu-menu-vertical
+    .ivu-menu-item-active:not(.ivu-menu-submenu):after {
+    background: #cc749a;
   }
 
   .box {
@@ -374,74 +333,5 @@
       padding: 10px 2px;
       height: 100%;
     }
-  }
-
-  /deep/ .ivu-tabs.ivu-tabs-card > .ivu-tabs-bar .ivu-tabs-tab-active {
-    height: 32px;
-    padding-bottom: 5px;
-    background: white;
-    transform: translateZ(0);
-    border-color: #f19ec2 !important;
-    color: #f19ec2;
-  }
-
-  /deep/.ivu-tabs-bar {
-    margin-bottom: 0;
-  }
-
-  /deep/ .ivu-tabs-tab:hover {
-    border-color: #f19ec2 !important;
-    color: #f19ec2 !important;
-  }
-
-  /deep/.ivu-tabs-nav .ivu-tabs-tab-active {
-    color: #f19ec2;
-  }
-
-  /deep/ .ivu-tabs-mini .ivu-tabs-nav-container {
-    font-size: 14px;
-    background: white;
-  }
-
-  /deep/ .ivu-tabs-ink-bar {
-    height: 2px;
-    box-sizing: border-box;
-    background-color: #f19ec2;
-    position: absolute;
-    left: 0;
-    bottom: 1px;
-    z-index: 1;
-    transition: transform 0.3s ease-in-out;
-    transform-origin: 0 0;
-  }
-
-  /deep/ .ivu-input-search {
-    background: #f19ec2 !important;
-    border-color: #f19ec2 !important;
-  }
-
-  /deep/ .ivu-btn-primary {
-    background: #f19ec2;
-    border-color: #f19ec2;
-  }
-
-  /deep/ .ivu-table-wrapper {
-    border: none;
-  }
-
-  /deep/ .ivu-table-header {
-    color: #000000;
-  }
-
-  /deep/ .ivu-table th {
-    background-color: #ffe1ef;
-    //text-align: center;
-  }
-
-  /deep/ .ivu-layout-header {
-    background: #f19ec2;
-    padding: 0;
-    height: 60px;
-    line-height: 60px;
   }
 </style>

@@ -406,7 +406,7 @@
         .box {
           border-radius: 8px;
           border: 1px solid #dcdee2;
-          box-shadow: 1px 2px 5px rgb(0 0 0 / 30%);
+          box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.3);
           padding: 1px;
           .title {
             padding: 12px;

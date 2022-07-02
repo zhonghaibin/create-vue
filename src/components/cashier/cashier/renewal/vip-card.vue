@@ -23,18 +23,18 @@
     </div>
     <div class="list">
       <div class="card">
-        <div class="header">骨盆修复套餐</div>
+        <div class="header">骨盆修复套餐1</div>
         <div class="content">
           <div class="row">
-            <div class="left">售价</div>
+            <div class="left">售价：</div>
             <div class="right"><div class="text">￥2342.33</div></div>
           </div>
           <div class="row">
-            <div class="left">余次</div>
+            <div class="left">余次：</div>
             <div class="right"><div class="text">8次</div></div>
           </div>
           <div class="row">
-            <div class="left">时限</div>
+            <div class="left">时限：</div>
             <div class="right"><div class="text">永久有效</div></div>
           </div>
           <div class="more">
@@ -131,35 +131,28 @@
       display: flex;
       flex-flow: wrap;
       .card {
-        border-radius: 8px;
+        border-radius: 12px;
         border: 1px solid #dcdee2;
         cursor: pointer;
         background: white;
         margin: 10px 10px 10px 0;
-        width: 240px;
+        width: 200px;
         .header {
-          border-top-left-radius: 8px;
-          border-top-right-radius: 8px;
-
-          height: 30px;
-          line-height: 30px;
-          padding: 0 10px;
+          margin-top: 10px;
+          padding: 2px 10px;
           font-size: 14px;
           text-align: center;
-          background: #fdf1f6;
+          font-weight: bold;
         }
 
         .content {
-          padding: 8px 8px;
+          padding: 0 8px 4px 6px;
 
           .row {
-            line-height: 26px;
-            height: 26px;
             display: flex;
-
+            padding: 2px 0;
+            align-items: center;
             .left {
-              flex: 1;
-              margin-left: 12px;
             }
 
             .right {

@@ -60,8 +60,5 @@
 <style lang="less" scoped>
   .tab {
     padding-bottom: 10px;
-    /deep/ .ivu-tabs-ink-bar {
-      background: #cc749a;
-    }
   }
 </style>
